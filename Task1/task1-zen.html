@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task 1: Zen Mode</title>
+    <link rel="stylesheet" href="/css/global.css">
+    <link rel="stylesheet" href="/css/Task1/task1-zen.css">
+</head>
+<body class="zen-body">
+    <div class="zen-container">
+        <!-- Header with Mode Selection -->
+        <header class="zen-header">
+            <div class="task-info">
+                <span class="task-icon">🎯</span>
+                <h1 class="task-title">Task 1: Find the Important Notification</h1>
+            </div>
+            <p class="task-subtitle">Choose a mode to see the difference:</p>
+            <div class="mode-toggle">
+                <button class="mode-btn inactive" onclick="switchMode('overload')">
+                    Overload Mode
+                </button>
+                <button class="mode-btn active">
+                    <span class="checkmark">✓</span> Zen Mode
+                </button>
+            </div>
+        </header>
+
+        <!-- Guide Message -->
+        <div class="zen-guide">
+            <div class="quote-icon">❝</div>
+            <p class="guide-text">See what you need? No hurting required. It's right there waiting for you.</p>
+        </div>
+
+        <!-- Main Content Area -->
+        <main class="zen-content">
+            <!-- Notifications Section -->
+            <section class="notifications-section">
+                <h2 class="section-title">Notifications</h2>
+                
+                <!-- Important Notification (Highlighted) -->
+                <div class="notification-card important" id="importantNotification">
+                    <div class="notification-header">
+                        <span class="notification-icon">🔒</span>
+                        <span class="priority-badge">Important</span>
+                    </div>
+                    <h3 class="notification-title">Account Security Update Required</h3>
+                    <p class="notification-text">We've detected a log in</p>
+                    <button class="notification-action" onclick="completeTask()">
+                        Review Now
+                    </button>
+                </div>
+            </section>
+
+            <!-- Other Updates Section -->
+            <section class="other-updates-section">
+                <h2 class="section-title-small">Other Updates</h2>
+                
+                <div class="update-item">
+                    <span class="update-icon">💬</span>
+                    <p class="update-text">2 new messages from your team</p>
+                </div>
+                
+                <div class="update-item">
+                    <span class="update-icon">📊</span>
+                    <p class="update-text">Weekly activity summary is ready</p>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="/js/Task1/task1-zen.js"></script>
+</body>
+</html>

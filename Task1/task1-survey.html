@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task 1 - Quick Reflection</title>
+    <link rel="stylesheet" href="/css/global.css">
+    <link rel="stylesheet" href="/css/Task1/task1-survey.css">
+</head>
+<body>
+    <div class="survey-container">
+        <div class="survey-header">
+            <h1 class="survey-title">Quick Reflection</h1>
+            <p class="survey-subtitle">You just experienced two different design approaches. Let's capture your thoughts while they're fresh.</p>
+        </div>
+
+        <form id="surveyForm" class="survey-form">
+            
+            <!-- Question 1: Mental Clarity -->
+            <div class="question-block">
+                <label class="question-label">
+                    <span class="question-number">1.</span>
+                    Which mode made you feel more mentally clear and focused?
+                </label>
+                <div class="radio-group">
+                    <label class="radio-option">
+                        <input type="radio" name="q1_clarity" value="overload" required>
+                        <span class="radio-label">Overload Mode</span>
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="q1_clarity" value="zen">
+                        <span class="radio-label">Zen Mode</span>
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="q1_clarity" value="same">
+                        <span class="radio-label">About the same</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Question 2: Emotional Response -->
+            <div class="question-block">
+                <label class="question-label">
+                    <span class="question-number">2.</span>
+                    How did each mode make you feel?
+                </label>
+                
+                <div class="sub-question">
+                    <p class="mode-label">Overload Mode felt:</p>
+                    <div class="likert-scale">
+                        <label class="likert-option">
+                            <input type="radio" name="q2_overload_feeling" value="1" required>
+                            <span>Very Stressful</span>
+                        </label>
+                        <label class="likert-option">
+                            <input type="radio" name="q2_overload_feeling" value="2">
+                            <span>Stressful</span>
+                        </label>
+                        <label class="likert-option">
+                            <input type="radio" name="q2_overload_feeling" value="3">
+                            <span>Neutral</span>
+                        </label>
+                        <label class="likert-option">
+                            <input type="radio" name="q2_overload_feeling" value="4">
+                            <span>Calm</span>
+                        </label>
+                        <label class="likert-option">
+                            <input type="radio" name="q2_overload_feeling" value="5">
+                            <span>Very Calm</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="sub-question">
+                    <p class="mode-label">Zen Mode felt:</p>
+                    <div class="likert-scale">
+                        <label class="likert-option">
+                            <input type="radio" name="q2_zen_feeling" value="1" required>
+                            <span>Very Stressful</span>
+                        </label>
+                        <label class="likert-option">
+                            <input type="radio" name="q2_zen_feeling" value="2">
+                            <span>Stressful</span>
+                        </label>
+                        <label class="likert-option">
+                            <input type="radio" name="q2_zen_feeling" value="3">
+                            <span>Neutral</span>
+                        </label>
+                        <label class="likert-option">
+                            <input type="radio" name="q2_zen_feeling" value="4">
+                            <span>Calm</span>
+                        </label>
+                        <label class="likert-option">
+                            <input type="radio" name="q2_zen_feeling" value="5">
+                            <span>Very Calm</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question 3: Sense of Control -->
+            <div class="question-block">
+                <label class="question-label">
+                    <span class="question-number">3.</span>
+                    In which mode did you feel more in control of your actions?
+                </label>
+                <div class="radio-group">
+                    <label class="radio-option">
+                        <input type="radio" name="q3_control" value="overload" required>
+                        <span class="radio-label">Overload Mode</span>
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="q3_control" value="zen">
+                        <span class="radio-label">Zen Mode</span>
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="q3_control" value="same">
+                        <span class="radio-label">About the same</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Optional Comments -->
+            <div class="question-block">
+                <label class="question-label">
+                    <span class="question-number">4.</span>
+                    Any additional thoughts? (Optional)
+                </label>
+                <textarea 
+                    name="q4_comments" 
+                    class="comment-box" 
+                    placeholder="Share any observations or feelings about the two experiences..."
+                    rows="4"
+                ></textarea>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" class="submit-btn">
+                Continue to Next Task →
+            </button>
+        </form>
+    </div>
+
+    <script src="/js/Task1/task1-survey.js"></script>
+</body>
+</html>

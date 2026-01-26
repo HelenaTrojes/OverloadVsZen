@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task 1: Overload Mode</title>
+    <link rel="stylesheet" href="/css/global.css">
+    <link rel="stylesheet" href="/css/Task1/task1-overload.css">
+</head>
+<body class="overload-body">
+    <!-- Annoying notification badges -->
+    <div class="floating-badges">
+        <span class="badge">🔔 12</span>
+        <span class="badge">⭐ New</span>
+        <span class="badge">🎁 3</span>
+        <span class="badge">🔥 12</span>
+    </div>
+
+    <div class="overload-container">
+        <!-- Header -->
+        <header class="overload-header">
+            <div class="task-info-chaos">
+                <span class="task-icon-chaos">🎯</span>
+                <h1 class="task-title-chaos">Task 1: Find the Important Notification</h1>
+            </div>
+            <p class="task-subtitle-chaos">Choose a mode to see the difference:</p>
+            <div class="mode-toggle-chaos">
+                <button class="mode-btn-chaos active">
+                    <span class="indicator-dot"></span> Overload Mode
+                </button>
+                <button class="mode-btn-chaos inactive" onclick="switchMode('zen')">
+                    Zen Mode
+                </button>
+            </div>
+        </header>
+
+        <!-- Chaotic Guide Message -->
+        <div class="chaos-guide">
+            <div class="quote-chaos">❝</div>
+            <p class="guide-text-chaos">
+                Everything's important! Or is it? Good luck finding what you actually need in here... that timer's ticking, by the way.
+            </p>
+        </div>
+
+        <!-- FLASH SALE BANNER (Urgent, distracting) -->
+        <div class="flash-banner">
+            <span class="flash-icon">⚡</span>
+            FLASH SALE! 50% OFF EVERYTHING - ENDS IN 00:23! CLICK NOW!
+            <span class="flash-icon">⚡</span>
+        </div>
+
+        <!-- Chaotic Notification Stack -->
+        <main class="chaos-content">
+            
+            <!-- AD Banner -->
+            <div class="ad-banner urgent">
+                🎉 AD: BUY NOW! LIMITED TIME OFFER 🎉
+            </div>
+
+            <!-- Fake urgent warning -->
+            <div class="fake-alert warning">
+                ⚠️ LAST CHANCE TO SAVE! ACT! ⚠️
+            </div>
+
+            <!-- Fake prize notification -->
+            <div class="fake-notification prize">
+                <span class="confetti">🎊</span>
+                Congratulations! You've won a $500 gift card!<br>
+                Click here to claim your prize NOW!
+                <span class="confetti">🎊</span>
+            </div>
+
+            <!-- Another flash sale -->
+            <div class="flash-alert">
+                <span class="alarm">🚨</span>
+                FLASH SALE ENDS IN 00:23
+                <span class="alarm">🚨</span>
+            </div>
+
+            <!-- Trending nonsense -->
+            <div class="trending-banner">
+                TRENDING NOW! DON'T MISS OUT!
+            </div>
+
+            <!-- THE ACTUAL IMPORTANT NOTIFICATION (Hidden in chaos) -->
+            <div class="notification-buried" id="importantNotification">
+                <span class="small-icon">ℹ️</span>
+                Account Security update required - We've detected a log in
+            </div>
+
+            <!-- More distractions -->
+            <div class="fake-alert urgent-red">
+                <span class="fire">🔥</span>
+                ONLY 3 ITEMS LEFT! HURRY!
+                <span class="fire">🔥</span>
+            </div>
+        </main>
+    </div>
+
+    <!-- Annoying popup that appears after 3 seconds -->
+    <div class="popup-overlay" id="annoyingPopup" style="display: none;">
+        <div class="popup-box">
+            <h3>🎁 Special Offer!</h3>
+            <p>Sign up now for exclusive deals!</p>
+            <button class="popup-close" onclick="closePopup()">Maybe Later</button>
+            <button class="popup-accept">Yes, Sign Me Up!</button>
+        </div>
+    </div>
+
+    <script src="/js/Task1/task1-overload.js"></script>
+</body>
+</html>

@@ -1,0 +1,187 @@
+/* Welcome Page */
+
+/* Hero Section (Top Dark Blue with Wave) */
+.hero-section {
+    background: linear-gradient(135deg, var(--navy-dark) 0%, var(--navy-blue) 100%);
+    min-height: 50vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    padding: var(--spacing-xl) var(--spacing-md);
+    clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
+}
+
+.hero-content {
+    text-align: center;
+    max-width: 800px;
+    z-index: 2;
+    animation: fadeInUp 1s ease-out;
+}
+
+.main-title {
+    font-family: var(--font-heading);
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    color: var(--white);
+    margin-bottom: var(--spacing-md);
+    font-weight: 300;
+    letter-spacing: 0.5px;
+}
+
+.subtitle {
+    font-size: clamp(1rem, 2.5vw, 1.3rem);
+    color: rgba(255, 255, 255, 0.9);
+    line-height: 1.8;
+}
+
+.highlight {
+    color: var(--coral);
+    font-weight: 500;
+    position: relative;
+}
+
+/* Info Section (Bottom Light) */
+.info-section {
+    background: var(--cream);
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--spacing-xl) var(--spacing-md);
+    margin-top: -50px;
+}
+
+.info-content {
+    max-width: 600px;
+    text-align: center;
+    animation: fadeIn 1.2s ease-out 0.3s backwards;
+}
+
+.section-title {
+    font-family: var(--font-heading);
+    font-size: clamp(1.8rem, 4vw, 2.5rem);
+    color: var(--text-dark);
+    margin-bottom: var(--spacing-xs);
+    font-weight: 400;
+}
+
+.title-underline {
+    width: 60px;
+    height: 3px;
+    background: var(--coral);
+    margin: 0 auto var(--spacing-lg);
+}
+
+.description {
+    font-size: 1.1rem;
+    color: var(--text-dark);
+    margin-bottom: var(--spacing-lg);
+}
+
+/* Mission Box */
+.mission-box {
+    background: rgba(255, 255, 255, 0.7);
+    border-left: 4px solid var(--teal);
+    padding: var(--spacing-md);
+    margin: var(--spacing-lg) 0;
+    text-align: left;
+}
+
+.mission-label {
+    font-weight: 600;
+    color: var(--navy-blue);
+    margin-bottom: var(--spacing-xs);
+}
+
+.mission-text {
+    color: var(--text-dark);
+    line-height: 1.6;
+}
+
+.mission-highlight {
+    color: var(--teal);
+    font-weight: 500;
+}
+
+/* CTA Button */
+.cta-button {
+    background: var(--teal);
+    color: var(--white);
+    border: none;
+    padding: 16px 40px;
+    font-size: 1.1rem;
+    font-weight: 500;
+    border-radius: 50px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: var(--spacing-md);
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(45, 154, 150, 0.3);
+}
+
+.cta-button:hover {
+    background: var(--teal-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(45, 154, 150, 0.4);
+}
+
+.cta-button:active {
+    transform: translateY(0);
+}
+
+.arrow {
+    font-size: 1.3rem;
+    transition: transform 0.3s ease;
+}
+
+.cta-button:hover .arrow {
+    transform: translateX(5px);
+}
+
+/* Footer */
+.page-footer {
+    background: var(--cream);
+    padding: var(--spacing-md);
+    text-align: center;
+    font-size: 0.9rem;
+    color: rgba(0, 0, 0, 0.5);
+}
+
+/* Animations */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .hero-section {
+        min-height: 45vh;
+        clip-path: polygon(0 0, 100% 0, 100% 90%, 0 100%);
+    }
+    
+    .info-section {
+        padding: var(--spacing-lg) var(--spacing-sm);
+    }
+    
+    .mission-box {
+        padding: var(--spacing-sm);
+    }
+}

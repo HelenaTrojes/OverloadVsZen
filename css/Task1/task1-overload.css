@@ -1,0 +1,383 @@
+/* Overload Mode Styles - Chaotic, Overwhelming, Manipulative */
+
+.overload-body {
+    background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+.overload-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: var(--spacing-md);
+}
+
+/* Floating Notification Badges (Annoying) */
+.floating-badges {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    gap: 10px;
+    z-index: 100;
+    animation: shake 0.5s infinite;
+}
+
+.badge {
+    background: #e74c3c;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    animation: pulse 1s infinite;
+}
+
+/* Header - Chaotic */
+.overload-header {
+    background: linear-gradient(135deg, #c0392b 0%, #e74c3c 100%);
+    border-radius: 12px;
+    padding: var(--spacing-lg);
+    margin-bottom: var(--spacing-md);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+    border: 3px solid #f39c12;
+}
+
+.task-info-chaos {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: var(--spacing-sm);
+}
+
+.task-icon-chaos {
+    font-size: 2rem;
+    animation: spin 2s linear infinite;
+}
+
+.task-title-chaos {
+    font-size: clamp(1.2rem, 3vw, 1.6rem);
+    color: white;
+    font-weight: 700;
+    margin: 0;
+    text-transform: uppercase;
+}
+
+.task-subtitle-chaos {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: var(--spacing-sm);
+    text-align: center;
+}
+
+/* Mode Toggle - Chaotic */
+.mode-toggle-chaos {
+    display: flex;
+    gap: var(--spacing-sm);
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.mode-btn-chaos {
+    padding: 10px 20px;
+    border-radius: 25px;
+    border: 2px solid transparent;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.mode-btn-chaos.active {
+    background: #e74c3c;
+    color: white;
+    border-color: #f39c12;
+    pointer-events: none;
+}
+
+.mode-btn-chaos.inactive {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+}
+
+.mode-btn-chaos.inactive:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.indicator-dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    background: white;
+    border-radius: 50%;
+    margin-right: 6px;
+    animation: blink 1s infinite;
+}
+
+/* Chaotic Guide */
+.chaos-guide {
+    background: rgba(52, 73, 94, 0.9);
+    border-left: 4px solid #e74c3c;
+    border-radius: 8px;
+    padding: var(--spacing-md);
+    margin-bottom: var(--spacing-md);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+.quote-chaos {
+    font-size: 2rem;
+    color: #e74c3c;
+    opacity: 0.5;
+}
+
+.guide-text-chaos {
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.9);
+    line-height: 1.5;
+    font-style: italic;
+}
+
+/* FLASH BANNER - Super Urgent */
+.flash-banner {
+    background: linear-gradient(90deg, #f39c12 0%, #e67e22 50%, #f39c12 100%);
+    background-size: 200% 100%;
+    animation: gradientShift 2s ease infinite;
+    color: white;
+    text-align: center;
+    padding: 16px;
+    font-weight: 900;
+    font-size: 1.2rem;
+    margin-bottom: var(--spacing-sm);
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(243, 156, 18, 0.6);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.flash-icon {
+    font-size: 1.5rem;
+    animation: bounce 0.5s infinite;
+}
+
+/* Chaotic Content Stack */
+.chaos-content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+}
+
+/* AD Banner */
+.ad-banner {
+    background: linear-gradient(135deg, #8e44ad 0%, #9b59b6 100%);
+    color: white;
+    text-align: center;
+    padding: 20px;
+    font-size: 1.3rem;
+    font-weight: 900;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(142, 68, 173, 0.5);
+    animation: pulse 1.5s infinite;
+}
+
+/* Fake Alert */
+.fake-alert {
+    background: linear-gradient(135deg, #e67e22 0%, #d35400 100%);
+    color: white;
+    text-align: center;
+    padding: 18px;
+    font-size: 1.1rem;
+    font-weight: 800;
+    border-radius: 8px;
+    border: 3px solid #f39c12;
+    animation: shake 0.3s infinite;
+}
+
+.fake-alert.warning {
+    background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+}
+
+.fake-alert.urgent-red {
+    background: linear-gradient(135deg, #c0392b 0%, #a93226 100%);
+}
+
+/* Fake Prize Notification */
+.fake-notification.prize {
+    background: linear-gradient(135deg, #16a085 0%, #1abc9c 100%);
+    color: white;
+    text-align: center;
+    padding: 20px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(26, 188, 156, 0.4);
+}
+
+.confetti {
+    font-size: 1.8rem;
+    animation: bounce 1s infinite;
+}
+
+/* Flash Alert */
+.flash-alert {
+    background: #000;
+    color: white;
+    text-align: center;
+    padding: 15px;
+    font-size: 1.2rem;
+    font-weight: 900;
+    border-radius: 8px;
+    border: 3px solid #e74c3c;
+    animation: flashBorder 0.5s infinite;
+}
+
+.alarm {
+    font-size: 1.5rem;
+    animation: spin 1s linear infinite;
+}
+
+/* Trending Banner */
+.trending-banner {
+    background: linear-gradient(135deg, #2980b9 0%, #3498db 100%);
+    color: white;
+    text-align: center;
+    padding: 16px;
+    font-size: 1.15rem;
+    font-weight: 800;
+    border-radius: 8px;
+    text-transform: uppercase;
+}
+
+/* THE ACTUAL NOTIFICATION (Buried and small) */
+.notification-buried {
+    background: rgba(52, 152, 219, 0.8);
+    color: white;
+    padding: 12px 16px;
+    font-size: 0.9rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.notification-buried:hover {
+    background: rgba(52, 152, 219, 1);
+    transform: scale(1.02);
+}
+
+.small-icon {
+    font-size: 1.2rem;
+}
+
+/* Annoying Popup */
+.popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    animation: fadeIn 0.3s ease;
+}
+
+.popup-box {
+    background: white;
+    padding: var(--spacing-xl);
+    border-radius: 16px;
+    max-width: 400px;
+    text-align: center;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+}
+
+.popup-box h3 {
+    font-size: 1.8rem;
+    margin-bottom: var(--spacing-sm);
+    color: #e74c3c;
+}
+
+.popup-close {
+    background: #95a5a6;
+    color: white;
+    padding: 12px 24px;
+    margin: 10px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+.popup-accept {
+    background: #e74c3c;
+    color: white;
+    padding: 12px 24px;
+    margin: 10px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+/* Animations */
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-2px); }
+    75% { transform: translateX(2px); }
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.05); opacity: 0.9; }
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+@keyframes blink {
+    0%, 50%, 100% { opacity: 1; }
+    25%, 75% { opacity: 0.3; }
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+}
+
+@keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+@keyframes flashBorder {
+    0%, 100% { border-color: #e74c3c; }
+    50% { border-color: #f39c12; }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .floating-badges {
+        top: 10px;
+        right: 10px;
+        flex-wrap: wrap;
+    }
+    
+    .flash-banner {
+        font-size: 1rem;
+        padding: 12px;
+    }
+}
