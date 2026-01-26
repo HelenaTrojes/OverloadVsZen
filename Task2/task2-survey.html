@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task 2 - Quick Reflection</title>
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/Task2/task2-survey.css">
+</head>
+<body>
+    <div class="survey-container">
+        <div class="survey-header">
+            <h1 class="survey-title">Quick Reflection - Task 2</h1>
+            <p class="survey-subtitle">You just filled out a form in two different ways. How did each feel?</p>
+        </div>
+
+        <form id="surveyForm" class="survey-form">
+            
+            <!-- Question 1: Ease of Use -->
+            <div class="question-block">
+                <label class="question-label">
+                    <span class="question-number">1.</span>
+                    Which mode made it easier to complete the form?
+                </label>
+                <div class="radio-group">
+                    <label class="radio-option">
+                        <input type="radio" name="q1_ease" value="overload" required>
+                        <span class="radio-label">Overload Mode</span>
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="q1_ease" value="zen">
+                        <span class="radio-label">Zen Mode</span>
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="q1_ease" value="same">
+                        <span class="radio-label">About the same</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Question 2: Confidence -->
+            <div class="question-block">
+                <label class="question-label">
+                    <span class="question-number">2.</span>
+                    How confident were you that your form was submitted correctly?
+                </label>
+                
+                <div class="sub-question">
+                    <p class="mode-label">Overload Mode:</p>
+                    <div class="likert-scale">
+                        <label class="likert-option">
+                            <input type="radio" name="q2_overload_confidence" value="1" required>
+                            <span>Very Unsure</span>
+                        </label>
+                        <label class="likert-option">
+                            <input type="radio" name="q2_overload_confidence" value="2">
+                            <span>Unsure</span>
+                        </label>
+                        <label class="likert-option">
+                            <input type="radio" name="q2_overload_confidence" value="3">
+                            <span>Neutral</span>
+                        </label>
+                        <label class="likert-option">
+                            <input type="radio" name="q2_overload_confidence" value="4">
+                            <span>Confident</span>
+                        </label>
+                        <label class="likert-option">
+                            <input type="radio" name="q2_overload_confidence" value="5">
+                            <span>Very Confident</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="sub-question">
+                    <p class="mode-label">Zen Mode:</p>
+                    <div class="likert-scale">
+                        <label class="likert-option">
+                            <input type="radio" name="q2_zen_confidence" value="1" required>
+                            <span>Very Unsure</span>
+                        </label>
+                        <label class="likert-option">
+                            <input type="radio" name="q2_zen_confidence" value="2">
+                            <span>Unsure</span>
+                        </label>
+                        <label class="likert-option">
+                            <input type="radio" name="q2_zen_confidence" value="3">
+                            <span>Neutral</span>
+                        </label>
+                        <label class="likert-option">
+                            <input type="radio" name="q2_zen_confidence" value="4">
+                            <span>Confident</span>
+                        </label>
+                        <label class="likert-option">
+                            <input type="radio" name="q2_zen_confidence" value="5">
+                            <span>Very Confident</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question 3: Frustration -->
+            <div class="question-block">
+                <label class="question-label">
+                    <span class="question-number">3.</span>
+                    Which mode felt more frustrating?
+                </label>
+                <div class="radio-group">
+                    <label class="radio-option">
+                        <input type="radio" name="q3_frustration" value="overload" required>
+                        <span class="radio-label">Overload Mode</span>
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="q3_frustration" value="zen">
+                        <span class="radio-label">Zen Mode</span>
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="q3_frustration" value="same">
+                        <span class="radio-label">About the same</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Optional Comments -->
+            <div class="question-block">
+                <label class="question-label">
+                    <span class="question-number">4.</span>
+                    Any thoughts about the form experiences? (Optional)
+                </label>
+                <textarea 
+                    name="q4_comments" 
+                    class="comment-box" 
+                    placeholder="What made one easier or harder than the other?"
+                    rows="4"
+                ></textarea>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" class="submit-btn">
+                Continue to Next Task →
+            </button>
+        </form>
+    </div>
+
+    <script src="../js/Task2/task2-survey.js"></script>
+</body>
+</html>

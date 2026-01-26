@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Task 2: Zen Mode</title>
+    <link rel="stylesheet" href="../css/global.css" />
+    <link rel="stylesheet" href="../css/Task2/task2-zen.css" />
+  </head>
+  <body class="zen-body">
+    <div class="zen-container">
+      <!-- Header -->
+      <header class="zen-header">
+        <div class="task-info">
+          <span class="task-icon">📝</span>
+          <h1 class="task-title">Task 2: Submit a Simple Form</h1>
+        </div>
+        <p class="task-subtitle">
+          Fill out a contact form with your name and email
+        </p>
+        <div class="mode-toggle">
+          <button class="mode-btn inactive" onclick="switchMode('overload')">
+            Overload Mode
+          </button>
+          <button class="mode-btn active">
+            <span class="checkmark">✓</span> Zen Mode
+          </button>
+        </div>
+      </header>
+
+      <!-- Guide Message -->
+      <div class="zen-guide">
+        <div class="quote-icon">❝</div>
+        <p class="guide-text">
+          A form that actually helps you. Clear feedback, one button, no
+          confusion. See how it guides you?
+        </p>
+      </div>
+
+      <!-- Contact Form -->
+      <main class="zen-content">
+        <div class="form-container">
+          <div class="form-header">
+            <h2 class="form-title">Contact Form</h2>
+            <p class="form-subtitle">We'd love to hear from you</p>
+          </div>
+
+          <!-- Progress Bar -->
+          <div class="progress-wrapper">
+            <div class="progress-bar">
+              <div class="progress-fill" id="formProgress"></div>
+            </div>
+            <p class="progress-text" id="progressText">0% completed</p>
+          </div>
+
+          <form id="contactForm" class="contact-form">
+            <!-- First Name -->
+            <div class="form-group">
+              <label for="firstName" class="form-label">First Name</label>
+              <input
+                type="text"
+                id="firstName"
+                name="firstName"
+                class="form-input"
+                placeholder="Enter your first name"
+                required
+              />
+              <span class="error-message" id="firstNameError"></span>
+            </div>
+
+            <!-- Last Name -->
+            <div class="form-group">
+              <label for="lastName" class="form-label">Last Name</label>
+              <input
+                type="text"
+                id="lastName"
+                name="lastName"
+                class="form-input"
+                placeholder="Enter your last name"
+                required
+              />
+              <span class="error-message" id="lastNameError"></span>
+            </div>
+
+            <!-- Email -->
+            <div class="form-group">
+              <label for="email" class="form-label">Email Address</label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                class="form-input"
+                placeholder="your@email.com"
+                required
+              />
+              <span class="helper-text"
+                >We will never share your email with anyone.</span
+              >
+              <span class="error-message" id="emailError"></span>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" class="submit-button">Submit Form</button>
+          </form>
+        </div>
+      </main>
+    </div>
+
+    <script src="../js/Task2/task2-zen.js"></script>
+  </body>
+</html>

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task 2: Overload Mode</title>
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/Task2/task2-overload.css">
+</head>
+<body class="overload-body">
+    <div class="overload-container">
+        <!-- Header -->
+        <header class="overload-header">
+            <div class="task-info-chaos">
+                <span class="task-icon-chaos">📝</span>
+                <h1 class="task-title-chaos">Task 2: Submit a Simple Form</h1>
+            </div>
+            <p class="task-subtitle-chaos">Fill out a contact form with your name and email</p>
+            <div class="mode-toggle-chaos">
+                <button class="mode-btn-chaos active">
+                    <span class="indicator-dot"></span> Overload Mode
+                </button>
+                <button class="mode-btn-chaos inactive" onclick="switchMode('zen')">
+                    Zen Mode
+                </button>
+            </div>
+        </header>
+
+        <!-- Chaotic Guide -->
+        <div class="chaos-guide">
+            <div class="quote-chaos">❝</div>
+            <p class="guide-text-chaos">
+                Just fill out a simple form. What could go wrong? Oh wait, which Submit button is the real one? And did it work? Who knows!
+            </p>
+        </div>
+
+        <!-- URGENT BANNER -->
+        <div class="urgent-banner">
+            🔥 SUBMIT NOW TO WIN $1000! LIMITED TIME! 🔥
+        </div>
+
+        <!-- Form Container -->
+        <main class="chaos-content">
+            <form id="chaosForm" class="chaos-form">
+                
+                <!-- First Name -->
+                <div class="form-group-chaos">
+                    <label class="form-label-chaos">First Name</label>
+                    <input 
+                        type="text" 
+                        id="firstName" 
+                        name="firstName" 
+                        class="form-input-chaos"
+                        required
+                    >
+                </div>
+
+                <!-- Last Name -->
+                <div class="form-group-chaos">
+                    <label class="form-label-chaos">Last Name</label>
+                    <input 
+                        type="text" 
+                        id="lastName" 
+                        name="lastName" 
+                        class="form-input-chaos"
+                        required
+                    >
+                </div>
+
+                <!-- Email -->
+                <div class="form-group-chaos">
+                    <label class="form-label-chaos">Email Address</label>
+                    <input 
+                        type="email" 
+                        id="email" 
+                        name="email" 
+                        class="form-input-chaos"
+                        required
+                    >
+                </div>
+
+                <!-- Country (Extra unnecessary field) -->
+                <div class="form-group-chaos">
+                    <label class="form-label-chaos">Country</label>
+                    <input 
+                        type="text" 
+                        id="country" 
+                        name="country" 
+                        class="form-input-chaos"
+                    >
+                </div>
+
+                <!-- Multiple Confusing Buttons -->
+                <div class="button-chaos">
+                    <button type="button" class="fake-btn submit-gray" onclick="fakeSubmit()">
+                        Submit
+                    </button>
+                    <button type="button" class="fake-btn submit-teal" onclick="fakeSubmit()">
+                        Submit Form
+                    </button>
+                    <button type="submit" class="real-btn submit-red">
+                        SUBMIT NOW!
+                    </button>
+                    <button type="button" class="fake-btn cancel-btn" onclick="fakeCancel()">
+                        Cancel
+                    </button>
+                    <button type="button" class="fake-btn reset-btn" onclick="resetForm()">
+                        Reset
+                    </button>
+                </div>
+            </form>
+        </main>
+    </div>
+
+    <!-- Vague error popup -->
+    <div class="error-popup" id="errorPopup" style="display: none;">
+        <div class="error-content">
+            <p>❌ Error! Something went wrong.</p>
+            <button onclick="closeError()">OK</button>
+        </div>
+    </div>
+
+    <script src="../js/Task2/task2-overload.js"></script>
+</body>
+</html>

@@ -1,0 +1,289 @@
+/* Task 2 Overload Mode - Confusing, Manipulative Form */
+
+.overload-body {
+    background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+    min-height: 100vh;
+}
+
+.overload-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: var(--spacing-md);
+}
+
+/* Header */
+.overload-header {
+    background: linear-gradient(135deg, #c0392b 0%, #e74c3c 100%);
+    border-radius: 12px;
+    padding: var(--spacing-lg);
+    margin-bottom: var(--spacing-md);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+    border: 3px solid #f39c12;
+}
+
+.task-info-chaos {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: var(--spacing-sm);
+}
+
+.task-icon-chaos {
+    font-size: 2rem;
+}
+
+.task-title-chaos {
+    font-size: clamp(1.2rem, 3vw, 1.6rem);
+    color: white;
+    font-weight: 700;
+    margin: 0;
+    text-transform: uppercase;
+}
+
+.task-subtitle-chaos {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: var(--spacing-sm);
+    text-align: center;
+}
+
+.mode-toggle-chaos {
+    display: flex;
+    gap: var(--spacing-sm);
+    justify-content: center;
+}
+
+.mode-btn-chaos {
+    padding: 10px 20px;
+    border-radius: 25px;
+    border: 2px solid transparent;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.mode-btn-chaos.active {
+    background: #e74c3c;
+    color: white;
+    border-color: #f39c12;
+}
+
+.mode-btn-chaos.inactive {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+}
+
+.indicator-dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    background: white;
+    border-radius: 50%;
+    margin-right: 6px;
+    animation: blink 1s infinite;
+}
+
+/* Chaotic Guide */
+.chaos-guide {
+    background: rgba(52, 73, 94, 0.9);
+    border-left: 4px solid #e74c3c;
+    border-radius: 8px;
+    padding: var(--spacing-md);
+    margin-bottom: var(--spacing-md);
+}
+
+.quote-chaos {
+    font-size: 2rem;
+    color: #e74c3c;
+    opacity: 0.5;
+}
+
+.guide-text-chaos {
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.9);
+    font-style: italic;
+}
+
+/* Urgent Banner */
+.urgent-banner {
+    background: linear-gradient(90deg, #e74c3c 0%, #c0392b 50%, #e74c3c 100%);
+    background-size: 200% 100%;
+    animation: gradientShift 2s ease infinite;
+    color: white;
+    text-align: center;
+    padding: 18px;
+    font-weight: 900;
+    font-size: 1.3rem;
+    margin-bottom: var(--spacing-md);
+    border-radius: 8px;
+    text-transform: uppercase;
+    box-shadow: 0 4px 15px rgba(231, 76, 60, 0.6);
+}
+
+/* Chaos Form */
+.chaos-form {
+    background: rgba(255, 255, 255, 0.95);
+    padding: var(--spacing-lg);
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.form-group-chaos {
+    margin-bottom: var(--spacing-md);
+}
+
+.form-label-chaos {
+    display: block;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text-dark);
+    margin-bottom: 6px;
+}
+
+.form-input-chaos {
+    width: 100%;
+    padding: 12px 14px;
+    border: 2px solid #bdc3c7;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-family: var(--font-main);
+    background: white;
+    transition: border-color 0.2s;
+}
+
+.form-input-chaos:focus {
+    outline: none;
+    border-color: #3498db;
+}
+
+/* Button Chaos - Multiple confusing buttons */
+.button-chaos {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: var(--spacing-lg);
+}
+
+.fake-btn, .real-btn {
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+/* Gray Submit (Fake) */
+.submit-gray {
+    background: #7f8c8d;
+    color: white;
+}
+
+.submit-gray:hover {
+    background: #6c7a7b;
+}
+
+/* Teal Submit (Fake) */
+.submit-teal {
+    background: #16a085;
+    color: white;
+}
+
+.submit-teal:hover {
+    background: #138d75;
+}
+
+/* Red Submit (REAL ONE) */
+.submit-red {
+    background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+    color: white;
+    font-weight: 900;
+    text-transform: uppercase;
+    animation: pulse 1.5s infinite;
+}
+
+.submit-red:hover {
+    background: linear-gradient(135deg, #c0392b 0%, #a93226 100%);
+}
+
+/* Cancel Button */
+.cancel-btn {
+    background: #95a5a6;
+    color: white;
+}
+
+/* Reset Button */
+.reset-btn {
+    background: #e67e22;
+    color: white;
+}
+
+/* Error Popup */
+.error-popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.error-content {
+    background: white;
+    padding: var(--spacing-xl);
+    border-radius: 12px;
+    text-align: center;
+    max-width: 400px;
+}
+
+.error-content p {
+    font-size: 1.2rem;
+    color: #e74c3c;
+    margin-bottom: var(--spacing-md);
+    font-weight: 600;
+}
+
+.error-content button {
+    background: #e74c3c;
+    color: white;
+    padding: 12px 32px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+/* Animations */
+@keyframes blink {
+    0%, 50%, 100% { opacity: 1; }
+    25%, 75% { opacity: 0.3; }
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+@keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+@media (max-width: 768px) {
+    .button-chaos {
+        flex-direction: column;
+    }
+    
+    .fake-btn, .real-btn {
+        width: 100%;
+    }
+}
