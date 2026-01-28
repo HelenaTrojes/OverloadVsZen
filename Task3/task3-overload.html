@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task 3: Overload Mode</title>
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/Task3/task3-overload.css">
+</head>
+<body class="overload-body">
+    <div class="overload-container">
+        <!-- Header -->
+        <header class="overload-header">
+            <div class="task-info-chaos">
+                <span class="task-icon-chaos">🔄</span>
+                <h1 class="task-title-chaos">Task 3: Make a Choice (and Change Your Mind)</h1>
+            </div>
+            <p class="task-subtitle-chaos">Select a subscription plan, then try to change it</p>
+            <div class="mode-toggle-chaos">
+                <button class="mode-btn-chaos active">
+                    <span class="indicator-dot"></span> Overload Mode
+                </button>
+                <button class="mode-btn-chaos inactive" onclick="switchMode('zen')">
+                    Zen Mode
+                </button>
+            </div>
+        </header>
+
+        <!-- Chaotic Guide -->
+        <div class="chaos-guide">
+            <div class="quote-chaos">❝</div>
+            <p class="guide-text-chaos">
+                Choose wisely! Once you pick, there's no going back... well, technically you can, but do you really want to miss out on this AMAZING deal?!
+            </p>
+        </div>
+
+        <!-- LIMITED TIME BANNER -->
+        <div class="urgent-banner">
+            ⏰ LIMITED TIME! PRICES INCREASE IN 5 MINUTES! ⏰
+        </div>
+
+        <!-- Main Content -->
+        <main class="chaos-content">
+            <div class="plan-container-chaos" id="planSelection">
+                <h2 class="section-title-chaos">CHOOSE NOW!</h2>
+
+                <div class="plans-grid-chaos">
+                    <!-- Basic Plan (De-emphasized) -->
+                    <div class="plan-card-chaos boring" data-plan="basic">
+                        <h3 class="plan-name-chaos">Basic</h3>
+                        <div class="plan-price-chaos">$9<span>/mo</span></div>
+                        <div class="boring-badge">⚠️ Limited Features</div>
+                        <ul class="plan-features-chaos">
+                            <li>❌ Only 10 projects</li>
+                            <li>❌ Slow support</li>
+                            <li>❌ Barely any storage</li>
+                        </ul>
+                        <button class="select-btn-chaos basic-btn" onclick="selectPlan('basic')">
+                            Select Basic (Not Recommended)
+                        </button>
+                    </div>
+
+                    <!-- Premium Plan (Pushed hard) -->
+                    <div class="plan-card-chaos premium-push" data-plan="premium">
+                        <div class="best-value-badge">🔥 BEST VALUE! 🔥</div>
+                        <div class="savings-badge">SAVE 60%!</div>
+                        <h3 class="plan-name-chaos">PREMIUM</h3>
+                        <div class="plan-price-chaos">
+                            <span class="old-price">$99</span>
+                            $29<span>/mo</span>
+                        </div>
+                        <ul class="plan-features-chaos">
+                            <li>✨ UNLIMITED Everything!</li>
+                            <li>✨ VIP Support!</li>
+                            <li>✨ MASSIVE Storage!</li>
+                            <li>✨ Exclusive Features!</li>
+                        </ul>
+                        <button class="select-btn-chaos premium-btn" onclick="selectPlan('premium')">
+                            🎁 GRAB THIS DEAL NOW!
+                        </button>
+                    </div>
+
+                    <!-- Pro Plan (Middle option, de-emphasized) -->
+                    <div class="plan-card-chaos" data-plan="pro">
+                        <h3 class="plan-name-chaos">Pro</h3>
+                        <div class="plan-price-chaos">$19<span>/mo</span></div>
+                        <ul class="plan-features-chaos">
+                            <li>Unlimited projects</li>
+                            <li>Priority support</li>
+                            <li>50 GB storage</li>
+                        </ul>
+                        <button class="select-btn-chaos pro-btn" onclick="selectPlan('pro')">
+                            Select Pro
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Confirmation with Confirmshaming -->
+            <div class="confirmation-section-chaos" id="confirmationSection" style="display: none;">
+                <div class="confirmation-card-chaos">
+                    <h2 class="confirmation-title-chaos">Great Choice!</h2>
+                    <p class="selected-plan-text-chaos">You selected: <strong id="selectedPlanName"></strong></p>
+                    
+                    <div class="upsell-message" id="upsellMessage" style="display: none;">
+                        <p class="upsell-text">
+                            ⚠️ Wait! Are you SURE you don't want Premium? You're missing out on 60% savings!
+                        </p>
+                    </div>
+
+                    <div class="confirmation-actions-chaos">
+                        <button class="confirm-btn-chaos" onclick="confirmSelection()">
+                            Yes, Continue
+                        </button>
+                        <button class="change-mind-btn-chaos" onclick="showConfirmShaming()">
+                            No, I Want to Change
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Confirmshaming Modal -->
+    <div class="confirmshame-modal" id="confirmshamingModal" style="display: none;">
+        <div class="confirmshame-content">
+            <h3>Are you sure you want to go back?</h3>
+            <p class="shame-text">Most successful people choose Premium. Don't you want to succeed?</p>
+            <div class="modal-actions">
+                <button class="stay-btn" onclick="closeConfirmShaming()">
+                    No, Keep My Choice
+                </button>
+                <button class="change-anyway-btn" onclick="actuallyChangeMind()">
+                    Yes, I Want to Miss Out
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/Task3/task3-overload.js"></script>
+</body>
+</html>

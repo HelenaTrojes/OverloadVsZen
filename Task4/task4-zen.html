@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task 4: Zen Mode</title>
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/Task4/task4-zen.css">
+</head>
+<body class="zen-body">
+    <div class="zen-container">
+        <!-- Header -->
+        <header class="zen-header">
+            <div class="task-info">
+                <span class="task-icon">🛍️</span>
+                <h1 class="task-title">Task 4: Choose a Product</h1>
+            </div>
+            <p class="task-subtitle">Browse products and select one that interests you</p>
+            <div class="mode-toggle">
+                <button class="mode-btn inactive" onclick="switchMode('overload')">
+                    Overload Mode
+                </button>
+                <button class="mode-btn active">
+                    <span class="checkmark">✓</span> Zen Mode
+                </button>
+            </div>
+        </header>
+
+        <!-- Guide Message -->
+        <div class="zen-guide">
+            <div class="quote-icon">❝</div>
+            <p class="guide-text">Browse at your own pace. Clear prices, honest stock levels, no tricks.</p>
+        </div>
+
+        <!-- Main Content -->
+        <main class="zen-content">
+            <div class="products-container">
+                <h2 class="section-title">Available Products</h2>
+
+                <div class="products-grid">
+                    <!-- Product 1: Headphones -->
+                    <div class="product-card">
+                        <div class="product-image">🎧</div>
+                        <h3 class="product-name">Wireless Headphones</h3>
+                        <p class="product-description">Premium sound quality with noise cancellation</p>
+                        <div class="product-price">$99.99</div>
+                        <div class="stock-info available">✓ In Stock (15 available)</div>
+                        <button class="select-product-btn" onclick="selectProduct('headphones', 99.99)">
+                            Select This Product
+                        </button>
+                    </div>
+
+                    <!-- Product 2: Smart Watch -->
+                    <div class="product-card">
+                        <div class="product-image">⌚</div>
+                        <h3 class="product-name">Smart Watch</h3>
+                        <p class="product-description">Fitness tracking and notifications on your wrist</p>
+                        <div class="product-price">$199.99</div>
+                        <div class="stock-info available">✓ In Stock (8 available)</div>
+                        <button class="select-product-btn" onclick="selectProduct('smartwatch', 199.99)">
+                            Select This Product
+                        </button>
+                    </div>
+
+                    <!-- Product 3: Laptop Bag -->
+                    <div class="product-card">
+                        <div class="product-image">💼</div>
+                        <h3 class="product-name">Laptop Bag</h3>
+                        <p class="product-description">Durable and stylish laptop protection</p>
+                        <div class="product-price">$49.99</div>
+                        <div class="stock-info available">✓ In Stock (20+ available)</div>
+                        <button class="select-product-btn" onclick="selectProduct('laptopbag', 49.99)">
+                            Select This Product
+                        </button>
+                    </div>
+
+                    <!-- Product 4: Bluetooth Speaker -->
+                    <div class="product-card">
+                        <div class="product-image">🔊</div>
+                        <h3 class="product-name">Bluetooth Speaker</h3>
+                        <p class="product-description">Portable speaker with excellent bass</p>
+                        <div class="product-price">$79.99</div>
+                        <div class="stock-info available">✓ In Stock (12 available)</div>
+                        <button class="select-product-btn" onclick="selectProduct('speaker', 79.99)">
+                            Select This Product
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../js/Task4/task4-zen.js"></script>
+</body>
+</html>

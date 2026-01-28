@@ -1,13 +1,13 @@
-// Task 2 Survey JavaScript
+// Task 3 Survey JavaScript
 
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('Task 2 Survey loaded');
+    console.log('Task 3 Survey loaded');
     
     // Verify both modes completed
-    const completed = JSON.parse(sessionStorage.getItem('task2ModesCompleted') || '[]');
+    const completed = JSON.parse(sessionStorage.getItem('task3ModesCompleted') || '[]');
     if (!completed.includes('overload') || !completed.includes('zen')) {
         console.warn('Both modes not completed. Redirecting...');
-        window.location.href = 'task2-selection.html';
+        window.location.href = 'task3-selection.html';
         return;
     }
     
@@ -20,39 +20,39 @@ function handleSubmit(e) {
     
     const formData = new FormData(e.target);
     const surveyData = {
-        task: 'task2',
+        task: 'task3',
         participantId: sessionStorage.getItem('participantId'),
         timestamp: new Date().toISOString(),
         responses: {
-            ease: formData.get('q1_ease'),
-            overloadConfidence: parseInt(formData.get('q2_overload_confidence')),
-            zenConfidence: parseInt(formData.get('q2_zen_confidence')),
-            frustration: formData.get('q3_frustration'),
+            freedom: formData.get('q1_freedom'),
+            overloadPressure: parseInt(formData.get('q2_overload_pressure')),
+            zenPressure: parseInt(formData.get('q2_zen_pressure')),
+            respect: formData.get('q3_respect'),
             comments: formData.get('q4_comments') || ''
         }
     };
     
-    console.log('Task 2 Survey data:', surveyData);
+    console.log('Task 3 Survey data:', surveyData);
     
     // Save survey response
     const allSurveys = JSON.parse(sessionStorage.getItem('surveyResponses') || '[]');
     allSurveys.push(surveyData);
     sessionStorage.setItem('surveyResponses', JSON.stringify(allSurveys));
     
-    // Mark Task 2 complete
+    // Mark Task 3 complete
     const tasksCompleted = JSON.parse(sessionStorage.getItem('tasksCompleted') || '[]');
-    if (!tasksCompleted.includes('task2')) {
-        tasksCompleted.push('task2');
+    if (!tasksCompleted.includes('task3')) {
+        tasksCompleted.push('task3');
         sessionStorage.setItem('tasksCompleted', JSON.stringify(tasksCompleted));
     }
     
-    // Clear task2 specific data
-    sessionStorage.removeItem('task2ModesCompleted');
-    sessionStorage.removeItem('task2FirstMode');
+    // Clear task3 specific data
+    sessionStorage.removeItem('task3ModesCompleted');
+    sessionStorage.removeItem('task3FirstMode');
     
-    // Navigate to Task 3
+    // Navigate to Task 4
     setTimeout(() => {
-        window.location.href = '../Task3/task3-selection.html';
+        window.location.href = '../Task4/task4-selection.html';
     }, 500);
 }
 

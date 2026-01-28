@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task 4 - Quick Reflection</title>
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/Task4/task4-survey.css">
+</head>
+<body>
+    <div class="survey-container">
+        <div class="survey-header">
+            <h1 class="survey-title">Quick Reflection - Task 4</h1>
+            <p class="survey-subtitle">You just browsed products in two different shopping experiences. How did they compare?</p>
+        </div>
+
+        <form id="surveyForm" class="survey-form">
+            
+            <!-- Question 1: Trust -->
+            <div class="question-block">
+                <label class="question-label">
+                    <span class="question-number">1.</span>
+                    Which mode made you feel more confident in your purchasing decision?
+                </label>
+                <div class="radio-group">
+                    <label class="radio-option">
+                        <input type="radio" name="q1_trust" value="overload" required>
+                        <span class="radio-label">Overload Mode</span>
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="q1_trust" value="zen">
+                        <span class="radio-label">Zen Mode</span>
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="q1_trust" value="same">
+                        <span class="radio-label">About the same</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Question 2: Urgency Pressure -->
+            <div class="question-block">
+                <label class="question-label">
+                    <span class="question-number">2.</span>
+                    How much urgency or pressure did you feel to make a quick decision?
+                </label>
+                
+                <div class="sub-question">
+                    <p class="mode-label">Overload Mode:</p>
+                    <div class="likert-scale">
+                        <label class="likert-option">
+                            <input type="radio" name="q2_overload_urgency" value="1" required>
+                            <span>No Pressure</span>
+                        </label>
+                        <label class="likert-option">
+                            <input type="radio" name="q2_overload_urgency" value="2">
+                            <span>Slight Pressure</span>
+                        </label>
+                        <label class="likert-option">
+                            <input type="radio" name="q2_overload_urgency" value="3">
+                            <span>Moderate</span>
+                        </label>
+                        <label class="likert-option">
+                            <input type="radio" name="q2_overload_urgency" value="4">
+                            <span>Strong Pressure</span>
+                        </label>
+                        <label class="likert-option">
+                            <input type="radio" name="q2_overload_urgency" value="5">
+                            <span>Extreme Pressure</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="sub-question">
+                    <p class="mode-label">Zen Mode:</p>
+                    <div class="likert-scale">
+                        <label class="likert-option">
+                            <input type="radio" name="q2_zen_urgency" value="1" required>
+                            <span>No Pressure</span>
+                        </label>
+                        <label class="likert-option">
+                            <input type="radio" name="q2_zen_urgency" value="2">
+                            <span>Slight Pressure</span>
+                        </label>
+                        <label class="likert-option">
+                            <input type="radio" name="q2_zen_urgency" value="3">
+                            <span>Moderate</span>
+                        </label>
+                        <label class="likert-option">
+                            <input type="radio" name="q2_zen_urgency" value="4">
+                            <span>Strong Pressure</span>
+                        </label>
+                        <label class="likert-option">
+                            <input type="radio" name="q2_zen_urgency" value="5">
+                            <span>Extreme Pressure</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question 3: Honesty -->
+            <div class="question-block">
+                <label class="question-label">
+                    <span class="question-number">3.</span>
+                    Which mode felt more honest and transparent?
+                </label>
+                <div class="radio-group">
+                    <label class="radio-option">
+                        <input type="radio" name="q3_honesty" value="overload" required>
+                        <span class="radio-label">Overload Mode</span>
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="q3_honesty" value="zen">
+                        <span class="radio-label">Zen Mode</span>
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="q3_honesty" value="same">
+                        <span class="radio-label">About the same</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Optional Comments -->
+            <div class="question-block">
+                <label class="question-label">
+                    <span class="question-number">4.</span>
+                    Any thoughts about the shopping experiences? (Optional)
+                </label>
+                <textarea 
+                    name="q4_comments" 
+                    class="comment-box" 
+                    placeholder="What influenced your decision? How did the urgency tactics make you feel?"
+                    rows="4"
+                ></textarea>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" class="submit-btn">
+                Continue to Final Task →
+            </button>
+        </form>
+    </div>
+
+    <script src="../js/Task4/task4-survey.js"></script>
+</body>
+</html>

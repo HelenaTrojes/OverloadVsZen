@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task 3: Zen Mode</title>
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/Task3/task3-zen.css">
+</head>
+<body class="zen-body">
+    <div class="zen-container">
+        <!-- Header -->
+        <header class="zen-header">
+            <div class="task-info">
+                <span class="task-icon">🔄</span>
+                <h1 class="task-title">Task 3: Make a Choice (and Change Your Mind)</h1>
+            </div>
+            <p class="task-subtitle">Select a subscription plan, then try to change it</p>
+            <div class="mode-toggle">
+                <button class="mode-btn inactive" onclick="switchMode('overload')">
+                    Overload Mode
+                </button>
+                <button class="mode-btn active">
+                    <span class="checkmark">✓</span> Zen Mode
+                </button>
+            </div>
+        </header>
+
+        <!-- Guide Message -->
+        <div class="zen-guide">
+            <div class="quote-icon">❝</div>
+            <p class="guide-text">Take your time. You can always change your mind. No tricks, no pressure.</p>
+        </div>
+
+        <!-- Main Content -->
+        <main class="zen-content">
+            <div class="plan-container" id="planSelection">
+                <h2 class="section-title">Choose Your Plan</h2>
+                <p class="section-subtitle">Select the plan that works best for you. You can change it anytime.</p>
+
+                <div class="plans-grid">
+                    <!-- Basic Plan -->
+                    <div class="plan-card" data-plan="basic">
+                        <h3 class="plan-name">Basic</h3>
+                        <div class="plan-price">$9<span>/month</span></div>
+                        <ul class="plan-features">
+                            <li>✓ 10 projects</li>
+                            <li>✓ Basic support</li>
+                            <li>✓ 5 GB storage</li>
+                        </ul>
+                        <button class="select-plan-btn" onclick="selectPlan('basic')">
+                            Select Basic
+                        </button>
+                    </div>
+
+                    <!-- Pro Plan (Recommended) -->
+                    <div class="plan-card recommended" data-plan="pro">
+                        <div class="recommended-badge">Most Popular</div>
+                        <h3 class="plan-name">Pro</h3>
+                        <div class="plan-price">$19<span>/month</span></div>
+                        <ul class="plan-features">
+                            <li>✓ Unlimited projects</li>
+                            <li>✓ Priority support</li>
+                            <li>✓ 50 GB storage</li>
+                            <li>✓ Advanced analytics</li>
+                        </ul>
+                        <button class="select-plan-btn" onclick="selectPlan('pro')">
+                            Select Pro
+                        </button>
+                    </div>
+
+                    <!-- Premium Plan -->
+                    <div class="plan-card" data-plan="premium">
+                        <h3 class="plan-name">Premium</h3>
+                        <div class="plan-price">$29<span>/month</span></div>
+                        <ul class="plan-features">
+                            <li>✓ Everything in Pro</li>
+                            <li>✓ 24/7 support</li>
+                            <li>✓ 200 GB storage</li>
+                            <li>✓ Custom integrations</li>
+                        </ul>
+                        <button class="select-plan-btn" onclick="selectPlan('premium')">
+                            Select Premium
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Confirmation Section (Hidden initially) -->
+            <div class="confirmation-section" id="confirmationSection" style="display: none;">
+                <div class="confirmation-card">
+                    <h2 class="confirmation-title">Plan Selected</h2>
+                    <p class="selected-plan-text">You've selected: <strong id="selectedPlanName"></strong></p>
+                    
+                    <div class="confirmation-actions">
+                        <button class="change-mind-btn" onclick="changeMind()">
+                            Cancel
+                        </button>
+                        <button class="confirm-btn" onclick="confirmSelection()">
+                            Confirm & Continue
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../js/Task3/task3-zen.js"></script>
+</body>
+</html>
