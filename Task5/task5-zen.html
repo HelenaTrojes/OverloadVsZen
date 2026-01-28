@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task 5: Zen Mode</title>
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/Task5/task5-zen.css">
+</head>
+<body class="zen-body">
+    <div class="zen-container">
+        <!-- Header -->
+        <header class="zen-header">
+            <div class="task-info">
+                <span class="task-icon">🎯</span>
+                <h1 class="task-title">Task 5: Complete a Simple Action</h1>
+            </div>
+            <p class="task-subtitle">Read a short paragraph and answer a question about it</p>
+            <div class="mode-toggle">
+                <button class="mode-btn inactive" onclick="switchMode('overload')">
+                    Overload Mode
+                </button>
+                <button class="mode-btn active">
+                    <span class="checkmark">✓</span> Zen Mode
+                </button>
+            </div>
+        </header>
+
+        <!-- Guide Message -->
+        <div class="zen-guide">
+            <div class="quote-icon">❝</div>
+            <p class="guide-text">Take your time. Focus on the content. No distractions, no pressure.</p>
+        </div>
+
+        <!-- Main Content -->
+        <main class="zen-content">
+            <div class="reading-container">
+                <h2 class="content-title">The Benefits of Mindful Design</h2>
+                
+                <div class="reading-text">
+                    <p>
+                        In today's digital world, the way we design interfaces can significantly impact user well-being. 
+                        Mindful design focuses on creating experiences that respect users' attention and mental energy. 
+                        Rather than overwhelming users with constant notifications and urgent prompts, mindful interfaces 
+                        provide clear information and allow users to engage at their own pace.
+                    </p>
+                    
+                    <p>
+                        Research shows that when interfaces respect users' cognitive limits and avoid manipulative tactics, 
+                        people report feeling more in control and less stressed. This approach not only benefits users' 
+                        mental health but also builds long-term trust between users and digital products.
+                    </p>
+                    
+                    <p>
+                        The key principle is simple: <strong>design for humans, not metrics</strong>. When we prioritize 
+                        user well-being over engagement statistics, we create digital experiences that people genuinely 
+                        appreciate and return to willingly.
+                    </p>
+                </div>
+
+                <div class="question-section">
+                    <h3 class="question-title">Comprehension Question</h3>
+                    <p class="question-text">According to the text, what is the key principle of mindful design?</p>
+                    
+                    <div class="answer-options">
+                        <label class="answer-option">
+                            <input type="radio" name="answer" value="A">
+                            <span>A. Maximize user engagement time</span>
+                        </label>
+                        <label class="answer-option">
+                            <input type="radio" name="answer" value="B">
+                            <span>B. Design for humans, not metrics</span>
+                        </label>
+                        <label class="answer-option">
+                            <input type="radio" name="answer" value="C">
+                            <span>C. Add as many features as possible</span>
+                        </label>
+                        <label class="answer-option">
+                            <input type="radio" name="answer" value="D">
+                            <span>D. Focus on visual aesthetics only</span>
+                        </label>
+                    </div>
+
+                    <button class="submit-answer-btn" onclick="submitAnswer()">
+                        Submit Answer
+                    </button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../js/Task5/task5-zen.js"></script>
+</body>
+</html>

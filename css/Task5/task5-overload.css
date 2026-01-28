@@ -1,0 +1,406 @@
+/* Task 5 Overload Mode - Maximum Distraction */
+
+.overload-body {
+    background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+    min-height: 100vh;
+    position: relative;
+}
+
+/* Floating Notifications */
+.floating-notifications {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    gap: 10px;
+    z-index: 100;
+    flex-wrap: wrap;
+}
+
+.notif-badge {
+    background: #e74c3c;
+    color: white;
+    padding: 8px 14px;
+    border-radius: 20px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    animation: shake 0.5s infinite, pulse 1s infinite;
+    box-shadow: 0 4px 12px rgba(231, 76, 60, 0.6);
+}
+
+/* Pressure Timer */
+.pressure-timer {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    background: #e74c3c;
+    color: white;
+    padding: 12px 20px;
+    border-radius: 25px;
+    font-weight: 900;
+    font-size: 1.1rem;
+    z-index: 100;
+    animation: pulse 1s infinite;
+    box-shadow: 0 4px 12px rgba(231, 76, 60, 0.6);
+}
+
+.overload-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 80px var(--spacing-md) var(--spacing-md);
+}
+
+/* Header */
+.overload-header {
+    background: linear-gradient(135deg, #c0392b 0%, #e74c3c 100%);
+    border-radius: 12px;
+    padding: var(--spacing-lg);
+    margin-bottom: var(--spacing-md);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+    border: 3px solid #f39c12;
+}
+
+.task-info-chaos {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: var(--spacing-sm);
+}
+
+.task-icon-chaos {
+    font-size: 2rem;
+    animation: spin 3s linear infinite;
+}
+
+.task-title-chaos {
+    font-size: clamp(1.2rem, 3vw, 1.6rem);
+    color: white;
+    font-weight: 700;
+    margin: 0;
+    text-transform: uppercase;
+}
+
+.task-subtitle-chaos {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: var(--spacing-sm);
+    text-align: center;
+}
+
+.mode-toggle-chaos {
+    display: flex;
+    gap: var(--spacing-sm);
+    justify-content: center;
+}
+
+.mode-btn-chaos {
+    padding: 10px 20px;
+    border-radius: 25px;
+    border: 2px solid transparent;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.mode-btn-chaos.active {
+    background: #e74c3c;
+    color: white;
+    border-color: #f39c12;
+}
+
+.mode-btn-chaos.inactive {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+}
+
+.indicator-dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    background: white;
+    border-radius: 50%;
+    margin-right: 6px;
+    animation: blink 1s infinite;
+}
+
+/* Chaotic Guide */
+.chaos-guide {
+    background: rgba(52, 73, 94, 0.9);
+    border-left: 4px solid #e74c3c;
+    border-radius: 8px;
+    padding: var(--spacing-md);
+    margin-bottom: var(--spacing-md);
+}
+
+.quote-chaos {
+    font-size: 2rem;
+    color: #e74c3c;
+    opacity: 0.5;
+}
+
+.guide-text-chaos {
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.9);
+    font-style: italic;
+}
+
+/* Animated Ad */
+.animated-ad {
+    background: linear-gradient(90deg, #f39c12 0%, #e67e22 50%, #f39c12 100%);
+    background-size: 200% 100%;
+    animation: gradientShift 1s ease infinite;
+    color: white;
+    text-align: center;
+    padding: 16px;
+    font-weight: 900;
+    font-size: 1.2rem;
+    margin-bottom: var(--spacing-md);
+    border-radius: 8px;
+    text-transform: uppercase;
+}
+
+.blink {
+    animation: blink 0.5s infinite;
+}
+
+/* Reading Container */
+.reading-container-chaos {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 12px;
+    padding: var(--spacing-lg);
+    position: relative;
+}
+
+/* Side Ad (Blocks Content) */
+.side-ad {
+    position: fixed;
+    right: 40px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: #e74c3c;
+    color: white;
+    padding: var(--spacing-lg);
+    border-radius: 12px;
+    font-weight: 900;
+    text-align: center;
+    z-index: 50;
+    animation: slideInRight 0.5s ease-out, shake 2s infinite;
+    box-shadow: 0 6px 20px rgba(231, 76, 60, 0.5);
+}
+
+.content-title-chaos {
+    font-size: 1.8rem;
+    color: var(--text-dark);
+    font-weight: 700;
+    margin-bottom: var(--spacing-md);
+}
+
+.reading-text-chaos {
+    line-height: 1.7;
+    font-size: 1rem;
+    color: var(--text-dark);
+    margin-bottom: var(--spacing-lg);
+}
+
+.reading-text-chaos p {
+    margin-bottom: var(--spacing-md);
+}
+
+/* Question Section */
+.question-section-chaos {
+    background: #f8f9fa;
+    border-radius: 10px;
+    padding: var(--spacing-md);
+    border: 2px solid #e74c3c;
+}
+
+.question-title-chaos {
+    font-size: 1.2rem;
+    color: #e74c3c;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.question-text-chaos {
+    font-size: 1rem;
+    color: var(--text-dark);
+    margin-bottom: var(--spacing-md);
+    font-weight: 500;
+}
+
+.answer-options-chaos {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: var(--spacing-md);
+}
+
+.answer-option-chaos {
+    display: flex;
+    align-items: center;
+    padding: 10px 14px;
+    background: white;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: 2px solid transparent;
+}
+
+.answer-option-chaos:hover {
+    border-color: #e74c3c;
+}
+
+.answer-option-chaos input[type="radio"] {
+    margin-right: 10px;
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+}
+
+.submit-answer-btn-chaos {
+    width: 100%;
+    padding: 14px 28px;
+    background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: 900;
+    cursor: pointer;
+    text-transform: uppercase;
+    animation: pulse 1.5s infinite;
+}
+
+/* Video Popup */
+.video-popup {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+    animation: slideInRight 0.5s ease-out;
+}
+
+.video-content {
+    background: black;
+    color: white;
+    padding: var(--spacing-lg);
+    border-radius: 12px;
+    position: relative;
+    width: 300px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.7);
+}
+
+.close-video {
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 2rem;
+    cursor: pointer;
+}
+
+.fake-video {
+    text-align: center;
+    padding: var(--spacing-lg);
+    font-size: 1.2rem;
+    font-weight: 700;
+}
+
+/* Interruption Popup */
+.interruption-popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+}
+
+.interruption-content {
+    background: white;
+    padding: var(--spacing-xl);
+    border-radius: 16px;
+    max-width: 400px;
+    text-align: center;
+}
+
+.interruption-content h3 {
+    font-size: 1.8rem;
+    color: #e74c3c;
+    margin-bottom: var(--spacing-md);
+}
+
+.interruption-content button {
+    margin: 8px;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.interruption-content .accept-btn {
+    background: #e74c3c;
+    color: white;
+    border: none;
+}
+
+/* Animations */
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-3px); }
+    75% { transform: translateX(3px); }
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.05); opacity: 0.9; }
+}
+
+@keyframes blink {
+    0%, 50%, 100% { opacity: 1; }
+    25%, 75% { opacity: 0.2; }
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+@keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(100px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@media (max-width: 768px) {
+    .side-ad {
+        display: none;
+    }
+    
+    .pressure-timer, .floating-notifications {
+        font-size: 0.8rem;
+        padding: 8px 12px;
+    }
+    
+    .overload-container {
+        padding-top: 60px;
+    }
+}

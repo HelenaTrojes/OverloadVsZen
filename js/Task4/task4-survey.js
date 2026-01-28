@@ -50,19 +50,9 @@ function handleSubmit(e) {
     sessionStorage.removeItem('task4ModesCompleted');
     sessionStorage.removeItem('task4FirstMode');
     
-    // Navigate to Task 5 or completion
+    // Navigate to Task 5 (Final task!)
     setTimeout(() => {
-        alert('Task 4 complete! One more task to go! 🎉');
-        
-        // Show progress
-        console.log('=== PROGRESS ===');
-        console.log('Tasks completed:', tasksCompleted);
-        console.log('Total surveys:', allSurveys.length);
-        
-        // Next: Create Task 5 or go to completion
-        // window.location.href = '../Task5/task5-selection.html';
-        // or
-        // window.location.href = '../completion.html';
+        window.location.href = '../Task5/task5-selection.html';
     }, 500);
 }
 

@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task 5: Overload Mode</title>
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/Task5/task5-overload.css">
+</head>
+<body class="overload-body">
+    <!-- Notification Badges Everywhere -->
+    <div class="floating-notifications">
+        <span class="notif-badge">🔔 5</span>
+        <span class="notif-badge">💬 12</span>
+        <span class="notif-badge">⭐ NEW</span>
+    </div>
+
+    <!-- Timer Pressure -->
+    <div class="pressure-timer">
+        ⏰ Time Remaining: <span id="pressureTimer">01:30</span>
+    </div>
+
+    <div class="overload-container">
+        <!-- Header -->
+        <header class="overload-header">
+            <div class="task-info-chaos">
+                <span class="task-icon-chaos">🎯</span>
+                <h1 class="task-title-chaos">Task 5: Complete a Simple Action</h1>
+            </div>
+            <p class="task-subtitle-chaos">Read a short paragraph and answer a question about it</p>
+            <div class="mode-toggle-chaos">
+                <button class="mode-btn-chaos active">
+                    <span class="indicator-dot"></span> Overload Mode
+                </button>
+                <button class="mode-btn-chaos inactive" onclick="switchMode('zen')">
+                    Zen Mode
+                </button>
+            </div>
+        </header>
+
+        <!-- Chaotic Guide -->
+        <div class="chaos-guide">
+            <div class="quote-chaos">❝</div>
+            <p class="guide-text-chaos">
+                HURRY! Read fast! Time's ticking! Don't get distracted by all the AMAZING offers popping up!
+            </p>
+        </div>
+
+        <!-- Animated Ad Banner -->
+        <div class="animated-ad">
+            <span class="blink">🎁</span> WIN $1000! CLICK HERE NOW! <span class="blink">🎁</span>
+        </div>
+
+        <!-- Main Content -->
+        <main class="chaos-content">
+            <div class="reading-container-chaos">
+                <h2 class="content-title-chaos">The Benefits of Mindful Design</h2>
+                
+                <!-- Side Ad that blocks text -->
+                <div class="side-ad">
+                    <p>🔥 HOT DEAL!</p>
+                    <p>Click to Save!</p>
+                </div>
+
+                <div class="reading-text-chaos">
+                    <p>
+                        In today's digital world, the way we design interfaces can significantly impact user well-being. 
+                        Mindful design focuses on creating experiences that respect users' attention and mental energy. 
+                        Rather than overwhelming users with constant notifications and urgent prompts, mindful interfaces 
+                        provide clear information and allow users to engage at their own pace.
+                    </p>
+                    
+                    <p>
+                        Research shows that when interfaces respect users' cognitive limits and avoid manipulative tactics, 
+                        people report feeling more in control and less stressed. This approach not only benefits users' 
+                        mental health but also builds long-term trust between users and digital products.
+                    </p>
+                    
+                    <p>
+                        The key principle is simple: <strong>design for humans, not metrics</strong>. When we prioritize 
+                        user well-being over engagement statistics, we create digital experiences that people genuinely 
+                        appreciate and return to willingly.
+                    </p>
+                </div>
+
+                <div class="question-section-chaos">
+                    <h3 class="question-title-chaos">Comprehension Question</h3>
+                    <p class="question-text-chaos">According to the text, what is the key principle of mindful design?</p>
+                    
+                    <div class="answer-options-chaos">
+                        <label class="answer-option-chaos">
+                            <input type="radio" name="answer" value="A">
+                            <span>A. Maximize user engagement time</span>
+                        </label>
+                        <label class="answer-option-chaos">
+                            <input type="radio" name="answer" value="B">
+                            <span>B. Design for humans, not metrics</span>
+                        </label>
+                        <label class="answer-option-chaos">
+                            <input type="radio" name="answer" value="C">
+                            <span>C. Add as many features as possible</span>
+                        </label>
+                        <label class="answer-option-chaos">
+                            <input type="radio" name="answer" value="D">
+                            <span>D. Focus on visual aesthetics only</span>
+                        </label>
+                    </div>
+
+                    <button class="submit-answer-btn-chaos" onclick="submitAnswer()">
+                        SUBMIT NOW!
+                    </button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Auto-playing Video Popup -->
+    <div class="video-popup" id="videoPopup" style="display: none;">
+        <div class="video-content">
+            <button class="close-video" onclick="closeVideo()">×</button>
+            <div class="fake-video">
+                <p>▶️ AUTO-PLAYING VIDEO</p>
+                <p>WATCH NOW!</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Random Interruption Popup -->
+    <div class="interruption-popup" id="interruptionPopup" style="display: none;">
+        <div class="interruption-content">
+            <h3>🎉 SPECIAL OFFER! 🎉</h3>
+            <p>Don't miss out on this EXCLUSIVE deal!</p>
+            <button onclick="closeInterruption()">Maybe Later</button>
+            <button class="accept-btn" onclick="closeInterruption()">I'm Interested!</button>
+        </div>
+    </div>
+
+    <script src="../js/Task5/task5-overload.js"></script>
+</body>
+</html>
