@@ -1,4 +1,4 @@
-// Welcome Page JavaScript
+// Welcome Page JavaScript - SKIP INTRO, GO DIRECTLY TO TASK 1
 
 // Track when user starts the experience
 function startExperience() {
@@ -9,8 +9,8 @@ function startExperience() {
     sessionStorage.setItem('experienceStartTime', startTime);
     sessionStorage.setItem('participantId', generateParticipantId());
     
-    // Navigate to introduction page
-    window.location.href = 'intro.html';
+    // Navigate DIRECTLY to Task 1 (skip intro)
+    window.location.href = 'Task1/task1-selection.html';
 }
 
 // Generate a unique participant ID

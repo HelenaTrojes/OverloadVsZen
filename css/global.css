@@ -7,15 +7,21 @@
 }
 
 :root {
-    /* Color Palette */
-    --navy-dark: #0a1e3f;
-    --navy-medium: #14284a;
-    --navy-blue: #1a365d;
-    --teal: #2d9a96;
-    --teal-dark: #257873;
-    --coral: #e67e5f;
+    /* UNIFIED Color Palette - Neutral Blue/Gray Theme */
+    --primary-blue: #071952;
+    --primary-dark: #2c3e50;
+    --secondary-dark: #212f3c;
+    --primary-light: #E9896A;
+    --secondary-light: #ad664e;
+    --secondary-blue: #517192;
+    --accent-green: #088395;
+    --secondary-green: #065a67;
+    
+    /* Neutral colors */
     --cream: #f5f5f0;
     --white: #ffffff;
+    --light-gray: #ecf0f1;
+    --medium-gray: #95a5a6;
     --text-dark: #2c3e50;
     
     /* Typography */
@@ -50,7 +56,7 @@ html {
 
 /* Accessibility */
 *:focus-visible {
-    outline: 2px solid var(--teal);
+    outline: 2px solid var(--primary-blue);
     outline-offset: 2px;
 }
 

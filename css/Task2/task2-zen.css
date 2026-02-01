@@ -8,10 +8,10 @@
 .zen-container {
   max-width: 900px;
   margin: 0 auto;
-  padding: var(--spacing-md);
+  padding: var(--spacing-lg);
 }
 
-/* Header - same as Task 1 */
+/* Header */
 .zen-header {
   background: white;
   border-radius: 16px;
@@ -67,18 +67,28 @@
 }
 
 .mode-btn.inactive {
-  background: #e8edf2;
-  color: #5a6c7d;
+  background: var(--primary-dark);
+  color: white;
 }
 
 .mode-btn.inactive:hover {
-  background: #d4dce4;
+  background: var(--secondary-dark);
+  transform: translateY(-2px);
 }
 
 .mode-btn.active {
-  background: linear-gradient(135deg, var(--teal) 0%, #27ae60 100%);
+  background: var(--secondary-dark);
   color: white;
   pointer-events: none;
+}
+
+.indicator-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  background: white;
+  border-radius: 50%;
+  margin-right: 6px;
 }
 
 /* Guide Section */
@@ -88,18 +98,21 @@
   border-radius: 12px;
   padding: var(--spacing-lg);
   margin-bottom: var(--spacing-lg);
+  animation: fadeIn 0.6s ease-out;
 }
 
 .quote-icon {
   font-size: 2.5rem;
-  color: var(--teal);
-  opacity: 0.3;
+  color: black;
+  opacity: 0.5;
+  line-height: 1;
+  margin-bottom: var(--spacing-xs);
 }
 
 .guide-text {
   font-size: 1.05rem;
   color: var(--text-dark);
-  line-height: 1.6;
+  line-height: 1.5;
   font-style: italic;
   margin: 0;
 }
@@ -134,7 +147,7 @@
 .progress-fill {
   height: 100%;
   width: 0%;
-  background: linear-gradient(135deg, var(--teal) 0%, #27ae60 100%);
+  background: var(--primary-dark);
   border-radius: 999px;
   transition: width 0.5s ease;
 }
@@ -184,14 +197,14 @@
 
 .form-input:focus {
   outline: none;
-  border-color: var(--teal);
+  border-color: var(--secondary-dark);
   background: white;
-  box-shadow: 0 0 0 3px rgba(45, 154, 150, 0.1);
+  box-shadow: 0 0 0 1px var(--secondary-dark);
 }
 
 .form-input.valid {
-  border-color: #27ae60;
-  background: #f0fff4;
+  border-color: var(--teal);
+  background: var(--light-gray);
 }
 
 .form-input.invalid {
@@ -221,7 +234,7 @@
 .submit-button {
   width: 100%;
   padding: 16px 32px;
-  background: linear-gradient(135deg, var(--teal) 0%, #27ae60 100%);
+  background: var(--primary-dark);
   color: white;
   border: none;
   border-radius: 10px;
@@ -229,14 +242,14 @@
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(45, 154, 150, 0.3);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
   margin-top: var(--spacing-md);
 }
 
 .submit-button:hover {
-  background: linear-gradient(135deg, var(--teal-dark) 0%, #229954 100%);
+  background: var(--secondary-dark);
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(45, 154, 150, 0.4);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
 }
 
 .submit-button:active {
@@ -252,7 +265,7 @@
 
 /* Success Message */
 .success-message {
-  background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
+  background: var(--teal);
   color: white;
   padding: var(--spacing-lg);
   border-radius: 12px;
@@ -264,6 +277,15 @@
 
 .success-message.show {
   display: block;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes fadeInUp {
@@ -291,6 +313,15 @@
 @media (max-width: 768px) {
   .zen-container {
     padding: var(--spacing-sm);
+  }
+
+  mode-toggle {
+    flex-direction: column;
+  }
+
+  .mode-btn {
+    width: 100%;
+    justify-content: center;
   }
 
   .form-container {

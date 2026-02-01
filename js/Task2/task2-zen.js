@@ -57,7 +57,7 @@ function addProgressTracking() {
     progressText.textContent = `${percent}% completed`;
 
     if (percent === 100) {
-      progressText.textContent = "Ready to submit ✓";
+      progressText.textContent = "Ready to submit ✓"; 
     }
   }
 

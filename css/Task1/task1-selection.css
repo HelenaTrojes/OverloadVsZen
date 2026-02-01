@@ -6,7 +6,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    background: var(--cream);
     padding: var(--spacing-lg);
 }
 
@@ -81,7 +81,7 @@
 
 /* Overload Button */
 .overload-btn {
-    background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+    background: var(--primary-dark);
     color: white;
 }
 
@@ -90,12 +90,12 @@
 }
 
 .overload-btn:hover {
-    background: linear-gradient(135deg, #e74c3c 0%, #a93226 100%);
+    background: var(--secondary-dark);
 }
 
 /* Zen Button */
 .zen-btn {
-    background: linear-gradient(135deg, var(--teal) 0%, #27ae60 100%);
+    background: var(--primary-dark);
     color: white;
 }
 
@@ -104,7 +104,7 @@
 }
 
 .zen-btn:hover {
-    background: linear-gradient(135deg, var(--teal-dark) 0%, #229954 100%);
+    background: var(--secondary-dark);
 }
 
 /* Animations */
