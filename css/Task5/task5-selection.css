@@ -1,4 +1,4 @@
-/* Task 5 Selection - Same as previous tasks */
+/* Task 5 Selection Page */
 
 .task-container {
     min-height: 100vh;
@@ -6,7 +6,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    background: linear-gradient(135deg, #f0f4f8 0%, #d9e8f5 100%);
     padding: var(--spacing-lg);
 }
 
@@ -50,7 +50,7 @@
     border-radius: 16px;
     cursor: pointer;
     transition: all 0.3s ease;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
     min-width: 220px;
     display: flex;
     align-items: center;
@@ -60,58 +60,76 @@
 
 .mode-btn:hover {
     transform: translateY(-4px);
-    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+}
+
+.mode-btn:active {
+    transform: translateY(-2px);
 }
 
 .mode-indicator {
     width: 12px;
     height: 12px;
     border-radius: 50%;
+    display: inline-block;
+    background: rgba(255, 255, 255, 0.8);
 }
 
 .overload-btn {
-    background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+    background: var(--primary-dark);
     color: white;
 }
 
-.overload-btn .mode-indicator {
-    background: rgba(255, 255, 255, 0.8);
-    animation: pulse 2s infinite;
+.overload-btn:hover {
+    background: var(--secondary-dark);
 }
 
 .zen-btn {
-    background: linear-gradient(135deg, var(--teal) 0%, #27ae60 100%);
+    background: var(--primary-dark);
     color: white;
 }
 
-.zen-btn .mode-indicator {
-    background: rgba(255, 255, 255, 0.8);
+.zen-btn:hover {
+    background: var(--secondary-dark);
 }
 
 @keyframes fadeInDown {
-    from { opacity: 0; transform: translateY(-30px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 @keyframes fadeInUp {
-    from { opacity: 0; transform: translateY(30px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 @keyframes bounce {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
-}
-
-@keyframes pulse {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.7; transform: scale(1.2); }
+    0%, 100% { 
+        transform: translateY(0); 
+    }
+    50% { 
+        transform: translateY(-10px); 
+    }
 }
 
 @media (max-width: 768px) {
     .mode-buttons {
         flex-direction: column;
+        gap: var(--spacing-md);
     }
+    
     .mode-btn {
         width: 100%;
         max-width: 300px;

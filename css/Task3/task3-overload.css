@@ -149,7 +149,6 @@
   text-align: center;
   margin-bottom: var(--spacing-xl);
   text-transform: uppercase;
-  animation: pulse 1.5s infinite;
 }
 
 /* Plans Grid */
@@ -191,7 +190,6 @@
   font-size: 0.9rem;
   font-weight: 900;
   margin-bottom: 8px;
-  animation: shake 0.5s infinite;
 }
 
 .savings-badge {
@@ -256,7 +254,6 @@
   font-size: 1rem;
   font-weight: 700;
   cursor: pointer;
-  transition: all 0.3s ease;
 }
 
 .basic-btn {
@@ -281,7 +278,6 @@
   background: var(--primary-dark);
   color: white;
   font-size: 1.1rem;
-  animation: pulse 1.5s infinite;
 }
 
 .premium-btn:hover {

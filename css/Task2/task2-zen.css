@@ -265,7 +265,7 @@
 
 /* Success Message */
 .success-message {
-  background: var(--teal);
+  background: var(--primary-dark);
   color: white;
   padding: var(--spacing-lg);
   border-radius: 12px;
