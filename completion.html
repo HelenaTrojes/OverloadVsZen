@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Study Complete - Thank You</title>
+    <link rel="stylesheet" href="css/global.css" />
+    <link rel="stylesheet" href="css/completion.css" />
+  </head>
+  <body>
+    <div class="completion-container">
+      <div class="completion-content">
+        <!-- Success Icon -->
+        <div class="success-icon">✓</div>
+
+        <!-- Thank You Message -->
+        <h1 class="completion-title">Thank You!</h1>
+        <p class="completion-subtitle">
+          You have successfully completed the study.
+        </p>
+
+        <!-- Participant Info -->
+        <div class="participant-info">
+          <p>
+            <strong>Your Participant ID:</strong>
+            <span id="participantId"></span>
+          </p>
+          <p>
+            <strong>Tasks Completed:</strong> <span id="tasksCount">5</span>
+          </p>
+          <p><strong>Time Spent:</strong> <span id="totalTime"></span></p>
+        </div>
+
+        <!-- Appreciation Message -->
+        <div class="appreciation-box">
+          <p>
+            Your participation in this research is greatly appreciated. The data
+            you provided will contribute to understanding how interface design
+            affects user experience and well-being.
+          </p>
+          <p>
+            If you have any questions about this study, please contact the
+            researcher.
+          </p>
+        </div>
+
+        <!-- Data Download Section -->
+        <div class="download-section">
+          <h2>Download Your Data</h2>
+          <p class="download-description">
+            Click below to download your session data. This data will be used
+            for research purposes only.
+          </p>
+
+          <div class="download-buttons">
+            <button class="download-btn" onclick="downloadJSON()">
+              📥 Download JSON
+            </button>
+            <button class="download-btn" onclick="downloadCSV()">
+              📊 Download CSV (Excel)
+            </button>
+          </div>
+        </div>
+
+        <!-- Data Summary Preview -->
+        <div class="data-summary">
+          <h3>Data Summary</h3>
+          <div id="summaryContent"></div>
+        </div>
+
+        <!-- Optional: Survey Link or Next Steps -->
+        <div class="next-steps">
+          <p class="small-text">
+            This window can be closed. Thank you again for your time!
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <script src="js/completion.js"></script>
+  </body>
+</html>
