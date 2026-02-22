@@ -3,6 +3,7 @@
 document.addEventListener("DOMContentLoaded", () => {
   console.log("Task 1 Survey loaded");
 
+  /*
   // Check if user actually completed both versions
   const completed = JSON.parse(
     sessionStorage.getItem("task1VersionsCompleted") || "[]",
@@ -13,6 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
     window.location.href = './task1-selection.html';
     return;
   }
+    */
 
   // Handle form submission
   const form = document.getElementById("surveyForm");
