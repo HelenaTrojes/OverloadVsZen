@@ -45,7 +45,7 @@ function selectMode(mode) {
     if (mode === 'overload') {
         window.location.href = 'task1-overload.html';
     } else {
-        window.location.href = 'task1-zen.html';
+        window.location.href = './task1-zen.html';
     }
 }
 
