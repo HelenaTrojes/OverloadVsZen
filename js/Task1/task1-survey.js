@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (!completed.includes("versionA") || !completed.includes("versionB")) {
     // Redirect back to task selection if they haven't completed both
     console.warn("Both versions not completed. Redirecting...");
-    window.location.href = "task1-selection.html";
+    window.location.href = './task1-selection.html';
     return;
   }
 
@@ -90,7 +90,7 @@ function handleSubmit(e) {
 
   // Navigate to Task 2
   setTimeout(() => {
-    window.location.href = "../Task2/task2-selection.html";
+    window.location.href = './Task2/task2-selection.html';
   }, 500);
 }
 
