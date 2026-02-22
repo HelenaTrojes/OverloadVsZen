@@ -92,7 +92,7 @@ function handleSubmit(e) {
 
   // Navigate to Task 2
   setTimeout(() => {
-    window.location.href = '../Task2/task2-selection.html';
+    window.location.href = 'Task2/task2-selection.html';
   }, 500);
 }
 
