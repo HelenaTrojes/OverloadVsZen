@@ -104,19 +104,19 @@ function checkIfBothModesCompleted() {
     if (completed.includes('overload') && completed.includes('zen')) {
         // Both modes completed - go to survey
         setTimeout(() => {
-            window.location.href = 'task1-survey.html';
+            window.location.href = './task1-survey.html';
         }, 500);
     } else {
         // Return to mode selection to try the other mode
         setTimeout(() => {
-            window.location.href = 'task1-selection.html';
+            window.location.href = './task1-selection.html';
         }, 500);
     }
 }
 
 function switchMode(mode) {
     if (mode === 'zen') {
-        window.location.href = 'task1-zen.html';
+        window.location.href = './task1-zen.html';
     }
 }
 
