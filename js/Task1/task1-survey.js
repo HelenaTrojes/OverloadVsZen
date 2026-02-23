@@ -3,7 +3,6 @@
 document.addEventListener("DOMContentLoaded", () => {
   console.log("Task 1 Survey loaded");
 
-  /*
   // Check if user actually completed both versions
   const completed = JSON.parse(
     sessionStorage.getItem("task1VersionsCompleted") || "[]",
@@ -11,10 +10,9 @@ document.addEventListener("DOMContentLoaded", () => {
   if (!completed.includes("versionA") || !completed.includes("versionB")) {
     // Redirect back to task selection if they haven't completed both
     console.warn("Both versions not completed. Redirecting...");
-    window.location.href = './task1-selection.html';
+    window.location.href = "./task1-selection.html";
     return;
   }
-    */
 
   // Handle form submission
   const form = document.getElementById("surveyForm");
