@@ -17,6 +17,32 @@
         </p>
       </div>
 
+      <div class="mode-preview-section" aria-label="Mode previews">
+        <p class="mode-preview-label">Need a quick reminder?</p>
+        <div class="mode-preview-buttons">
+          <button
+            type="button"
+            class="preview-btn"
+            data-preview-mode="modeA"
+            data-preview-src="../assets/task3-mode-a.png"
+            data-preview-title="Mode A Preview"
+            data-preview-alt="Static screenshot preview of Task 3 Mode A interface"
+          >
+            Mode A preview
+          </button>
+          <button
+            type="button"
+            class="preview-btn"
+            data-preview-mode="modeB"
+            data-preview-src="../assets/task3-mode-b.png"
+            data-preview-title="Mode B Preview"
+            data-preview-alt="Static screenshot preview of Task 3 Mode B interface"
+          >
+            Mode B preview
+          </button>
+        </div>
+      </div>
+
       <form id="surveyForm" class="survey-form">
         <!-- Question 1: Freedom to Change -->
         <div class="question-block">
@@ -131,7 +157,8 @@
         <div class="question-block">
           <label class="question-label">
             <span class="question-number">4.</span>
-            Please share any feedback regarding your ability to revise your decision. (Optional)
+            Please share any feedback regarding your ability to revise your
+            decision. (Optional)
           </label>
           <textarea
             name="q4_comments"
@@ -142,10 +169,30 @@
         </div>
 
         <!-- Submit Button -->
-        <button type="submit" class="submit-btn">
-          Next Task →
-        </button>
+        <button type="submit" class="submit-btn">Next Task →</button>
       </form>
+    </div>
+
+    <div
+      id="modePreviewModal"
+      class="preview-modal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="modePreviewTitle"
+      hidden
+    >
+      <div class="preview-modal-content">
+        <button
+          type="button"
+          id="modePreviewClose"
+          class="preview-close-btn"
+          aria-label="Close preview"
+        >
+          &times;
+        </button>
+        <h2 id="modePreviewTitle" class="preview-modal-title">Mode Preview</h2>
+        <img id="modePreviewImage" class="preview-modal-image" alt="" />
+      </div>
     </div>
 
     <script src="../js/data-sender.js"></script>

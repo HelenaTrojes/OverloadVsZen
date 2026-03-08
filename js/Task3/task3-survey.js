@@ -15,7 +15,85 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const form = document.getElementById("surveyForm");
   form.addEventListener("submit", handleSubmit);
+
+  initializeModePreviewModal();
 });
+
+function initializeModePreviewModal() {
+  const previewButtons = document.querySelectorAll(".preview-btn");
+  const previewModal = document.getElementById("modePreviewModal");
+  const previewTitle = document.getElementById("modePreviewTitle");
+  const previewImage = document.getElementById("modePreviewImage");
+  const closeButton = document.getElementById("modePreviewClose");
+
+  if (
+    !previewButtons.length ||
+    !previewModal ||
+    !previewTitle ||
+    !previewImage ||
+    !closeButton
+  ) {
+    return;
+  }
+
+  const previewImages = {
+    modeA: {
+      src: "../assets/task3-mode-a.png",
+      title: "Mode A Preview",
+      alt: "Static screenshot preview of Task 3 Mode A interface",
+    },
+    modeB: {
+      src: "../assets/task3-mode-b.png",
+      title: "Mode B Preview",
+      alt: "Static screenshot preview of Task 3 Mode B interface",
+    },
+  };
+
+  let lastTrigger = null;
+
+  const closeModal = () => {
+    previewModal.hidden = true;
+    document.body.style.overflow = "";
+    if (lastTrigger) {
+      lastTrigger.focus();
+    }
+  };
+
+  const openModal = (trigger) => {
+    const mode = trigger.dataset.previewMode;
+    const defaults = previewImages[mode] || {};
+    const src = trigger.dataset.previewSrc || defaults.src || "";
+    const title = trigger.dataset.previewTitle || defaults.title || "Mode Preview";
+    const alt = trigger.dataset.previewAlt || defaults.alt || "Mode preview";
+
+    previewTitle.textContent = title;
+    previewImage.src = src;
+    previewImage.alt = alt;
+    lastTrigger = trigger;
+
+    previewModal.hidden = false;
+    document.body.style.overflow = "hidden";
+    closeButton.focus();
+  };
+
+  previewButtons.forEach((button) => {
+    button.addEventListener("click", () => openModal(button));
+  });
+
+  closeButton.addEventListener("click", closeModal);
+
+  previewModal.addEventListener("click", (event) => {
+    if (event.target === previewModal) {
+      closeModal();
+    }
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && !previewModal.hidden) {
+      closeModal();
+    }
+  });
+}
 
 function handleSubmit(e) {
   e.preventDefault();
