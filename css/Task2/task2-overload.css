@@ -7,7 +7,7 @@
 }
 
 .overload-container {
-  max-width: 900px;
+  max-width: 1000px;
   margin: 0 auto;
   padding: var(--spacing-lg);
 }
@@ -27,7 +27,7 @@
   align-items: center;
   justify-content: center;
   gap: 12px;
-  margin-bottom: var(--spacing-sm);
+  margin-bottom: var(--spacing-xs);
 }
 
 .task-icon-chaos {
@@ -97,8 +97,8 @@
   background: rgba(255, 255, 255, 0.6);
   border-left: 4px solid var(--teal);
   border-radius: 12px;
-  padding: var(--spacing-lg);
-  margin-bottom: var(--spacing-lg);
+  padding: var(--spacing-md);
+  margin-bottom: var(--spacing-md);
 }
 
 .quote-chaos {
@@ -216,7 +216,6 @@
   color: white;
   font-weight: 900;
   text-transform: uppercase;
-  animation: pulse 1.5s infinite;
 }
 
 .submit-red:hover {

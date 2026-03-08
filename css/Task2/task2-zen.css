@@ -6,7 +6,7 @@
 }
 
 .zen-container {
-  max-width: 900px;
+  max-width: 1000px;
   margin: 0 auto;
   padding: var(--spacing-lg);
 }
@@ -26,7 +26,7 @@
   align-items: center;
   justify-content: center;
   gap: 12px;
-  margin-bottom: var(--spacing-sm);
+  margin-bottom: var(--spacing-xs);
 }
 
 .task-icon {
@@ -96,8 +96,8 @@
   background: rgba(255, 255, 255, 0.6);
   border-left: 4px solid var(--teal);
   border-radius: 12px;
-  padding: var(--spacing-lg);
-  margin-bottom: var(--spacing-lg);
+  padding: var(--spacing-md);
+  margin-bottom: var(--spacing-md);
   animation: fadeIn 0.6s ease-out;
 }
 
@@ -128,12 +128,12 @@
 
 .form-header {
   text-align: center;
-  margin-bottom: var(--spacing-lg);
+  margin-bottom: var(--spacing-md);
 }
 
 /* Form Progress Bar */
 .progress-wrapper {
-  margin-bottom: var(--spacing-lg);
+  margin-bottom: var(--spacing-md);
 }
 
 .progress-bar {
@@ -173,7 +173,7 @@
 
 /* Form Groups */
 .form-group {
-  margin-bottom: var(--spacing-lg);
+  margin-bottom: var(--spacing-md);
 }
 
 .form-label {
