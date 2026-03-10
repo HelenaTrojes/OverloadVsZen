@@ -1,22 +1,8 @@
-// Task 1 Survey JavaScript - REVISED FOR SPECIFIC MEASUREMENTS
+// Task 1 Survey JavaScript
 
 document.addEventListener("DOMContentLoaded", () => {
   console.log("Task 1 Survey loaded");
 
-  /*
-  // Check if user actually completed both versions
-  const completed = JSON.parse(
-    sessionStorage.getItem("task1VersionsCompleted") || "[]",
-  );
-  if (!completed.includes("versionA") || !completed.includes("versionB")) {
-    // Redirect back to task selection if they haven't completed both
-    console.warn("Both versions not completed. Redirecting...");
-    window.location.href = "./task1-selection.html";
-    return;
-  }
-    */
-
-  // Handle form submission
   const form = document.getElementById("surveyForm");
   form.addEventListener("submit", handleSubmit);
 
@@ -67,7 +53,8 @@ function initializeModePreviewModal() {
     const mode = trigger.dataset.previewMode;
     const defaults = previewImages[mode] || {};
     const src = trigger.dataset.previewSrc || defaults.src || "";
-    const title = trigger.dataset.previewTitle || defaults.title || "Mode Preview";
+    const title =
+      trigger.dataset.previewTitle || defaults.title || "Mode Preview";
     const alt = trigger.dataset.previewAlt || defaults.alt || "Mode preview";
 
     previewTitle.textContent = title;
@@ -99,25 +86,46 @@ function initializeModePreviewModal() {
   });
 }
 
-function handleSubmit(e) {
+function comparativeChoiceToScores(choice) {
+  if (choice === "overload") {
+    return { versionA: 5, versionB: 1 };
+  }
+
+  if (choice === "zen") {
+    return { versionA: 1, versionB: 5 };
+  }
+
+  return { versionA: 3, versionB: 3 };
+}
+
+function buildCommentSummary(formData, freeText) {
+  const rawSummary = [
+    `q1_clarity=${formData.get("q1_clarity") || ""}`,
+    `q2_overload_feeling=${formData.get("q2_overload_feeling") || ""}`,
+    `q2_zen_feeling=${formData.get("q2_zen_feeling") || ""}`,
+    `q3_control=${formData.get("q3_control") || ""}`,
+  ].join("; ");
+
+  return freeText ? `${freeText}\n[raw] ${rawSummary}` : `[raw] ${rawSummary}`;
+}
+
+async function handleSubmit(e) {
   e.preventDefault();
 
-  // Collect form data
   const formData = new FormData(e.target);
-
-  // Get task completion data
   const completedTasks = JSON.parse(
     sessionStorage.getItem("completedTasks") || "[]",
   );
   const task1Data = completedTasks.filter((t) => t.task === "task1");
-
-  // Calculate average metrics from both versions
   const versionAData = task1Data.find(
     (t) => t.version === "versionA" || t.mode === "overload",
   );
   const versionBData = task1Data.find(
     (t) => t.version === "versionB" || t.mode === "zen",
   );
+
+  const clarityScores = comparativeChoiceToScores(formData.get("q1_clarity"));
+  const controlScores = comparativeChoiceToScores(formData.get("q3_control"));
 
   const surveyData = {
     participantId: sessionStorage.getItem("participantId"),
@@ -127,35 +135,34 @@ function handleSubmit(e) {
     timeSpent: (versionAData?.timeSpent || 0) + (versionBData?.timeSpent || 0),
     clicks: (versionAData?.clicks || 0) + (versionBData?.clicks || 0),
     responses: {
-      versionA_confidence: parseInt(formData.get("q1_versionA_confidence")),
-      versionB_confidence: parseInt(formData.get("q1_versionB_confidence")),
-      versionA_difficulty: parseInt(formData.get("q2_versionA_difficulty")),
-      versionB_difficulty: parseInt(formData.get("q2_versionB_difficulty")),
-      versionA_control: parseInt(formData.get("q3_versionA_control")),
-      versionB_control: parseInt(formData.get("q3_versionB_control")),
-      comments: formData.get("q4_comments") || "",
+      versionA_confidence: clarityScores.versionA,
+      versionB_confidence: clarityScores.versionB,
+      versionA_difficulty: parseInt(formData.get("q2_overload_feeling"), 10),
+      versionB_difficulty: parseInt(formData.get("q2_zen_feeling"), 10),
+      versionA_control: controlScores.versionA,
+      versionB_control: controlScores.versionB,
+      comments: buildCommentSummary(
+        formData,
+        (formData.get("q4_comments") || "").trim(),
+      ),
     },
   };
 
   console.log("Survey data collected:", surveyData);
 
-  // Save to session storage (local backup)
   const allSurveys = JSON.parse(
     sessionStorage.getItem("surveyResponses") || "[]",
   );
   allSurveys.push(surveyData);
   sessionStorage.setItem("surveyResponses", JSON.stringify(allSurveys));
 
-  // Send to Google Sheets (if data-sender.js is loaded)
   if (typeof sendToGoogleSheets === "function") {
-    sendToGoogleSheets(surveyData).then((result) => {
-      if (result.success) {
-        console.log("✅ Data sent to Google Sheets");
-      }
-    });
+    const result = await sendToGoogleSheets(surveyData);
+    if (result.success) {
+      console.log("Task 1 data sent to Google Sheets");
+    }
   }
 
-  // Mark Task 1 as fully complete
   const tasksCompleted = JSON.parse(
     sessionStorage.getItem("tasksCompleted") || "[]",
   );
@@ -164,17 +171,14 @@ function handleSubmit(e) {
     sessionStorage.setItem("tasksCompleted", JSON.stringify(tasksCompleted));
   }
 
-  // Clear task1 specific data
-  sessionStorage.removeItem("task1VersionsCompleted");
-  sessionStorage.removeItem("task1FirstVersion");
+  sessionStorage.removeItem("task1ModesCompleted");
+  sessionStorage.removeItem("task1FirstMode");
 
-  // Navigate to Task 2
   setTimeout(() => {
     window.location.href = "../Task2/task2-selection.html";
   }, 500);
 }
 
-// Optional: Add validation feedback
 document.querySelectorAll("input[required]").forEach((input) => {
   input.addEventListener("invalid", (e) => {
     e.preventDefault();
@@ -185,7 +189,6 @@ document.querySelectorAll("input[required]").forEach((input) => {
   });
 });
 
-// Add shake animation to CSS if needed
 const style = document.createElement("style");
 style.textContent = `
     @keyframes shake {

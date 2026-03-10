@@ -1,9 +1,8 @@
-// Task 5 Survey JavaScript - FINAL TASK!
+// Task 5 Survey JavaScript - Final task
 
 document.addEventListener("DOMContentLoaded", () => {
-  console.log("Task 5 Survey (FINAL) loaded");
+  console.log("Task 5 Survey loaded");
 
-  // Verify both modes completed
   const completed = JSON.parse(
     sessionStorage.getItem("task5ModesCompleted") || "[]",
   );
@@ -96,22 +95,47 @@ function initializeModePreviewModal() {
   });
 }
 
-function handleSubmit(e) {
+function comparativeChoiceToScores(choice) {
+  if (choice === "overload") {
+    return { versionA: 5, versionB: 1 };
+  }
+
+  if (choice === "zen") {
+    return { versionA: 1, versionB: 5 };
+  }
+
+  return { versionA: 3, versionB: 3 };
+}
+
+function buildCommentSummary(formData, freeText) {
+  const rawSummary = [
+    `q1_focus=${formData.get("q1_focus") || ""}`,
+    `q2_overload_distraction=${formData.get("q2_overload_distraction") || ""}`,
+    `q2_zen_distraction=${formData.get("q2_zen_distraction") || ""}`,
+    `q3_effectiveness=${formData.get("q3_effectiveness") || ""}`,
+  ].join("; ");
+
+  return freeText ? `${freeText}\n[raw] ${rawSummary}` : `[raw] ${rawSummary}`;
+}
+
+async function handleSubmit(e) {
   e.preventDefault();
 
   const formData = new FormData(e.target);
-
-  // Get task completion data
   const completedTasks = JSON.parse(
     sessionStorage.getItem("completedTasks") || "[]",
   );
   const task5Data = completedTasks.filter((t) => t.task === "task5");
-
   const versionAData = task5Data.find(
     (t) => t.version === "versionA" || t.mode === "overload",
   );
   const versionBData = task5Data.find(
     (t) => t.version === "versionB" || t.mode === "zen",
+  );
+
+  const focusScores = comparativeChoiceToScores(formData.get("q1_focus"));
+  const effectivenessScores = comparativeChoiceToScores(
+    formData.get("q3_effectiveness"),
   );
 
   const surveyData = {
@@ -122,47 +146,37 @@ function handleSubmit(e) {
     timeSpent: (versionAData?.timeSpent || 0) + (versionBData?.timeSpent || 0),
     clicks: (versionAData?.clicks || 0) + (versionBData?.clicks || 0),
     responses: {
-      versionA_confidence: parseInt(
-        formData.get("q1_versionA_confidence") ||
-          formData.get("q2_overload_distraction") ||
-          3,
-      ),
-      versionB_confidence: parseInt(
-        formData.get("q1_versionB_confidence") ||
-          formData.get("q2_zen_distraction") ||
-          3,
-      ),
+      versionA_confidence: focusScores.versionA,
+      versionB_confidence: focusScores.versionB,
       versionA_difficulty: parseInt(
-        formData.get("q2_versionA_difficulty") || 3,
+        formData.get("q2_overload_distraction"),
+        10,
       ),
-      versionB_difficulty: parseInt(
-        formData.get("q2_versionB_difficulty") || 3,
+      versionB_difficulty: parseInt(formData.get("q2_zen_distraction"), 10),
+      versionA_control: effectivenessScores.versionA,
+      versionB_control: effectivenessScores.versionB,
+      comments: buildCommentSummary(
+        formData,
+        (formData.get("q4_comments") || "").trim(),
       ),
-      versionA_control: parseInt(formData.get("q3_versionA_control") || 3),
-      versionB_control: parseInt(formData.get("q3_versionB_control") || 3),
-      comments: formData.get("q4_comments") || "",
     },
   };
 
-  console.log("Task 5 Survey data (FINAL):", surveyData);
+  console.log("Task 5 Survey data:", surveyData);
 
-  // Save to session storage
   const allSurveys = JSON.parse(
     sessionStorage.getItem("surveyResponses") || "[]",
   );
   allSurveys.push(surveyData);
   sessionStorage.setItem("surveyResponses", JSON.stringify(allSurveys));
 
-  // Send to Google Sheets
   if (typeof sendToGoogleSheets === "function") {
-    sendToGoogleSheets(surveyData).then((result) => {
-      if (result.success) {
-        console.log("✅ Task 5 data sent to Google Sheets");
-      }
-    });
+    const result = await sendToGoogleSheets(surveyData);
+    if (result.success) {
+      console.log("Task 5 data sent to Google Sheets");
+    }
   }
 
-  // Mark Task 5 complete
   const tasksCompleted = JSON.parse(
     sessionStorage.getItem("tasksCompleted") || "[]",
   );
@@ -171,41 +185,17 @@ function handleSubmit(e) {
     sessionStorage.setItem("tasksCompleted", JSON.stringify(tasksCompleted));
   }
 
-  sessionStorage.removeItem("task5VersionsCompleted");
-  sessionStorage.removeItem("task5FirstVersion");
+  sessionStorage.removeItem("task5ModesCompleted");
+  sessionStorage.removeItem("task5FirstMode");
 
-  // Mark study as complete
   sessionStorage.setItem("studyComplete", "true");
   sessionStorage.setItem("studyCompletedAt", new Date().toISOString());
 
-  // Navigate to completion page
   setTimeout(() => {
     window.location.href = "../completion.html";
   }, 500);
 }
 
-function showDataSummary() {
-  const completedTasks = JSON.parse(
-    sessionStorage.getItem("completedTasks") || "[]",
-  );
-  const surveys = JSON.parse(sessionStorage.getItem("surveyResponses") || "[]");
-  const participantId = sessionStorage.getItem("participantId");
-
-  console.log("\n=== FINAL DATA SUMMARY ===");
-  console.log("Participant ID:", participantId);
-  console.log("Tasks Completed:", completedTasks.length);
-  console.log("Surveys Completed:", surveys.length);
-  console.log("\nAll Data:");
-  console.log("Completed Tasks:", completedTasks);
-  console.log("Survey Responses:", surveys);
-
-  // You can add a download button here later
-  alert(
-    `Data Collection Complete!\n\nParticipant ID: ${participantId}\nTasks: ${completedTasks.length}\nSurveys: ${surveys.length}\n\nCheck console for full data.`,
-  );
-}
-
-// Add validation shake
 document.querySelectorAll("input[required]").forEach((input) => {
   input.addEventListener("invalid", (e) => {
     e.preventDefault();

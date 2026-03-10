@@ -3,7 +3,6 @@
 document.addEventListener("DOMContentLoaded", () => {
   console.log("Task 3 Survey loaded");
 
-  // Verify both modes completed
   const completed = JSON.parse(
     sessionStorage.getItem("task3ModesCompleted") || "[]",
   );
@@ -63,7 +62,8 @@ function initializeModePreviewModal() {
     const mode = trigger.dataset.previewMode;
     const defaults = previewImages[mode] || {};
     const src = trigger.dataset.previewSrc || defaults.src || "";
-    const title = trigger.dataset.previewTitle || defaults.title || "Mode Preview";
+    const title =
+      trigger.dataset.previewTitle || defaults.title || "Mode Preview";
     const alt = trigger.dataset.previewAlt || defaults.alt || "Mode preview";
 
     previewTitle.textContent = title;
@@ -95,23 +95,46 @@ function initializeModePreviewModal() {
   });
 }
 
-function handleSubmit(e) {
+function comparativeChoiceToScores(choice) {
+  if (choice === "overload") {
+    return { versionA: 5, versionB: 1 };
+  }
+
+  if (choice === "zen") {
+    return { versionA: 1, versionB: 5 };
+  }
+
+  return { versionA: 3, versionB: 3 };
+}
+
+function buildCommentSummary(formData, freeText) {
+  const rawSummary = [
+    `q1_freedom=${formData.get("q1_freedom") || ""}`,
+    `q2_overload_pressure=${formData.get("q2_overload_pressure") || ""}`,
+    `q2_zen_pressure=${formData.get("q2_zen_pressure") || ""}`,
+    `q3_respect=${formData.get("q3_respect") || ""}`,
+  ].join("; ");
+
+  return freeText ? `${freeText}\n[raw] ${rawSummary}` : `[raw] ${rawSummary}`;
+}
+
+async function handleSubmit(e) {
   e.preventDefault();
 
   const formData = new FormData(e.target);
-
-  // Get task completion data
   const completedTasks = JSON.parse(
     sessionStorage.getItem("completedTasks") || "[]",
   );
   const task3Data = completedTasks.filter((t) => t.task === "task3");
-
   const versionAData = task3Data.find(
     (t) => t.version === "versionA" || t.mode === "overload",
   );
   const versionBData = task3Data.find(
     (t) => t.version === "versionB" || t.mode === "zen",
   );
+
+  const freedomScores = comparativeChoiceToScores(formData.get("q1_freedom"));
+  const respectScores = comparativeChoiceToScores(formData.get("q3_respect"));
 
   const surveyData = {
     participantId: sessionStorage.getItem("participantId"),
@@ -121,47 +144,34 @@ function handleSubmit(e) {
     timeSpent: (versionAData?.timeSpent || 0) + (versionBData?.timeSpent || 0),
     clicks: (versionAData?.clicks || 0) + (versionBData?.clicks || 0),
     responses: {
-      versionA_confidence: parseInt(
-        formData.get("q1_versionA_confidence") ||
-          formData.get("q2_overload_pressure") ||
-          3,
+      versionA_confidence: freedomScores.versionA,
+      versionB_confidence: freedomScores.versionB,
+      versionA_difficulty: parseInt(formData.get("q2_overload_pressure"), 10),
+      versionB_difficulty: parseInt(formData.get("q2_zen_pressure"), 10),
+      versionA_control: respectScores.versionA,
+      versionB_control: respectScores.versionB,
+      comments: buildCommentSummary(
+        formData,
+        (formData.get("q4_comments") || "").trim(),
       ),
-      versionB_confidence: parseInt(
-        formData.get("q1_versionB_confidence") ||
-          formData.get("q2_zen_pressure") ||
-          3,
-      ),
-      versionA_difficulty: parseInt(
-        formData.get("q2_versionA_difficulty") || 3,
-      ),
-      versionB_difficulty: parseInt(
-        formData.get("q2_versionB_difficulty") || 3,
-      ),
-      versionA_control: parseInt(formData.get("q3_versionA_control") || 3),
-      versionB_control: parseInt(formData.get("q3_versionB_control") || 3),
-      comments: formData.get("q4_comments") || "",
     },
   };
 
   console.log("Task 3 Survey data:", surveyData);
 
-  // Save to session storage
   const allSurveys = JSON.parse(
     sessionStorage.getItem("surveyResponses") || "[]",
   );
   allSurveys.push(surveyData);
   sessionStorage.setItem("surveyResponses", JSON.stringify(allSurveys));
 
-  // Send to Google Sheets
   if (typeof sendToGoogleSheets === "function") {
-    sendToGoogleSheets(surveyData).then((result) => {
-      if (result.success) {
-        console.log("✅ Task 3 data sent to Google Sheets");
-      }
-    });
+    const result = await sendToGoogleSheets(surveyData);
+    if (result.success) {
+      console.log("Task 3 data sent to Google Sheets");
+    }
   }
 
-  // Mark Task 3 complete
   const tasksCompleted = JSON.parse(
     sessionStorage.getItem("tasksCompleted") || "[]",
   );
@@ -170,16 +180,14 @@ function handleSubmit(e) {
     sessionStorage.setItem("tasksCompleted", JSON.stringify(tasksCompleted));
   }
 
-  sessionStorage.removeItem("task3VersionsCompleted");
-  sessionStorage.removeItem("task3FirstVersion");
+  sessionStorage.removeItem("task3ModesCompleted");
+  sessionStorage.removeItem("task3FirstMode");
 
-  // Navigate to Task 4
   setTimeout(() => {
     window.location.href = "../Task4/task4-selection.html";
   }, 500);
 }
 
-// Add validation shake
 document.querySelectorAll("input[required]").forEach((input) => {
   input.addEventListener("invalid", (e) => {
     e.preventDefault();

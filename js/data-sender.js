@@ -1,35 +1,40 @@
-// Data Sender - Sends data to Google Sheets via Apps Script
+// Data Sender - Sends survey data to Google Sheets via Apps Script
 
-// REPLACE THIS with your actual Google Apps Script URL
 const GOOGLE_SCRIPT_URL =
   "https://script.google.com/macros/s/AKfycbwC8yOOp3Z1qRI4HQJ-YvhkgHrdD1yD8BhxPg4LTWkmza0mZU6w-W_pnmjT8NbV63Ne9g/exec";
 
-// Send survey data to Google Sheets
 async function sendToGoogleSheets(surveyData) {
+  const payload = JSON.stringify(surveyData);
+
   try {
     console.log("Sending data to Google Sheets...", surveyData);
 
-    const response = await fetch(GOOGLE_SCRIPT_URL, {
+    if (navigator.sendBeacon) {
+      const blob = new Blob([payload], { type: "text/plain;charset=UTF-8" });
+      const queued = navigator.sendBeacon(GOOGLE_SCRIPT_URL, blob);
+
+      if (queued) {
+        console.log("Data queued for Google Sheets via sendBeacon");
+        return { success: true, method: "sendBeacon" };
+      }
+    }
+
+    await fetch(GOOGLE_SCRIPT_URL, {
       method: "POST",
-      mode: "no-cors", // Important! Allows cross-origin
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(surveyData),
+      mode: "no-cors",
+      keepalive: true,
+      body: payload,
     });
 
-    console.log("✅ Data sent successfully");
-    return { success: true };
+    console.log("Data sent to Google Sheets");
+    return { success: true, method: "fetch" };
   } catch (error) {
-    console.error("❌ Error sending data:", error);
-
-    // Still save locally as backup
+    console.error("Error sending data:", error);
     saveLocalBackup(surveyData);
     return { success: false, error: error.message };
   }
 }
 
-// Save backup locally in case Google Sheets fails
 function saveLocalBackup(data) {
   const backups = JSON.parse(localStorage.getItem("dataBackups") || "[]");
   backups.push({
@@ -37,10 +42,9 @@ function saveLocalBackup(data) {
     backupTimestamp: new Date().toISOString(),
   });
   localStorage.setItem("dataBackups", JSON.stringify(backups));
-  console.log("💾 Data backed up locally");
+  console.log("Data backed up locally");
 }
 
-// Export local backups if needed
 function downloadBackups() {
   const backups = JSON.parse(localStorage.getItem("dataBackups") || "[]");
   if (backups.length === 0) {
@@ -60,15 +64,14 @@ function downloadBackups() {
   URL.revokeObjectURL(url);
 }
 
-// Test connection to Google Sheets
 async function testConnection() {
   console.log("Testing connection to Google Sheets...");
 
   const testData = {
-    participantId: "TEST-" + Date.now(),
+    participantId: `TEST-${Date.now()}`,
     timestamp: new Date().toISOString(),
     task: "test",
-    version: "test",
+    version: "both",
     timeSpent: 0,
     clicks: 0,
     responses: {
@@ -78,19 +81,17 @@ async function testConnection() {
       versionB_difficulty: 1,
       versionA_control: 5,
       versionB_control: 5,
-      comments: "This is a test entry",
+      comments: "Connection test entry",
     },
   };
 
   const result = await sendToGoogleSheets(testData);
 
   if (result.success) {
-    console.log("✅ Connection test successful! Check your Google Sheet.");
-    alert(
-      "✅ Connection successful! Check your Google Sheet for a test entry.",
-    );
+    console.log("Connection test request sent. Check your Google Sheet.");
+    alert("Connection test request sent. Check your Google Sheet.");
   } else {
-    console.error("❌ Connection test failed:", result.error);
-    alert("❌ Connection failed. Check console for details.");
+    console.error("Connection test failed:", result.error);
+    alert("Connection failed. Check console for details.");
   }
 }
