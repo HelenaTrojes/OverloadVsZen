@@ -1,180 +1,170 @@
-// Task 4 Survey JavaScript
+// ============================================================
+// task4-survey.js
+// Task 4 — Trust & Transparency (Product Purchase)
+// Dark pattern: Fake countdown timer, fake viewer count,
+//               fake stock alerts, false urgency
+//
+// Survey questions:
+//   Q1 (t4_trust_winner)       — Which mode felt more trustworthy?
+//                                comparative: "overload" / "zen" / "same"
+//   Q2 (t4_A_urgency /
+//       t4_B_urgency)          — How much urgency or time pressure
+//                                did each mode make you feel? (1–5 Likert)
+//                                1 = No pressure, 5 = Very pressured
+//   Q3 (t4_honesty_winner)     — Which mode felt more honest about
+//                                the product and its availability?
+//                                comparative: "overload" / "zen" / "same"
+//   Q4 (t4_comment)            — Open text, optional
+//
+// Form field names (HTML):
+//   q1_trust, q2_overload_urgency, q2_zen_urgency,
+//   q3_honesty, q4_comments
+//
+// Payload sent to Google Sheets:
+//   data.behavioral  → Behavioral_Data sheet
+//   data.survey      → Survey_Responses sheet
+// ============================================================
 
 document.addEventListener("DOMContentLoaded", () => {
-  console.log("Task 4 Survey loaded");
-
   const completed = JSON.parse(
-    sessionStorage.getItem("task4ModesCompleted") || "[]",
+    sessionStorage.getItem("task4ModesCompleted") || "[]"
   );
+
   if (!completed.includes("overload") || !completed.includes("zen")) {
-    console.warn("Both modes not completed. Redirecting...");
+    console.warn("Both modes not completed for task 4. Redirecting...");
     window.location.href = "task4-selection.html";
     return;
   }
 
-  const form = document.getElementById("surveyForm");
-  form.addEventListener("submit", handleSubmit);
-
-  initializeModePreviewModal();
+  document.getElementById("surveyForm").addEventListener("submit", handleSubmit);
+  initPreviewModal();
 });
 
-function initializeModePreviewModal() {
-  const previewButtons = document.querySelectorAll(".preview-btn");
-  const previewModal = document.getElementById("modePreviewModal");
-  const previewTitle = document.getElementById("modePreviewTitle");
-  const previewImage = document.getElementById("modePreviewImage");
-  const closeButton = document.getElementById("modePreviewClose");
+// ── Modal ─────────────────────────────────────────────────────
 
-  if (
-    !previewButtons.length ||
-    !previewModal ||
-    !previewTitle ||
-    !previewImage ||
-    !closeButton
-  ) {
-    return;
-  }
+function initPreviewModal() {
+  const modal       = document.getElementById("modePreviewModal");
+  const titleEl     = document.getElementById("modePreviewTitle");
+  const imageEl     = document.getElementById("modePreviewImage");
+  const closeBtn    = document.getElementById("modePreviewClose");
+  const previewBtns = document.querySelectorAll(".preview-btn");
 
-  const previewImages = {
-    modeA: {
-      src: "../assets/task4-mode-a.png",
-      title: "Mode A Preview",
-      alt: "Static screenshot preview of Task 4 Mode A interface",
-    },
-    modeB: {
-      src: "../assets/task4-mode-b.png",
-      title: "Mode B Preview",
-      alt: "Static screenshot preview of Task 4 Mode B interface",
-    },
+  if (!modal || !titleEl || !imageEl || !closeBtn || !previewBtns.length) return;
+
+  const defaults = {
+    modeA: { src: "../assets/task4-mode-a.png", title: "Mode A — Overload", alt: "Task 4 Overload Mode screenshot" },
+    modeB: { src: "../assets/task4-mode-b.png", title: "Mode B — Zen",      alt: "Task 4 Zen Mode screenshot" }
   };
 
   let lastTrigger = null;
 
-  const closeModal = () => {
-    previewModal.hidden = true;
-    document.body.style.overflow = "";
-    if (lastTrigger) {
-      lastTrigger.focus();
-    }
-  };
-
-  const openModal = (trigger) => {
-    const mode = trigger.dataset.previewMode;
-    const defaults = previewImages[mode] || {};
-    const src = trigger.dataset.previewSrc || defaults.src || "";
-    const title =
-      trigger.dataset.previewTitle || defaults.title || "Mode Preview";
-    const alt = trigger.dataset.previewAlt || defaults.alt || "Mode preview";
-
-    previewTitle.textContent = title;
-    previewImage.src = src;
-    previewImage.alt = alt;
-    lastTrigger = trigger;
-
-    previewModal.hidden = false;
+  const openModal = (btn) => {
+    const d     = defaults[btn.dataset.previewMode] || {};
+    titleEl.textContent = btn.dataset.previewTitle || d.title || "Preview";
+    imageEl.src         = btn.dataset.previewSrc   || d.src   || "";
+    imageEl.alt         = btn.dataset.previewAlt   || d.alt   || "";
+    lastTrigger         = btn;
+    modal.hidden        = false;
     document.body.style.overflow = "hidden";
-    closeButton.focus();
+    closeBtn.focus();
   };
 
-  previewButtons.forEach((button) => {
-    button.addEventListener("click", () => openModal(button));
-  });
+  const closeModal = () => {
+    modal.hidden = true;
+    document.body.style.overflow = "";
+    lastTrigger?.focus();
+  };
 
-  closeButton.addEventListener("click", closeModal);
+  previewBtns.forEach(btn => btn.addEventListener("click", () => openModal(btn)));
+  closeBtn.addEventListener("click", closeModal);
+  modal.addEventListener("click", e => { if (e.target === modal) closeModal(); });
+  document.addEventListener("keydown", e => { if (e.key === "Escape" && !modal.hidden) closeModal(); });
+}
 
-  previewModal.addEventListener("click", (event) => {
-    if (event.target === previewModal) {
-      closeModal();
+// ── Score helpers ─────────────────────────────────────────────
+
+function comparativeToScores(choice) {
+  if (choice === "overload") return { A: 5, B: 1 };
+  if (choice === "zen")      return { A: 1, B: 5 };
+  return                            { A: 3, B: 3 };
+}
+
+// ── Build payload ─────────────────────────────────────────────
+
+function buildPayload(formData) {
+  const allTasks    = JSON.parse(sessionStorage.getItem("completedTasks") || "[]");
+  const task4Tasks  = allTasks.filter(t => t.task === "task4");
+  const overloadRec = task4Tasks.find(t => t.mode === "overload" || t.version === "versionA");
+  const zenRec      = task4Tasks.find(t => t.mode === "zen"      || t.version === "versionB");
+
+  const trustWinner   = formData.get("q1_trust")   || "same";
+  const honestyWinner = formData.get("q3_honesty") || "same";
+
+  return {
+    // ── Identity & session ──────────────────────────────────
+    participantId:  sessionStorage.getItem("participantId") || "",
+    conditionOrder: sessionStorage.getItem("conditionOrder") || "",
+    isTestEntry:    false,
+    task:           "task4",
+
+    // ── Behavioral data (goes to Behavioral_Data sheet) ─────
+    // t4_A = Overload Mode, t4_B = Zen Mode
+    behavioral: {
+      t4_A_timeSpent:     overloadRec?.timeSpent    ?? "",
+      t4_B_timeSpent:     zenRec?.timeSpent         ?? "",
+      t4_A_clicks:        overloadRec?.clicks       ?? "",
+      t4_B_clicks:        zenRec?.clicks            ?? "",
+      t4_A_misclicks:     overloadRec?.misclicks    ?? "",
+      t4_B_misclicks:     zenRec?.misclicks         ?? "",
+      // productChosen and priceChosen are the key outcome metrics
+      // for task 4. Comparing these across modes shows whether
+      // false urgency pressure influenced purchase decisions —
+      // e.g. did overload mode push participants toward pricier
+      // or impulse choices compared to zen mode?
+      t4_A_productChosen: overloadRec?.productChosen ?? "",
+      t4_B_productChosen: zenRec?.productChosen      ?? "",
+      t4_A_priceChosen:   overloadRec?.priceChosen   ?? "",
+      t4_B_priceChosen:   zenRec?.priceChosen        ?? ""
+    },
+
+    // ── Survey data (goes to Survey_Responses sheet) ────────
+    survey: {
+      // Q1 — trust: which mode felt more trustworthy?
+      t4_trust_winner: trustWinner,
+
+      // Q2 — urgency rating per mode (1–5 Likert)
+      // Form fields: q2_overload_urgency, q2_zen_urgency
+      t4_A_urgency: parseInt(formData.get("q2_overload_urgency"), 10) || "",
+      t4_B_urgency: parseInt(formData.get("q2_zen_urgency"),      10) || "",
+
+      // Q3 — honesty: which mode felt more honest?
+      t4_honesty_winner: honestyWinner,
+
+      // Q4 — open text comment
+      t4_comment: (formData.get("q4_comments") || "").trim()
     }
-  });
-
-  document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape" && !previewModal.hidden) {
-      closeModal();
-    }
-  });
+  };
 }
 
-function comparativeChoiceToScores(choice) {
-  if (choice === "overload") {
-    return { versionA: 5, versionB: 1 };
-  }
-
-  if (choice === "zen") {
-    return { versionA: 1, versionB: 5 };
-  }
-
-  return { versionA: 3, versionB: 3 };
-}
-
-function buildCommentSummary(formData, freeText) {
-  const rawSummary = [
-    `q1_trust=${formData.get("q1_trust") || ""}`,
-    `q2_overload_urgency=${formData.get("q2_overload_urgency") || ""}`,
-    `q2_zen_urgency=${formData.get("q2_zen_urgency") || ""}`,
-    `q3_honesty=${formData.get("q3_honesty") || ""}`,
-  ].join("; ");
-
-  return freeText ? `${freeText}\n[raw] ${rawSummary}` : `[raw] ${rawSummary}`;
-}
+// ── Submit ────────────────────────────────────────────────────
 
 async function handleSubmit(e) {
   e.preventDefault();
 
   const formData = new FormData(e.target);
-  const completedTasks = JSON.parse(
-    sessionStorage.getItem("completedTasks") || "[]",
-  );
-  const task4Data = completedTasks.filter((t) => t.task === "task4");
-  const versionAData = task4Data.find(
-    (t) => t.version === "versionA" || t.mode === "overload",
-  );
-  const versionBData = task4Data.find(
-    (t) => t.version === "versionB" || t.mode === "zen",
-  );
+  const payload  = buildPayload(formData);
 
-  const trustScores = comparativeChoiceToScores(formData.get("q1_trust"));
-  const honestyScores = comparativeChoiceToScores(formData.get("q3_honesty"));
-
-  const surveyData = {
-    participantId: sessionStorage.getItem("participantId"),
-    timestamp: new Date().toISOString(),
-    task: "task4",
-    version: "both",
-    timeSpent: (versionAData?.timeSpent || 0) + (versionBData?.timeSpent || 0),
-    clicks: (versionAData?.clicks || 0) + (versionBData?.clicks || 0),
-    responses: {
-      versionA_confidence: trustScores.versionA,
-      versionB_confidence: trustScores.versionB,
-      versionA_difficulty: parseInt(formData.get("q2_overload_urgency"), 10),
-      versionB_difficulty: parseInt(formData.get("q2_zen_urgency"), 10),
-      versionA_control: honestyScores.versionA,
-      versionB_control: honestyScores.versionB,
-      comments: buildCommentSummary(
-        formData,
-        (formData.get("q4_comments") || "").trim(),
-      ),
-    },
-  };
-
-  console.log("Task 4 Survey data:", surveyData);
-
-  const allSurveys = JSON.parse(
-    sessionStorage.getItem("surveyResponses") || "[]",
-  );
-  allSurveys.push(surveyData);
+  const allSurveys = JSON.parse(sessionStorage.getItem("surveyResponses") || "[]");
+  allSurveys.push(payload);
   sessionStorage.setItem("surveyResponses", JSON.stringify(allSurveys));
 
+  /*
   if (typeof sendToGoogleSheets === "function") {
-    const result = await sendToGoogleSheets(surveyData);
-    if (result.success) {
-      console.log("Task 4 data sent to Google Sheets");
-    }
+    await sendToGoogleSheets(payload);
   }
+    */
 
-  const tasksCompleted = JSON.parse(
-    sessionStorage.getItem("tasksCompleted") || "[]",
-  );
+  const tasksCompleted = JSON.parse(sessionStorage.getItem("tasksCompleted") || "[]");
   if (!tasksCompleted.includes("task4")) {
     tasksCompleted.push("task4");
     sessionStorage.setItem("tasksCompleted", JSON.stringify(tasksCompleted));
@@ -188,22 +178,24 @@ async function handleSubmit(e) {
   }, 500);
 }
 
-document.querySelectorAll("input[required]").forEach((input) => {
-  input.addEventListener("invalid", (e) => {
+// ── Validation shake animation ────────────────────────────────
+
+document.querySelectorAll("input[required]").forEach(input => {
+  input.addEventListener("invalid", e => {
     e.preventDefault();
-    e.target.closest(".question-block").style.animation = "shake 0.5s";
-    setTimeout(() => {
-      e.target.closest(".question-block").style.animation = "";
-    }, 500);
+    const block = e.target.closest(".question-block");
+    if (!block) return;
+    block.style.animation = "shake 0.5s";
+    setTimeout(() => { block.style.animation = ""; }, 500);
   });
 });
 
 const style = document.createElement("style");
 style.textContent = `
-    @keyframes shake {
-        0%, 100% { transform: translateX(0); }
-        25% { transform: translateX(-10px); }
-        75% { transform: translateX(10px); }
-    }
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25%       { transform: translateX(-10px); }
+    75%       { transform: translateX(10px); }
+  }
 `;
 document.head.appendChild(style);

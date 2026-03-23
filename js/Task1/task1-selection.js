@@ -26,6 +26,8 @@ function selectMode(mode) {
     const firstMode = sessionStorage.getItem('task1FirstMode');
     if (!firstMode) {
         sessionStorage.setItem('task1FirstMode', mode);
+        const order = mode === 'overload' ? 'overload-first' : 'zen-first';
+        sessionStorage.setItem('conditionOrder', order);
     }
     
     // Store selection timestamp

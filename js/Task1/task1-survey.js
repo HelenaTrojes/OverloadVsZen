@@ -1,176 +1,174 @@
-// Task 1 Survey JavaScript
+// ============================================================
+// task1-survey.js
+// Task 1 — Mental Clarity & Cognitive Load
+// Dark pattern: Distraction (irrelevant buttons, visual noise)
+//
+// Survey questions:
+//   Q1 (t1_clarity_winner)  — Which mode felt clearer to navigate?
+//                             comparative choice: "overload" / "zen" / "same"
+//   Q2 (t1_A_stress /
+//       t1_B_stress)        — How stressful did each mode feel?
+//                             1–5 Likert per mode (overload + zen separately)
+//   Q3 (t1_control_winner)  — In which mode did you feel more in control?
+//                             comparative choice: "overload" / "zen" / "same"
+//   Q4 (t1_comment)         — Open text, optional
+//
+// Payload sent to Google Sheets:
+//   data.behavioral  → Behavioral_Data sheet
+//   data.survey      → Survey_Responses sheet
+// ============================================================
 
 document.addEventListener("DOMContentLoaded", () => {
-  console.log("Task 1 Survey loaded");
+  const completed = JSON.parse(
+    sessionStorage.getItem("task1ModesCompleted") || "[]"
+  );
 
-  const form = document.getElementById("surveyForm");
-  form.addEventListener("submit", handleSubmit);
-
-  initializeModePreviewModal();
-});
-
-function initializeModePreviewModal() {
-  const previewButtons = document.querySelectorAll(".preview-btn");
-  const previewModal = document.getElementById("modePreviewModal");
-  const previewTitle = document.getElementById("modePreviewTitle");
-  const previewImage = document.getElementById("modePreviewImage");
-  const closeButton = document.getElementById("modePreviewClose");
-
-  if (
-    !previewButtons.length ||
-    !previewModal ||
-    !previewTitle ||
-    !previewImage ||
-    !closeButton
-  ) {
+  if (!completed.includes("overload") || !completed.includes("zen")) {
+    console.warn("Both modes not completed for task 1. Redirecting...");
+    window.location.href = "task1-selection.html";
     return;
   }
 
-  const previewImages = {
-    modeA: {
-      src: "../assets/task1-mode-a.png",
-      title: "Mode A Preview",
-      alt: "Static screenshot preview of Task 1 Mode A interface",
-    },
-    modeB: {
-      src: "../assets/task1-mode-b.png",
-      title: "Mode B Preview",
-      alt: "Static screenshot preview of Task 1 Mode B interface",
-    },
+  document.getElementById("surveyForm").addEventListener("submit", handleSubmit);
+  initPreviewModal();
+});
+
+// ── Modal ─────────────────────────────────────────────────────
+
+function initPreviewModal() {
+  const modal       = document.getElementById("modePreviewModal");
+  const titleEl     = document.getElementById("modePreviewTitle");
+  const imageEl     = document.getElementById("modePreviewImage");
+  const closeBtn    = document.getElementById("modePreviewClose");
+  const previewBtns = document.querySelectorAll(".preview-btn");
+
+  if (!modal || !titleEl || !imageEl || !closeBtn || !previewBtns.length) return;
+
+  const defaults = {
+    modeA: { src: "../assets/task1-mode-a.png", title: "Mode A — Overload", alt: "Task 1 Overload Mode screenshot" },
+    modeB: { src: "../assets/task1-mode-b.png", title: "Mode B — Zen",      alt: "Task 1 Zen Mode screenshot" }
   };
 
   let lastTrigger = null;
 
-  const closeModal = () => {
-    previewModal.hidden = true;
-    document.body.style.overflow = "";
-    if (lastTrigger) {
-      lastTrigger.focus();
-    }
-  };
-
-  const openModal = (trigger) => {
-    const mode = trigger.dataset.previewMode;
-    const defaults = previewImages[mode] || {};
-    const src = trigger.dataset.previewSrc || defaults.src || "";
-    const title =
-      trigger.dataset.previewTitle || defaults.title || "Mode Preview";
-    const alt = trigger.dataset.previewAlt || defaults.alt || "Mode preview";
-
-    previewTitle.textContent = title;
-    previewImage.src = src;
-    previewImage.alt = alt;
-    lastTrigger = trigger;
-
-    previewModal.hidden = false;
+  const openModal = (btn) => {
+    const d     = defaults[btn.dataset.previewMode] || {};
+    titleEl.textContent = btn.dataset.previewTitle || d.title || "Preview";
+    imageEl.src         = btn.dataset.previewSrc   || d.src   || "";
+    imageEl.alt         = btn.dataset.previewAlt   || d.alt   || "";
+    lastTrigger         = btn;
+    modal.hidden        = false;
     document.body.style.overflow = "hidden";
-    closeButton.focus();
+    closeBtn.focus();
   };
 
-  previewButtons.forEach((button) => {
-    button.addEventListener("click", () => openModal(button));
-  });
+  const closeModal = () => {
+    modal.hidden = true;
+    document.body.style.overflow = "";
+    lastTrigger?.focus();
+  };
 
-  closeButton.addEventListener("click", closeModal);
+  previewBtns.forEach(btn => btn.addEventListener("click", () => openModal(btn)));
+  closeBtn.addEventListener("click", closeModal);
+  modal.addEventListener("click", e => { if (e.target === modal) closeModal(); });
+  document.addEventListener("keydown", e => { if (e.key === "Escape" && !modal.hidden) closeModal(); });
+}
 
-  previewModal.addEventListener("click", (event) => {
-    if (event.target === previewModal) {
-      closeModal();
+// ── Score helpers ─────────────────────────────────────────────
+
+// Converts a comparative choice ("overload" / "zen" / "same")
+// into numeric scores for version A (Overload) and version B (Zen).
+// Used so the _winner label stays readable in the sheet while
+// the numeric form is available if needed for analysis.
+function comparativeToScores(choice) {
+  if (choice === "overload") return { A: 5, B: 1 };
+  if (choice === "zen")      return { A: 1, B: 5 };
+  return                            { A: 3, B: 3 };
+}
+
+// ── Build payload ─────────────────────────────────────────────
+
+function buildPayload(formData) {
+  // Pull both mode records from sessionStorage separately —
+  // never combine them, because we need per-mode timing and clicks.
+  const allTasks    = JSON.parse(sessionStorage.getItem("completedTasks") || "[]");
+  const task1Tasks  = allTasks.filter(t => t.task === "task1");
+  const overloadRec = task1Tasks.find(t => t.mode === "overload" || t.version === "versionA");
+  const zenRec      = task1Tasks.find(t => t.mode === "zen"      || t.version === "versionB");
+
+  // Survey answers
+  const clarityWinner = formData.get("q1_clarity")  || "same";
+  const controlWinner = formData.get("q3_control")  || "same";
+
+  return {
+    // ── Identity & session ──────────────────────────────────
+    participantId:  sessionStorage.getItem("participantId") || "",
+    conditionOrder: sessionStorage.getItem("conditionOrder") || "",
+    isTestEntry:    false,
+    task:           "task1",
+
+    // ── Behavioral data (goes to Behavioral_Data sheet) ─────
+    // All timing and click metrics split by mode.
+    // t1_A = Overload, t1_B = Zen — consistent with Code.gs.
+    behavioral: {
+      t1_A_timeSpent:         overloadRec?.timeSpent         ?? "",
+      t1_B_timeSpent:         zenRec?.timeSpent              ?? "",
+      t1_A_clicks:            overloadRec?.clicks            ?? "",
+      t1_B_clicks:            zenRec?.clicks                 ?? "",
+      t1_A_misclicks:         overloadRec?.misclicks         ?? "",
+      t1_B_misclicks:         zenRec?.misclicks              ?? "",
+      // Task 1 specific: how many times did the participant
+      // click distraction elements in Overload mode?
+      t1_A_distractionClicks: overloadRec?.distractionClicks ?? ""
+    },
+
+    // ── Survey data (goes to Survey_Responses sheet) ────────
+    survey: {
+      // Q1 — clarity: which mode felt clearer?
+      t1_clarity_winner: clarityWinner,
+
+      // Q2 — stress rating per mode (1–5 Likert)
+      // Form fields: q2_overload_feeling, q2_zen_feeling
+      t1_A_stress: parseInt(formData.get("q2_overload_feeling"), 10) || "",
+      t1_B_stress: parseInt(formData.get("q2_zen_feeling"),      10) || "",
+
+      // Q3 — control: which mode gave more sense of control?
+      t1_control_winner: controlWinner,
+
+      // Q4 — open text comment (clean, no raw dumps)
+      t1_comment: (formData.get("q4_comments") || "").trim()
     }
-  });
-
-  document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape" && !previewModal.hidden) {
-      closeModal();
-    }
-  });
+  };
 }
 
-function comparativeChoiceToScores(choice) {
-  if (choice === "overload") {
-    return { versionA: 5, versionB: 1 };
-  }
-
-  if (choice === "zen") {
-    return { versionA: 1, versionB: 5 };
-  }
-
-  return { versionA: 3, versionB: 3 };
-}
-
-function buildCommentSummary(formData, freeText) {
-  const rawSummary = [
-    `q1_clarity=${formData.get("q1_clarity") || ""}`,
-    `q2_overload_feeling=${formData.get("q2_overload_feeling") || ""}`,
-    `q2_zen_feeling=${formData.get("q2_zen_feeling") || ""}`,
-    `q3_control=${formData.get("q3_control") || ""}`,
-  ].join("; ");
-
-  return freeText ? `${freeText}\n[raw] ${rawSummary}` : `[raw] ${rawSummary}`;
-}
+// ── Submit ────────────────────────────────────────────────────
 
 async function handleSubmit(e) {
   e.preventDefault();
 
   const formData = new FormData(e.target);
-  const completedTasks = JSON.parse(
-    sessionStorage.getItem("completedTasks") || "[]",
-  );
-  const task1Data = completedTasks.filter((t) => t.task === "task1");
-  const versionAData = task1Data.find(
-    (t) => t.version === "versionA" || t.mode === "overload",
-  );
-  const versionBData = task1Data.find(
-    (t) => t.version === "versionB" || t.mode === "zen",
-  );
+  const payload  = buildPayload(formData);
 
-  const clarityScores = comparativeChoiceToScores(formData.get("q1_clarity"));
-  const controlScores = comparativeChoiceToScores(formData.get("q3_control"));
-
-  const surveyData = {
-    participantId: sessionStorage.getItem("participantId"),
-    timestamp: new Date().toISOString(),
-    task: "task1",
-    version: "both",
-    timeSpent: (versionAData?.timeSpent || 0) + (versionBData?.timeSpent || 0),
-    clicks: (versionAData?.clicks || 0) + (versionBData?.clicks || 0),
-    responses: {
-      versionA_confidence: clarityScores.versionA,
-      versionB_confidence: clarityScores.versionB,
-      versionA_difficulty: parseInt(formData.get("q2_overload_feeling"), 10),
-      versionB_difficulty: parseInt(formData.get("q2_zen_feeling"), 10),
-      versionA_control: controlScores.versionA,
-      versionB_control: controlScores.versionB,
-      comments: buildCommentSummary(
-        formData,
-        (formData.get("q4_comments") || "").trim(),
-      ),
-    },
-  };
-
-  console.log("Survey data collected:", surveyData);
-
-  const allSurveys = JSON.parse(
-    sessionStorage.getItem("surveyResponses") || "[]",
-  );
-  allSurveys.push(surveyData);
+  // Save to sessionStorage so the completion page can
+  // offer a local JSON download as backup.
+  const allSurveys = JSON.parse(sessionStorage.getItem("surveyResponses") || "[]");
+  allSurveys.push(payload);
   sessionStorage.setItem("surveyResponses", JSON.stringify(allSurveys));
 
-  if (typeof sendToGoogleSheets === "function") {
-    const result = await sendToGoogleSheets(surveyData);
-    if (result.success) {
-      console.log("Task 1 data sent to Google Sheets");
-    }
-  }
+  // Send to Google Sheets (no-cors, fire and forget).
+  // Failure is handled inside sendToGoogleSheets via local backup.
+  //if (typeof sendToGoogleSheets === "function") {
+  //  await sendToGoogleSheets(payload);
+  //}
 
-  const tasksCompleted = JSON.parse(
-    sessionStorage.getItem("tasksCompleted") || "[]",
-  );
+  // Mark task 1 as complete
+  const tasksCompleted = JSON.parse(sessionStorage.getItem("tasksCompleted") || "[]");
   if (!tasksCompleted.includes("task1")) {
     tasksCompleted.push("task1");
     sessionStorage.setItem("tasksCompleted", JSON.stringify(tasksCompleted));
   }
 
+  // Clean up task-specific sessionStorage keys
   sessionStorage.removeItem("task1ModesCompleted");
   sessionStorage.removeItem("task1FirstMode");
 
@@ -179,22 +177,24 @@ async function handleSubmit(e) {
   }, 500);
 }
 
-document.querySelectorAll("input[required]").forEach((input) => {
-  input.addEventListener("invalid", (e) => {
+// ── Validation shake animation ────────────────────────────────
+
+document.querySelectorAll("input[required]").forEach(input => {
+  input.addEventListener("invalid", e => {
     e.preventDefault();
-    e.target.closest(".question-block").style.animation = "shake 0.5s";
-    setTimeout(() => {
-      e.target.closest(".question-block").style.animation = "";
-    }, 500);
+    const block = e.target.closest(".question-block");
+    if (!block) return;
+    block.style.animation = "shake 0.5s";
+    setTimeout(() => { block.style.animation = ""; }, 500);
   });
 });
 
 const style = document.createElement("style");
 style.textContent = `
-    @keyframes shake {
-        0%, 100% { transform: translateX(0); }
-        25% { transform: translateX(-10px); }
-        75% { transform: translateX(10px); }
-    }
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25%       { transform: translateX(-10px); }
+    75%       { transform: translateX(10px); }
+  }
 `;
 document.head.appendChild(style);

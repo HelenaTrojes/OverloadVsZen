@@ -90,9 +90,10 @@ function completeTask(isCorrect) {
         completed: true,
         timeSpent: timeSpent,
         clicks: clickCount,
+        misclicks: interruptionCount,
         interruptionCount: interruptionCount,
-        selectedAnswer: selectedAnswer,
-        correctAnswer: isCorrect,
+        answerGiven: selectedAnswer,
+        answerCorrect: isCorrect,
         timestamp: new Date().toISOString(),
         participantId: sessionStorage.getItem('participantId')
     };

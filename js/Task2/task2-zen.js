@@ -127,7 +127,8 @@ function completeTask(form) {
     completed: true,
     timeSpent: timeSpent,
     clicks: clickCount,
-    validationAttempts: validationAttempts,
+    misclicks: 0,
+    validationErrors: validationAttempts,
     formData: {
       firstName: form.firstName.value,
       lastName: form.lastName.value,

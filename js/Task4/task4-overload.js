@@ -76,8 +76,9 @@ function completeTask() {
         completed: true,
         timeSpent: timeSpent,
         clicks: clickCount,
-        selectedProduct: selectedProduct,
-        selectedPrice: selectedPrice,
+        misclicks: 0,
+        productChosen: selectedProduct,
+        priceChosen: selectedPrice,
         timestamp: new Date().toISOString(),
         participantId: sessionStorage.getItem('participantId')
     };

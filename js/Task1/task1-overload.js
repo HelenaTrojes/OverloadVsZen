@@ -76,6 +76,7 @@ function completeTask() {
         timeSpent: timeSpent,
         clicks: clickCount,
         distractionClicks: distractionClicks,
+        misclicks: distractionClicks,
         timestamp: new Date().toISOString(),
         participantId: sessionStorage.getItem('participantId')
     };

@@ -1,180 +1,174 @@
-// Task 3 Survey JavaScript
+// ============================================================
+// task3-survey.js
+// Task 3 — Freedom & Pressure (Plan Selection)
+// Dark pattern: Confirmshaming, upsell pressure, plan change friction
+//
+// Survey questions:
+//   Q1 (t3_freedom_winner)     — In which mode did you feel freer
+//                                to choose without pressure?
+//                                comparative: "overload" / "zen" / "same"
+//   Q2 (t3_A_pressure /
+//       t3_B_pressure)         — How much pressure did each mode
+//                                make you feel? (1–5 Likert)
+//                                1 = No pressure, 5 = Very pressured
+//   Q3 (t3_respect_winner)     — Which mode felt more respectful
+//                                of your decision?
+//                                comparative: "overload" / "zen" / "same"
+//   Q4 (t3_comment)            — Open text, optional
+//
+// Form field names (HTML):
+//   q1_freedom, q2_overload_pressure, q2_zen_pressure,
+//   q3_respect, q4_comments
+//
+// Payload sent to Google Sheets:
+//   data.behavioral  → Behavioral_Data sheet
+//   data.survey      → Survey_Responses sheet
+// ============================================================
 
 document.addEventListener("DOMContentLoaded", () => {
-  console.log("Task 3 Survey loaded");
-
   const completed = JSON.parse(
-    sessionStorage.getItem("task3ModesCompleted") || "[]",
+    sessionStorage.getItem("task3ModesCompleted") || "[]"
   );
+
   if (!completed.includes("overload") || !completed.includes("zen")) {
-    console.warn("Both modes not completed. Redirecting...");
+    console.warn("Both modes not completed for task 3. Redirecting...");
     window.location.href = "task3-selection.html";
     return;
   }
 
-  const form = document.getElementById("surveyForm");
-  form.addEventListener("submit", handleSubmit);
-
-  initializeModePreviewModal();
+  document.getElementById("surveyForm").addEventListener("submit", handleSubmit);
+  initPreviewModal();
 });
 
-function initializeModePreviewModal() {
-  const previewButtons = document.querySelectorAll(".preview-btn");
-  const previewModal = document.getElementById("modePreviewModal");
-  const previewTitle = document.getElementById("modePreviewTitle");
-  const previewImage = document.getElementById("modePreviewImage");
-  const closeButton = document.getElementById("modePreviewClose");
+// ── Modal ─────────────────────────────────────────────────────
 
-  if (
-    !previewButtons.length ||
-    !previewModal ||
-    !previewTitle ||
-    !previewImage ||
-    !closeButton
-  ) {
-    return;
-  }
+function initPreviewModal() {
+  const modal       = document.getElementById("modePreviewModal");
+  const titleEl     = document.getElementById("modePreviewTitle");
+  const imageEl     = document.getElementById("modePreviewImage");
+  const closeBtn    = document.getElementById("modePreviewClose");
+  const previewBtns = document.querySelectorAll(".preview-btn");
 
-  const previewImages = {
-    modeA: {
-      src: "../assets/task3-mode-a.png",
-      title: "Mode A Preview",
-      alt: "Static screenshot preview of Task 3 Mode A interface",
-    },
-    modeB: {
-      src: "../assets/task3-mode-b.png",
-      title: "Mode B Preview",
-      alt: "Static screenshot preview of Task 3 Mode B interface",
-    },
+  if (!modal || !titleEl || !imageEl || !closeBtn || !previewBtns.length) return;
+
+  const defaults = {
+    modeA: { src: "../assets/task3-mode-a.png", title: "Mode A — Overload", alt: "Task 3 Overload Mode screenshot" },
+    modeB: { src: "../assets/task3-mode-b.png", title: "Mode B — Zen",      alt: "Task 3 Zen Mode screenshot" }
   };
 
   let lastTrigger = null;
 
-  const closeModal = () => {
-    previewModal.hidden = true;
-    document.body.style.overflow = "";
-    if (lastTrigger) {
-      lastTrigger.focus();
-    }
-  };
-
-  const openModal = (trigger) => {
-    const mode = trigger.dataset.previewMode;
-    const defaults = previewImages[mode] || {};
-    const src = trigger.dataset.previewSrc || defaults.src || "";
-    const title =
-      trigger.dataset.previewTitle || defaults.title || "Mode Preview";
-    const alt = trigger.dataset.previewAlt || defaults.alt || "Mode preview";
-
-    previewTitle.textContent = title;
-    previewImage.src = src;
-    previewImage.alt = alt;
-    lastTrigger = trigger;
-
-    previewModal.hidden = false;
+  const openModal = (btn) => {
+    const d     = defaults[btn.dataset.previewMode] || {};
+    titleEl.textContent = btn.dataset.previewTitle || d.title || "Preview";
+    imageEl.src         = btn.dataset.previewSrc   || d.src   || "";
+    imageEl.alt         = btn.dataset.previewAlt   || d.alt   || "";
+    lastTrigger         = btn;
+    modal.hidden        = false;
     document.body.style.overflow = "hidden";
-    closeButton.focus();
+    closeBtn.focus();
   };
 
-  previewButtons.forEach((button) => {
-    button.addEventListener("click", () => openModal(button));
-  });
+  const closeModal = () => {
+    modal.hidden = true;
+    document.body.style.overflow = "";
+    lastTrigger?.focus();
+  };
 
-  closeButton.addEventListener("click", closeModal);
+  previewBtns.forEach(btn => btn.addEventListener("click", () => openModal(btn)));
+  closeBtn.addEventListener("click", closeModal);
+  modal.addEventListener("click", e => { if (e.target === modal) closeModal(); });
+  document.addEventListener("keydown", e => { if (e.key === "Escape" && !modal.hidden) closeModal(); });
+}
 
-  previewModal.addEventListener("click", (event) => {
-    if (event.target === previewModal) {
-      closeModal();
+// ── Score helpers ─────────────────────────────────────────────
+
+function comparativeToScores(choice) {
+  if (choice === "overload") return { A: 5, B: 1 };
+  if (choice === "zen")      return { A: 1, B: 5 };
+  return                            { A: 3, B: 3 };
+}
+
+// ── Build payload ─────────────────────────────────────────────
+
+function buildPayload(formData) {
+  const allTasks    = JSON.parse(sessionStorage.getItem("completedTasks") || "[]");
+  const task3Tasks  = allTasks.filter(t => t.task === "task3");
+  const overloadRec = task3Tasks.find(t => t.mode === "overload" || t.version === "versionA");
+  const zenRec      = task3Tasks.find(t => t.mode === "zen"      || t.version === "versionB");
+
+  const freedomWinner = formData.get("q1_freedom") || "same";
+  const respectWinner = formData.get("q3_respect") || "same";
+
+  return {
+    // ── Identity & session ──────────────────────────────────
+    participantId:  sessionStorage.getItem("participantId") || "",
+    conditionOrder: sessionStorage.getItem("conditionOrder") || "",
+    isTestEntry:    false,
+    task:           "task3",
+
+    // ── Behavioral data (goes to Behavioral_Data sheet) ─────
+    // t3_A = Overload Mode, t3_B = Zen Mode
+    behavioral: {
+      t3_A_timeSpent:           overloadRec?.timeSpent           ?? "",
+      t3_B_timeSpent:           zenRec?.timeSpent                ?? "",
+      t3_A_clicks:              overloadRec?.clicks              ?? "",
+      t3_B_clicks:              zenRec?.clicks                   ?? "",
+      t3_A_misclicks:           overloadRec?.misclicks           ?? "",
+      t3_B_misclicks:           zenRec?.misclicks                ?? "",
+      // planChanges: how many times the participant went back
+      // to change their plan selection — comparable across both modes.
+      // In overload this is driven by pressure; in zen it is genuine choice.
+      t3_A_planChanges:         overloadRec?.planChanges         ?? "",
+      t3_B_planChanges:         zenRec?.planChanges              ?? "",
+      // confirmshamingShown: how many times the manipulative modal
+      // appeared in overload mode. Always 0 in zen mode.
+      t3_A_confirmShamingShown: overloadRec?.confirmshamingShown ?? "",
+      // finalPlan: which plan the participant ended up selecting.
+      // Useful to check if overload pressure pushed people toward
+      // more expensive plans compared to zen mode.
+      t3_A_finalPlan:           overloadRec?.finalPlan           ?? "",
+      t3_B_finalPlan:           zenRec?.finalPlan                ?? ""
+    },
+
+    // ── Survey data (goes to Survey_Responses sheet) ────────
+    survey: {
+      // Q1 — freedom: which mode felt freer to choose without pressure?
+      t3_freedom_winner: freedomWinner,
+
+      // Q2 — pressure rating per mode (1–5 Likert)
+      // Form fields: q2_overload_pressure, q2_zen_pressure
+      t3_A_pressure: parseInt(formData.get("q2_overload_pressure"), 10) || "",
+      t3_B_pressure: parseInt(formData.get("q2_zen_pressure"),      10) || "",
+
+      // Q3 — respect: which mode felt more respectful of your decision?
+      t3_respect_winner: respectWinner,
+
+      // Q4 — open text comment
+      t3_comment: (formData.get("q4_comments") || "").trim()
     }
-  });
-
-  document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape" && !previewModal.hidden) {
-      closeModal();
-    }
-  });
+  };
 }
 
-function comparativeChoiceToScores(choice) {
-  if (choice === "overload") {
-    return { versionA: 5, versionB: 1 };
-  }
-
-  if (choice === "zen") {
-    return { versionA: 1, versionB: 5 };
-  }
-
-  return { versionA: 3, versionB: 3 };
-}
-
-function buildCommentSummary(formData, freeText) {
-  const rawSummary = [
-    `q1_freedom=${formData.get("q1_freedom") || ""}`,
-    `q2_overload_pressure=${formData.get("q2_overload_pressure") || ""}`,
-    `q2_zen_pressure=${formData.get("q2_zen_pressure") || ""}`,
-    `q3_respect=${formData.get("q3_respect") || ""}`,
-  ].join("; ");
-
-  return freeText ? `${freeText}\n[raw] ${rawSummary}` : `[raw] ${rawSummary}`;
-}
+// ── Submit ────────────────────────────────────────────────────
 
 async function handleSubmit(e) {
   e.preventDefault();
 
   const formData = new FormData(e.target);
-  const completedTasks = JSON.parse(
-    sessionStorage.getItem("completedTasks") || "[]",
-  );
-  const task3Data = completedTasks.filter((t) => t.task === "task3");
-  const versionAData = task3Data.find(
-    (t) => t.version === "versionA" || t.mode === "overload",
-  );
-  const versionBData = task3Data.find(
-    (t) => t.version === "versionB" || t.mode === "zen",
-  );
+  const payload  = buildPayload(formData);
 
-  const freedomScores = comparativeChoiceToScores(formData.get("q1_freedom"));
-  const respectScores = comparativeChoiceToScores(formData.get("q3_respect"));
-
-  const surveyData = {
-    participantId: sessionStorage.getItem("participantId"),
-    timestamp: new Date().toISOString(),
-    task: "task3",
-    version: "both",
-    timeSpent: (versionAData?.timeSpent || 0) + (versionBData?.timeSpent || 0),
-    clicks: (versionAData?.clicks || 0) + (versionBData?.clicks || 0),
-    responses: {
-      versionA_confidence: freedomScores.versionA,
-      versionB_confidence: freedomScores.versionB,
-      versionA_difficulty: parseInt(formData.get("q2_overload_pressure"), 10),
-      versionB_difficulty: parseInt(formData.get("q2_zen_pressure"), 10),
-      versionA_control: respectScores.versionA,
-      versionB_control: respectScores.versionB,
-      comments: buildCommentSummary(
-        formData,
-        (formData.get("q4_comments") || "").trim(),
-      ),
-    },
-  };
-
-  console.log("Task 3 Survey data:", surveyData);
-
-  const allSurveys = JSON.parse(
-    sessionStorage.getItem("surveyResponses") || "[]",
-  );
-  allSurveys.push(surveyData);
+  const allSurveys = JSON.parse(sessionStorage.getItem("surveyResponses") || "[]");
+  allSurveys.push(payload);
   sessionStorage.setItem("surveyResponses", JSON.stringify(allSurveys));
 
+  /*
   if (typeof sendToGoogleSheets === "function") {
-    const result = await sendToGoogleSheets(surveyData);
-    if (result.success) {
-      console.log("Task 3 data sent to Google Sheets");
-    }
+    await sendToGoogleSheets(payload);
   }
+    */
 
-  const tasksCompleted = JSON.parse(
-    sessionStorage.getItem("tasksCompleted") || "[]",
-  );
+  const tasksCompleted = JSON.parse(sessionStorage.getItem("tasksCompleted") || "[]");
   if (!tasksCompleted.includes("task3")) {
     tasksCompleted.push("task3");
     sessionStorage.setItem("tasksCompleted", JSON.stringify(tasksCompleted));
@@ -188,22 +182,24 @@ async function handleSubmit(e) {
   }, 500);
 }
 
-document.querySelectorAll("input[required]").forEach((input) => {
-  input.addEventListener("invalid", (e) => {
+// ── Validation shake animation ────────────────────────────────
+
+document.querySelectorAll("input[required]").forEach(input => {
+  input.addEventListener("invalid", e => {
     e.preventDefault();
-    e.target.closest(".question-block").style.animation = "shake 0.5s";
-    setTimeout(() => {
-      e.target.closest(".question-block").style.animation = "";
-    }, 500);
+    const block = e.target.closest(".question-block");
+    if (!block) return;
+    block.style.animation = "shake 0.5s";
+    setTimeout(() => { block.style.animation = ""; }, 500);
   });
 });
 
 const style = document.createElement("style");
 style.textContent = `
-    @keyframes shake {
-        0%, 100% { transform: translateX(0); }
-        25% { transform: translateX(-10px); }
-        75% { transform: translateX(10px); }
-    }
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25%       { transform: translateX(-10px); }
+    75%       { transform: translateX(10px); }
+  }
 `;
 document.head.appendChild(style);

@@ -8,6 +8,9 @@ function startExperience() {
     // Store in session storage for data collection
     sessionStorage.setItem('experienceStartTime', startTime);
     sessionStorage.setItem('participantId', generateParticipantId());
+
+    const order = Math.random() < 0.5 ? 'overload_first' : 'zen_first';
+    sessionStorage.setItem('conditionOrder', order);
     
     // Navigate DIRECTLY to Task 1 (skip intro)
     window.location.href = 'Task1/task1-selection.html';

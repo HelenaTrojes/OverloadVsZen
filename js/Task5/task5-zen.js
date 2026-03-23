@@ -44,8 +44,10 @@ function completeTask(isCorrect) {
         completed: true,
         timeSpent: timeSpent,
         clicks: clickCount,
-        selectedAnswer: selectedAnswer,
-        correctAnswer: isCorrect,
+        misclicks: 0,
+        interruptionCount: 0,
+        answerGiven: selectedAnswer,
+        answerCorrect: isCorrect,
         timestamp: new Date().toISOString(),
         participantId: sessionStorage.getItem('participantId')
     };

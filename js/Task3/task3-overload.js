@@ -91,6 +91,7 @@ function completeTask() {
         planChanges: planChanges,
         confirmshamingShown: confirmshamingShown,
         finalPlan: selectedPlan,
+        misclicks:confirmshamingShown,
         timestamp: new Date().toISOString(),
         participantId: sessionStorage.getItem('participantId')
     };

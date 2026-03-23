@@ -40,6 +40,7 @@ function completeTask() {
         completed: true,
         timeSpent: timeSpent,
         clicks: clickCount,
+        misclicks: 0,
         timestamp: new Date().toISOString(),
         participantId: sessionStorage.getItem('participantId')
     };

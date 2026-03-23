@@ -75,6 +75,7 @@ function completeTask(formData) {
         clicks: clickCount,
         fakeButtonClicks: fakeButtonClicks,
         resetClicks: resetClicks,
+        misclicks: fakeButtonClicks + resetClicks,
         formData: formData,
         timestamp: new Date().toISOString(),
         participantId: sessionStorage.getItem('participantId')
