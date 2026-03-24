@@ -19,7 +19,7 @@
 // ============================================================
 
 const GOOGLE_SCRIPT_URL =
-  "https://script.google.com/macros/s/AKfycbyyEUlyiQbSei1cCfnY_qlXUAmw70WVh3yJK0Yn_ejBpepoyzkbs1lQwKl5MCpBGtGVXg/exec";
+  "https://script.google.com/macros/s/AKfycbzQBU85n60Fi3OqbPLubKniv02PEZkSfYd68BX_p91rrRLajde-4lN0PwrWDMiSIXnCJQ/exec";
 
 // ── Main send function ────────────────────────────────────────
 
@@ -28,26 +28,16 @@ async function sendToGoogleSheets(payload) {
 
   try {
     console.log("Sending to Google Sheets...", payload);
+    console.log("POST body:", body);
 
-    // sendBeacon is preferred on page unload — it fires even if
-    // the page navigates away before fetch completes.
-    if (navigator.sendBeacon) {
-      const blob   = new Blob([body], { type: "text/plain;charset=UTF-8" });
-      const queued = navigator.sendBeacon(GOOGLE_SCRIPT_URL, blob);
-
-      if (queued) {
-        console.log("Data queued via sendBeacon");
-        return { success: true, method: "sendBeacon" };
-      }
-    }
-
-    // Fallback: fetch with no-cors + keepalive so the request
-    // survives page transitions on GitHub Pages.
     await fetch(GOOGLE_SCRIPT_URL, {
-      method:    "POST",
-      mode:      "no-cors",
+      method: "POST",
+      mode: "no-cors",
       keepalive: true,
-      body:      body
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: body
     });
 
     console.log("Data sent via fetch");
@@ -83,14 +73,13 @@ function downloadBackups() {
     return;
   }
 
-  const blob = new Blob(
-    [JSON.stringify(backups, null, 2)],
-    { type: "application/json" }
-  );
-  const url  = URL.createObjectURL(blob);
+  const blob = new Blob([JSON.stringify(backups, null, 2)], {
+    type: "application/json",
+  });
+  const url = URL.createObjectURL(blob);
   const link = document.createElement("a");
 
-  link.href     = url;
+  link.href = url;
   link.download = `backup-data-${Date.now()}.json`;
   link.click();
   URL.revokeObjectURL(url);
@@ -104,19 +93,21 @@ async function testConnection() {
   console.log("Testing connection to Google Sheets...");
 
   const testPayload = {
-    participantId:  `TEST-${Date.now()}`,
+    participantId: `TEST-${Date.now()}`,
     conditionOrder: "overload_first",
-    isTestEntry:    true,           // ← routes to Tests sheet in Code.gs
-    task:           "test",
-    behavioral:     {},
-    survey:         { comment: "Connection test entry" }
+    isTestEntry: true, // ← routes to Tests sheet in Code.gs
+    task: "test",
+    behavioral: {},
+    survey: { comment: "Connection test entry" },
   };
 
   const result = await sendToGoogleSheets(testPayload);
 
   if (result.success) {
     console.log("Test sent. Check the Tests tab in your Google Sheet.");
-    alert("Test sent successfully. Check the Tests tab in your Google Sheet — not the Behavioral_Data or Survey_Responses tabs.");
+    alert(
+      "Test sent successfully. Check the Tests tab in your Google Sheet — not the Behavioral_Data or Survey_Responses tabs.",
+    );
   } else {
     console.error("Test failed:", result.error);
     alert("Connection failed. Check the browser console for details.");
