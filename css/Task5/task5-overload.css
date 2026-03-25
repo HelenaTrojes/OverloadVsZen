@@ -163,6 +163,7 @@
   color: var(--text-dark);
   font-weight: 700;
   margin-bottom: var(--spacing-md);
+  text-align: center;
 }
 
 .reading-text-chaos {
