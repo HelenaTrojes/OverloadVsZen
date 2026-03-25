@@ -157,20 +157,41 @@ function completeTask(form) {
   }
 
   // Show success message briefly
+  const submitBtn = document.querySelector(".submit-button");
+  if (submitBtn) {
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Submitted ✓";
+  }
+
   showSuccessMessage();
 
   // Check if both modes completed
   setTimeout(() => {
     checkIfBothModesCompleted();
-  }, 1500);
+  }, 2000);
 }
 
 function showSuccessMessage() {
-  const successDiv = document.createElement("div");
-  successDiv.className = "success-message show";
-  successDiv.innerHTML =
-    "<strong>✓ Success!</strong><br>Your form has been submitted.";
-  document.querySelector(".form-container").appendChild(successDiv);
+  // Avoid duplicate success messages
+  let successDiv = document.querySelector(".success-message");
+
+  if (!successDiv) {
+    successDiv = document.createElement("div");
+    successDiv.className = "success-message";
+    successDiv.innerHTML =
+      "<strong>✓ Success!</strong><br>Your form has been submitted.";
+    document.querySelector(".form-container").appendChild(successDiv);
+  }
+
+  successDiv.classList.add("show");
+
+  // Scroll to the confirmation so the user clearly sees it
+  setTimeout(() => {
+    successDiv.scrollIntoView({
+      behavior: "smooth",
+      block: "center",
+    });
+  }, 100);
 }
 
 function checkIfBothModesCompleted() {

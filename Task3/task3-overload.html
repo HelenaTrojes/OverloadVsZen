@@ -13,12 +13,11 @@
       <header class="overload-header">
         <div class="task-info-chaos">
           <span class="task-icon-chaos">🔄</span>
-          <h1 class="task-title-chaos">
-            Task 3: Make a Choice (and Change Your Mind)
-          </h1>
+          <h1 class="task-title-chaos">Task 3: Choose a Plan</h1>
         </div>
         <p class="task-subtitle-chaos">
-          Select a subscription plan, then try to change it
+          Choose a subscription plan. Then, before finishing, try to go back and
+          change your choice once.
         </p>
         <div class="mode-toggle-chaos">
           <button class="mode-btn-chaos active">
@@ -55,7 +54,8 @@
             <div class="plan-card-chaos boring" data-plan="basic">
               <h3 class="plan-name-chaos">Basic</h3>
               <div class="plan-price-chaos">$9<span>/mo</span></div>
-              <div class="boring-badge">Limited Features</div>
+              <div class="boring-badge">Very Limited</div>
+              <p class="plan-tagline-chaos">Not recommended for most users</p>
               <ul class="plan-features-chaos">
                 <li>✓ Only 10 projects</li>
                 <li>✓ Slow support</li>
@@ -65,7 +65,7 @@
                 class="select-btn-chaos basic-btn"
                 onclick="selectPlan('basic')"
               >
-                Select Basic
+                Select Basic Anyway
               </button>
             </div>
 
@@ -76,7 +76,7 @@
                 <span class="old-price">$99</span>
                 $29<span>/mo</span>
               </div>
-              <div class="best-value-badge"> BEST VALUE! </div>
+              <div class="best-value-badge">BEST VALUE!</div>
               <ul class="plan-features-chaos">
                 <li>✓ UNLIMITED Everything!</li>
                 <li>✓ VIP Support!</li>
@@ -117,7 +117,9 @@
           style="display: none"
         >
           <div class="confirmation-card-chaos">
-            <h2 class="confirmation-title-chaos">Great Choice!</h2>
+            <h2 class="confirmation-title-chaos" id="confirmationTitle">
+              Great Choice!
+            </h2>
             <p class="selected-plan-text-chaos">
               You selected: <strong id="selectedPlanName"></strong>
             </p>
@@ -127,7 +129,7 @@
               id="upsellMessage"
               style="display: none"
             >
-              <p class="upsell-text">
+              <p class="upsell-text" id="upsellText">
                 ⚠️ Wait! Are you SURE you don't want Premium? You're missing out
                 on 60% savings!
               </p>
@@ -135,13 +137,13 @@
 
             <div class="confirmation-actions-chaos">
               <button class="confirm-btn-chaos" onclick="confirmSelection()">
-                Yes, Continue
+                Keep This Plan
               </button>
               <button
                 class="change-mind-btn-chaos"
                 onclick="showConfirmShaming()"
               >
-                No, I Want to Change
+                Change My Choice
               </button>
             </div>
           </div>
@@ -156,16 +158,17 @@
       style="display: none"
     >
       <div class="confirmshame-content">
-        <h3>Are you sure you want to go back?</h3>
-        <p class="shame-text">
-          Most successful people choose Premium. Don't you want to succeed?
+        <h3 id="shameTitle">Are you sure you want to go back?</h3>
+        <p class="shame-text" id="shameText">
+          Most users choose Premium for the best results. Are you sure you want
+          to continue without it?
         </p>
         <div class="modal-actions">
           <button class="stay-btn" onclick="closeConfirmShaming()">
-            No, Keep My Choice
+            Keep My Current Plan
           </button>
           <button class="change-anyway-btn" onclick="actuallyChangeMind()">
-            Yes, I Want to Miss Out
+            Change My Choice Anyway
           </button>
         </div>
       </div>

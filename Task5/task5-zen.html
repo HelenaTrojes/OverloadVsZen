@@ -1,94 +1,102 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Task 5: Zen Mode</title>
-    <link rel="stylesheet" href="../css/global.css">
-    <link rel="stylesheet" href="../css/Task5/task5-zen.css">
-</head>
-<body class="zen-body">
+    <link rel="stylesheet" href="../css/global.css" />
+    <link rel="stylesheet" href="../css/Task5/task5-zen.css" />
+  </head>
+  <body class="zen-body">
     <div class="zen-container">
-        <!-- Header -->
-        <header class="zen-header">
-            <div class="task-info">
-                <span class="task-icon">🎯</span>
-                <h1 class="task-title">Task 5: Complete a Simple Action</h1>
-            </div>
-            <p class="task-subtitle">Read a short paragraph and answer a question about it</p>
-            <div class="mode-toggle">
-                <button class="mode-btn inactive" onclick="switchMode('overload')">
-                    Mode A
-                </button>
-                <button class="mode-btn active">
-                    <span class="indicator-dot"></span> Mode B
-                </button>
-            </div>
-        </header>
-
-        <!-- Guide Message -->
-        <div class="zen-guide">
-            <div class="quote-icon">❝</div>
-            <p class="guide-text">Take your time. Focus on the content. No distractions, no pressure.</p>
+      <!-- Header -->
+      <header class="zen-header">
+        <div class="task-info">
+          <span class="task-icon">🎯</span>
+          <h1 class="task-title">Task 5: Complete a Simple Action</h1>
         </div>
+        <p class="task-subtitle">
+          Read a short paragraph and answer a question about it
+        </p>
+        <div class="mode-toggle">
+          <button class="mode-btn inactive" onclick="switchMode('overload')">
+            Mode A
+          </button>
+          <button class="mode-btn active">
+            <span class="indicator-dot"></span> Mode B
+          </button>
+        </div>
+      </header>
 
-        <!-- Main Content -->
-        <main class="zen-content">
-            <div class="reading-container">
-                <h2 class="content-title">The Benefits of Mindful Design</h2>
-                
-                <div class="reading-text">
-                    <p>
-                        In today's digital world, the way we design interfaces can significantly impact user well-being. 
-                        Mindful design focuses on creating experiences that respect users' attention and mental energy. 
-                        Rather than overwhelming users with constant notifications and urgent prompts, mindful interfaces 
-                        provide clear information and allow users to engage at their own pace.
-                    </p>
-                    
-                    <p>
-                        Research shows that when interfaces respect users' cognitive limits and avoid manipulative tactics, 
-                        people report feeling more in control and less stressed. This approach not only benefits users' 
-                        mental health but also builds long-term trust between users and digital products.
-                    </p>
-                    
-                    <p>
-                        The key principle is simple: <strong>design for humans, not metrics</strong>. When we prioritize 
-                        user well-being over engagement statistics, we create digital experiences that people genuinely 
-                        appreciate and return to willingly.
-                    </p>
-                </div>
+      <!-- Guide Message -->
+      <div class="zen-guide">
+        <div class="quote-icon">❝</div>
+        <p class="guide-text">
+          Take your time. Focus on the content. No distractions, no pressure.
+        </p>
+      </div>
 
-                <div class="question-section">
-                    <h3 class="question-title">Comprehension Question</h3>
-                    <p class="question-text">According to the text, what is the key principle of mindful design?</p>
-                    
-                    <div class="answer-options">
-                        <label class="answer-option">
-                            <input type="radio" name="answer" value="A">
-                            <span>A. Maximize user engagement time</span>
-                        </label>
-                        <label class="answer-option">
-                            <input type="radio" name="answer" value="B">
-                            <span>B. Design for humans, not metrics</span>
-                        </label>
-                        <label class="answer-option">
-                            <input type="radio" name="answer" value="C">
-                            <span>C. Add as many features as possible</span>
-                        </label>
-                        <label class="answer-option">
-                            <input type="radio" name="answer" value="D">
-                            <span>D. Focus on visual aesthetics only</span>
-                        </label>
-                    </div>
+      <!-- Main Content -->
+      <main class="zen-content">
+        <div class="reading-container">
+          <h2 class="content-title">How People Stay Focused While Working</h2>
 
-                    <button class="submit-answer-btn" onclick="submitAnswer()">
-                        Submit Answer
-                    </button>
-                </div>
+          <div class="reading-text">
+            <p>
+              Many people struggle to stay focused when working for long periods
+              of time. Small distractions, such as notifications or background
+              noise, can interrupt concentration and make it harder to complete
+              tasks efficiently.
+            </p>
+
+            <p>
+              One common strategy is to work in short, uninterrupted sessions.
+              During these periods, individuals focus on a single task and avoid
+              switching between activities. Afterward, they take a short break
+              before starting again.
+            </p>
+
+            <p>
+              This approach helps maintain attention and reduces mental fatigue.
+              By limiting distractions and focusing on one task at a time,
+              people are often able to work more effectively and feel less
+              overwhelmed.
+            </p>
+          </div>
+
+          <div class="question-section">
+            <h3 class="question-title">Comprehension Question</h3>
+            <p class="question-text">
+              According to the text, what helps people stay focused?
+            </p>
+
+            <div class="answer-options">
+              <label class="answer-option">
+                <input type="radio" name="answer" value="A" />
+                <span>A. Switching tasks frequently</span>
+              </label>
+              <label class="answer-option">
+                <input type="radio" name="answer" value="B" />
+                <span>B. Working in short, uninterrupted sessions</span>
+              </label>
+              <label class="answer-option">
+                <input type="radio" name="answer" value="C" />
+                <span>C. Multitasking as much as possible</span>
+              </label>
+              <label class="answer-option">
+                <input type="radio" name="answer" value="D" />
+                <span>D. Adding more background noise</span>
+              </label>
             </div>
-        </main>
+
+            <button class="submit-answer-btn" onclick="submitAnswer()">
+              Submit Answer
+            </button>
+          </div>
+        </div>
+      </main>
     </div>
 
     <script src="../js/Task5/task5-zen.js"></script>
-</body>
+  </body>
 </html>

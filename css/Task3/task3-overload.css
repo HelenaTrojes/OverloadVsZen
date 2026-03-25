@@ -212,6 +212,14 @@
   white-space: nowrap;
 }
 
+.plan-tagline-chaos {
+  font-size: 0.75rem;
+  color: var(--text-dark);
+  font-style: italic;
+  margin: 4px 0 10px;
+  text-align: center;
+}
+
 .old-price {
   font-size: 1.2rem;
   text-decoration: line-through;

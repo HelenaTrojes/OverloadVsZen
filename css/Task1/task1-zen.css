@@ -122,7 +122,7 @@
 .zen-content {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-lg);
+  gap: var(--spacing-md);
 }
 
 /* Notifications Section */
@@ -212,24 +212,25 @@
 /* Other Updates Section */
 .other-updates-section {
   background: white;
-  border-radius: 12px;
-  padding: var(--spacing-lg);
+  border-radius: 10px;
+  padding: var(--spacing-md);
+  margin-top: -4px;
   animation: fadeInUp 0.6s ease-out 0.4s backwards;
 }
 
 .section-title-small {
-  font-size: 1.2rem;
+  font-size: 1rem;
   color: var(--text-dark);
   font-weight: 500;
-  margin-bottom: var(--spacing-md);
+  margin-bottom: var(--spacing-sm);
 }
 
 .update-item {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: var(--spacing-sm);
-  margin-bottom: var(--spacing-sm);
+  gap: 10px;
+  padding: 8px 10px;
+  margin-bottom: 6px;
   border-radius: 8px;
   transition: background 0.2s ease;
 }
@@ -239,7 +240,7 @@
 }
 
 .update-icon {
-  font-size: 1.5rem;
+  font-size: 1.2rem;
 }
 
 .update-text {
