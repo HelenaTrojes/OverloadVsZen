@@ -57,7 +57,7 @@ function addProgressTracking() {
     progressText.textContent = `${percent}% completed`;
 
     if (percent === 100) {
-      progressText.textContent = "Ready to submit ✓"; 
+      progressText.textContent = "Ready to submit ✓";
     }
   }
 
@@ -128,6 +128,8 @@ function completeTask(form) {
     timeSpent: timeSpent,
     clicks: clickCount,
     misclicks: 0,
+    fakeButtonClicks: 0,
+    resetClicks: 0,
     validationErrors: validationAttempts,
     formData: {
       firstName: form.firstName.value,

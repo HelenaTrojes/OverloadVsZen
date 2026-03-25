@@ -4,6 +4,7 @@ let taskStartTime;
 let clickCount = 0;
 let fakeButtonClicks = 0;
 let resetClicks = 0;
+let validationErrors = 0;
 
 document.addEventListener('DOMContentLoaded', () => {
     console.log('Task 2 Overload Mode loaded');
@@ -56,7 +57,7 @@ function handleRealSubmit(e) {
     
     // Check if required fields are filled
     if (!formData.firstName || !formData.lastName || !formData.email) {
-        // Show vague error
+        validationErrors++;
         fakeSubmit();
         return;
     }
@@ -75,6 +76,7 @@ function completeTask(formData) {
         clicks: clickCount,
         fakeButtonClicks: fakeButtonClicks,
         resetClicks: resetClicks,
+        validationErrors: validationErrors,
         misclicks: fakeButtonClicks + resetClicks,
         formData: formData,
         timestamp: new Date().toISOString(),

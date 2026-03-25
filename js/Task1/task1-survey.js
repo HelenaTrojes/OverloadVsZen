@@ -117,9 +117,9 @@ function buildPayload(formData) {
       t1_B_clicks:            zenRec?.clicks                 ?? "",
       t1_A_misclicks:         overloadRec?.misclicks         ?? "",
       t1_B_misclicks:         zenRec?.misclicks              ?? "",
-      // Task 1 specific: how many times did the participant
-      // click distraction elements in Overload mode?
-      t1_A_distractionClicks: overloadRec?.distractionClicks ?? ""
+      // Task 1 specific: how many times did the participant click distraction elements in Overload mode?
+      t1_A_distractionClicks: overloadRec?.distractionClicks ?? "",
+      t1_B_distractionClicks: zenRec?.distractionClicks      ?? ""
     },
 
     // ── Survey data (goes to Survey_Responses sheet) ────────

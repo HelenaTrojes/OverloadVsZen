@@ -145,6 +145,7 @@ function buildPayload(formData) {
       // broke the participant's reading focus in overload mode.
       // Always 0 in zen mode. Direct measure of distraction intensity.
       t5_A_interruptionCount: overloadRec?.interruptionCount ?? "",
+      t5_B_interruptionCount: zenRec?.interruptionCount ?? "",
       // answerGiven + answerCorrect: the comprehension check.
       // This is task 5's strongest objective metric — did overload
       // mode's distractions actually impair reading comprehension

@@ -19,7 +19,7 @@
 // ============================================================
 
 const GOOGLE_SCRIPT_URL =
-  "https://script.google.com/macros/s/AKfycbzQBU85n60Fi3OqbPLubKniv02PEZkSfYd68BX_p91rrRLajde-4lN0PwrWDMiSIXnCJQ/exec";
+  "https://script.google.com/macros/s/AKfycbwM9SJBR5bmwO-3yK6x_3Z-RrZMYjskvOpa-fFzJsoE8ZtcwzXQ9PFt0NFpfgFlXMPtzg/exec";
 
 // ── Main send function ────────────────────────────────────────
 
@@ -35,14 +35,13 @@ async function sendToGoogleSheets(payload) {
       mode: "no-cors",
       keepalive: true,
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
-      body: body
+      body: body,
     });
 
     console.log("Data sent via fetch");
     return { success: true, method: "fetch" };
-
   } catch (error) {
     console.error("Send failed — saving local backup:", error);
     saveLocalBackup(payload);
