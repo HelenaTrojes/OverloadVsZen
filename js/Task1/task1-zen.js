@@ -1,6 +1,10 @@
+// Task 1 Zen Mode JavaScript
+// Clean notification layout — one clear target, no distractors
+
 let taskStartTime;
-let clickCount = 0;
-let distractionClicks = 0;
+let firstClickTime = null; // seconds from task load to first click
+let clickCount = 0;        // internal only, not saved
+let misclicks = 0;         // any click that is NOT the target notification
 
 document.addEventListener("DOMContentLoaded", () => {
   console.log("Task 1 Zen Mode loaded");
@@ -9,30 +13,40 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function trackInteractions() {
+  const importantNotif = document.getElementById("importantNotification");
+
   document.addEventListener("click", (e) => {
     clickCount++;
 
-    const importantNotif = document.getElementById("importantNotification");
-    const clickedImportant =
-      importantNotif && importantNotif.contains(e.target);
-
-    if (!clickedImportant) {
-      distractionClicks++;
-      console.log(
-        "Zen non-target click counted as distraction/misdirect click",
-      );
+    // Record time to first click
+    if (firstClickTime === null) {
+      firstClickTime = (new Date() - taskStartTime) / 1000;
     }
 
-    const clickData = {
+    const clickedTarget = importantNotif && importantNotif.contains(e.target);
+
+    // In Zen there are no deception elements.
+    // Any non-target click counts as a misclick.
+    if (!clickedTarget) {
+      misclicks++;
+      console.log("Non-target click counted as misclick");
+    }
+
+    console.log("Click tracked:", {
       timestamp: new Date().toISOString(),
       element: e.target.tagName,
       className: e.target.className,
       clickNumber: clickCount,
-      wasDistraction: !clickedImportant,
-    };
-
-    console.log("Click tracked:", clickData);
+      wasMisclick: !clickedTarget,
+    });
   });
+
+  // Explicitly bind the correct target to task completion
+  if (importantNotif) {
+    importantNotif.addEventListener("click", () => {
+      completeTask();
+    });
+  }
 }
 
 function completeTask() {
@@ -43,23 +57,18 @@ function completeTask() {
     mode: "zen",
     completed: true,
     timeSpent: timeSpent,
-    clicks: clickCount,
-    distractionClicks: distractionClicks,
-    misclicks: distractionClicks,
+    firstClickTime: firstClickTime ?? "",
+    misclicks: misclicks,
     timestamp: new Date().toISOString(),
     participantId: sessionStorage.getItem("participantId"),
   };
 
-  console.log("Task completed:", taskData);
+  console.log("Task 1 Zen completed:", taskData);
 
-  const completedTasks = JSON.parse(
-    sessionStorage.getItem("completedTasks") || "[]",
-  );
-  completedTasks.push(taskData);
-  sessionStorage.setItem("completedTasks", JSON.stringify(completedTasks));
+  saveOrUpdateCompletedTask(taskData);
 
   const task1Modes = JSON.parse(
-    sessionStorage.getItem("task1ModesCompleted") || "[]",
+    sessionStorage.getItem("task1ModesCompleted") || "[]"
   );
   if (!task1Modes.includes("zen")) {
     task1Modes.push("zen");
@@ -71,16 +80,14 @@ function completeTask() {
 
 function checkIfBothModesCompleted() {
   const completed = JSON.parse(
-    sessionStorage.getItem("task1ModesCompleted") || "[]",
+    sessionStorage.getItem("task1ModesCompleted") || "[]"
   );
 
   if (completed.includes("overload") && completed.includes("zen")) {
-    // Both modes completed - go to survey
     setTimeout(() => {
       window.location.href = "./task1-survey.html";
     }, 500);
   } else {
-    // Return to mode selection to try the other mode
     setTimeout(() => {
       window.location.href = "./task1-selection.html";
     }, 500);
@@ -88,7 +95,23 @@ function checkIfBothModesCompleted() {
 }
 
 function switchMode(mode) {
-  if (mode === "overload") {
-    window.location.href = "./task1-overload.html";
+  if (mode === "overload") window.location.href = "./task1-overload.html";
+}
+
+function saveOrUpdateCompletedTask(taskData) {
+  const completedTasks = JSON.parse(
+    sessionStorage.getItem("completedTasks") || "[]"
+  );
+
+  const index = completedTasks.findIndex(
+    (item) => item.task === taskData.task && item.mode === taskData.mode
+  );
+
+  if (index >= 0) {
+    completedTasks[index] = taskData;
+  } else {
+    completedTasks.push(taskData);
   }
+
+  sessionStorage.setItem("completedTasks", JSON.stringify(completedTasks));
 }

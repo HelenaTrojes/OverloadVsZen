@@ -7,7 +7,7 @@
 //     participantId:  string,
 //     conditionOrder: string,   "overload_first" | "zen_first"
 //     isTestEntry:    boolean,  true → routed to Tests sheet only
-//     task:           string,   "task1" … "task5"
+//     task:           string,   "task1" … "task5" | "all_tasks"
 //     behavioral:     object,   → written to Behavioral_Data sheet
 //     survey:         object    → written to Survey_Responses sheet
 //   }
@@ -16,10 +16,14 @@
 // requests use mode: "no-cors". This means we never receive a
 // response body — fire-and-forget. Failures are caught by the
 // try/catch and saved to localStorage as a local backup.
+//
+// NO LOGIC CHANGES in this file — only the test payload below
+// has been updated to reflect the current schema (no _clicks,
+// firstClickTime added) so test entries stay consistent.
 // ============================================================
 
 const GOOGLE_SCRIPT_URL =
-  "https://script.google.com/macros/s/AKfycbwM9SJBR5bmwO-3yK6x_3Z-RrZMYjskvOpa-fFzJsoE8ZtcwzXQ9PFt0NFpfgFlXMPtzg/exec";
+  "https://script.google.com/macros/s/AKfycby--KKuzcP5KYwMO83t3KOIKDxPLXhFcztMaOc2LIc_nb9d8kQh531PgLYSqnV7fDKxTg/exec";
 
 // ── Main send function ────────────────────────────────────────
 
@@ -87,6 +91,8 @@ function downloadBackups() {
 // ── Test connection ───────────────────────────────────────────
 // Sends a minimal payload with isTestEntry: true so Code.gs
 // routes it to the Tests sheet and never touches real data.
+// Behavioral fields here reflect the current schema so test
+// entries in the Tests sheet look realistic.
 
 async function testConnection() {
   console.log("Testing connection to Google Sheets...");
@@ -94,9 +100,17 @@ async function testConnection() {
   const testPayload = {
     participantId: `TEST-${Date.now()}`,
     conditionOrder: "overload_first",
-    isTestEntry: true, // ← routes to Tests sheet in Code.gs
+    isTestEntry: true,
     task: "test",
-    behavioral: {},
+    behavioral: {
+      t1_A_timeSpent: 0,
+      t1_B_timeSpent: 0,
+      t1_A_firstClickTime: 0,
+      t1_B_firstClickTime: 0,
+      t1_A_misclicks: 0,
+      t1_B_misclicks: 0,
+      t1_A_deceptionClicks: 0,
+    },
     survey: { comment: "Connection test entry" },
   };
 

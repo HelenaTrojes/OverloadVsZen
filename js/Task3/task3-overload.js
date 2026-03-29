@@ -1,9 +1,11 @@
 // Task 3 Overload Mode JavaScript
+// Dark pattern: confirmshaming modal, upsell pressure on every plan choice
 
 let taskStartTime;
-let clickCount = 0;
-let planChanges = 0;
-let confirmshamingShown = 0;
+let firstClickTime = null;      // seconds from task load to first click
+let clickCount = 0;             // internal only, not saved
+let planChanges = 0;            // times user went back to change their plan
+let confirmshamingShown = 0;    // times the manipulative modal was triggered
 let selectedPlan = null;
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -12,6 +14,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
   document.addEventListener("click", () => {
     clickCount++;
+
+    if (firstClickTime === null) {
+      firstClickTime = (new Date() - taskStartTime) / 1000;
+    }
   });
 });
 
@@ -20,16 +26,13 @@ function selectPlan(plan) {
   console.log("Plan selected:", plan);
 
   document.getElementById("planSelection").style.display = "none";
-
-  const confirmationSection = document.getElementById("confirmationSection");
-  confirmationSection.style.display = "block";
+  document.getElementById("confirmationSection").style.display = "block";
 
   const planNames = {
     basic: "Basic Plan ($9/month)",
     pro: "Pro Plan ($19/month)",
     premium: "Premium Plan ($29/month)",
   };
-
   document.getElementById("selectedPlanName").textContent = planNames[plan];
 
   const confirmationTitle = document.getElementById("confirmationTitle");
@@ -82,24 +85,17 @@ function showConfirmShaming() {
 }
 
 function closeConfirmShaming() {
-  // Hide modal without changing
   document.getElementById("confirmshamingModal").style.display = "none";
 }
 
 function actuallyChangeMind() {
   planChanges++;
-  console.log("User actually changed mind. Total changes:", planChanges);
+  console.log("User changed mind. Total changes:", planChanges);
 
-  // Hide modal
   document.getElementById("confirmshamingModal").style.display = "none";
-
-  // Hide confirmation
   document.getElementById("confirmationSection").style.display = "none";
-
-  // Show plan selection again
   document.getElementById("planSelection").style.display = "block";
 
-  // Scroll to top
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
@@ -108,7 +104,6 @@ function confirmSelection() {
     alert("Please select a plan first");
     return;
   }
-
   completeTask();
 }
 
@@ -120,34 +115,27 @@ function completeTask() {
     mode: "overload",
     completed: true,
     timeSpent: timeSpent,
-    clicks: clickCount,
+    firstClickTime: firstClickTime ?? "",
+    misclicks: 0,
     planChanges: planChanges,
     confirmshamingShown: confirmshamingShown,
     finalPlan: selectedPlan,
-    misclicks: confirmshamingShown,
     timestamp: new Date().toISOString(),
     participantId: sessionStorage.getItem("participantId"),
   };
 
   console.log("Task 3 Overload completed:", taskData);
 
-  // Save task data
-  const completedTasks = JSON.parse(
-    sessionStorage.getItem("completedTasks") || "[]",
-  );
-  completedTasks.push(taskData);
-  sessionStorage.setItem("completedTasks", JSON.stringify(completedTasks));
+  saveOrUpdateCompletedTask(taskData);
 
-  // Mark mode as completed
   const task3Modes = JSON.parse(
-    sessionStorage.getItem("task3ModesCompleted") || "[]",
+    sessionStorage.getItem("task3ModesCompleted") || "[]"
   );
   if (!task3Modes.includes("overload")) {
     task3Modes.push("overload");
     sessionStorage.setItem("task3ModesCompleted", JSON.stringify(task3Modes));
   }
 
-  // Check if both modes completed
   setTimeout(() => {
     checkIfBothModesCompleted();
   }, 500);
@@ -155,7 +143,7 @@ function completeTask() {
 
 function checkIfBothModesCompleted() {
   const completed = JSON.parse(
-    sessionStorage.getItem("task3ModesCompleted") || "[]",
+    sessionStorage.getItem("task3ModesCompleted") || "[]"
   );
 
   if (completed.includes("overload") && completed.includes("zen")) {
@@ -166,7 +154,23 @@ function checkIfBothModesCompleted() {
 }
 
 function switchMode(mode) {
-  if (mode === "zen") {
-    window.location.href = "task3-zen.html";
+  if (mode === "zen") window.location.href = "task3-zen.html";
+}
+
+function saveOrUpdateCompletedTask(taskData) {
+  const completedTasks = JSON.parse(
+    sessionStorage.getItem("completedTasks") || "[]"
+  );
+
+  const index = completedTasks.findIndex(
+    (item) => item.task === taskData.task && item.mode === taskData.mode
+  );
+
+  if (index >= 0) {
+    completedTasks[index] = taskData;
+  } else {
+    completedTasks.push(taskData);
   }
+
+  sessionStorage.setItem("completedTasks", JSON.stringify(completedTasks));
 }

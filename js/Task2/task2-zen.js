@@ -1,8 +1,10 @@
 // Task 2 Zen Mode JavaScript
+// Clear form with real-time validation, progress indicator, honest feedback
 
 let taskStartTime;
-let clickCount = 0;
-let validationAttempts = 0;
+let firstClickTime = null;   // seconds from task load to first click
+let clickCount = 0;          // internal only, not saved
+let validationErrors = 0;    // failed validation attempts
 let progressFill;
 let progressText;
 
@@ -11,16 +13,23 @@ document.addEventListener("DOMContentLoaded", () => {
   taskStartTime = new Date();
 
   const form = document.getElementById("contactForm");
-  form.addEventListener("submit", handleSubmit);
+  if (form) {
+    form.addEventListener("submit", handleSubmit);
+  }
 
   progressFill = document.getElementById("formProgress");
   progressText = document.getElementById("progressText");
 
-  // Add real-time validation feedback
   addRealtimeValidation();
-
-  // Initialize progress tracking
   addProgressTracking();
+
+  document.addEventListener("click", () => {
+    clickCount++;
+
+    if (firstClickTime === null) {
+      firstClickTime = (new Date() - taskStartTime) / 1000;
+    }
+  });
 });
 
 function addRealtimeValidation() {
@@ -53,11 +62,13 @@ function addProgressTracking() {
 
     const percent = Math.round((filled / inputs.length) * 100);
 
-    progressFill.style.width = percent + "%";
-    progressText.textContent = `${percent}% completed`;
+    if (progressFill) {
+      progressFill.style.width = percent + "%";
+    }
 
-    if (percent === 100) {
-      progressText.textContent = "Ready to submit ✓";
+    if (progressText) {
+      progressText.textContent =
+        percent === 100 ? "Ready to submit ✓" : `${percent}% completed`;
     }
   }
 
@@ -65,7 +76,6 @@ function addProgressTracking() {
     input.addEventListener("input", updateProgress);
   });
 
-  // Initial state
   updateProgress();
 }
 
@@ -85,12 +95,12 @@ function validateField(input) {
   if (isValid) {
     input.classList.remove("invalid");
     input.classList.add("valid");
-    errorSpan.textContent = "";
+    if (errorSpan) errorSpan.textContent = "";
   } else {
     input.classList.remove("valid");
     input.classList.add("invalid");
-    errorSpan.textContent = errorMessage;
-    validationAttempts++;
+    if (errorSpan) errorSpan.textContent = errorMessage;
+    validationErrors++;
   }
 
   return isValid;
@@ -126,11 +136,11 @@ function completeTask(form) {
     mode: "zen",
     completed: true,
     timeSpent: timeSpent,
-    clicks: clickCount,
-    misclicks: 0,
+    firstClickTime: firstClickTime ?? "",
+    misclicks: validationErrors,
     fakeButtonClicks: 0,
     resetClicks: 0,
-    validationErrors: validationAttempts,
+    validationErrors: validationErrors,
     formData: {
       firstName: form.firstName.value,
       lastName: form.lastName.value,
@@ -140,23 +150,18 @@ function completeTask(form) {
     participantId: sessionStorage.getItem("participantId"),
   };
 
-  console.log("Task 2 completed:", taskData);
+  console.log("Task 2 Zen completed:", taskData);
 
-  const completedTasks = JSON.parse(
-    sessionStorage.getItem("completedTasks") || "[]",
-  );
-  completedTasks.push(taskData);
-  sessionStorage.setItem("completedTasks", JSON.stringify(completedTasks));
+  saveOrUpdateCompletedTask(taskData);
 
   const task2Modes = JSON.parse(
-    sessionStorage.getItem("task2ModesCompleted") || "[]",
+    sessionStorage.getItem("task2ModesCompleted") || "[]"
   );
   if (!task2Modes.includes("zen")) {
     task2Modes.push("zen");
     sessionStorage.setItem("task2ModesCompleted", JSON.stringify(task2Modes));
   }
 
-  // Show success message briefly
   const submitBtn = document.querySelector(".submit-button");
   if (submitBtn) {
     submitBtn.disabled = true;
@@ -165,14 +170,12 @@ function completeTask(form) {
 
   showSuccessMessage();
 
-  // Check if both modes completed
   setTimeout(() => {
     checkIfBothModesCompleted();
   }, 2000);
 }
 
 function showSuccessMessage() {
-  // Avoid duplicate success messages
   let successDiv = document.querySelector(".success-message");
 
   if (!successDiv) {
@@ -180,23 +183,23 @@ function showSuccessMessage() {
     successDiv.className = "success-message";
     successDiv.innerHTML =
       "<strong>✓ Success!</strong><br>Your form has been submitted.";
-    document.querySelector(".form-container").appendChild(successDiv);
+
+    const container = document.querySelector(".form-container");
+    if (container) {
+      container.appendChild(successDiv);
+    }
   }
 
   successDiv.classList.add("show");
 
-  // Scroll to the confirmation so the user clearly sees it
   setTimeout(() => {
-    successDiv.scrollIntoView({
-      behavior: "smooth",
-      block: "center",
-    });
+    successDiv.scrollIntoView({ behavior: "smooth", block: "center" });
   }, 100);
 }
 
 function checkIfBothModesCompleted() {
   const completed = JSON.parse(
-    sessionStorage.getItem("task2ModesCompleted") || "[]",
+    sessionStorage.getItem("task2ModesCompleted") || "[]"
   );
 
   if (completed.includes("overload") && completed.includes("zen")) {
@@ -207,12 +210,23 @@ function checkIfBothModesCompleted() {
 }
 
 function switchMode(mode) {
-  if (mode === "overload") {
-    window.location.href = "task2-overload.html";
-  }
+  if (mode === "overload") window.location.href = "task2-overload.html";
 }
 
-// Track clicks
-document.addEventListener("click", () => {
-  clickCount++;
-});
+function saveOrUpdateCompletedTask(taskData) {
+  const completedTasks = JSON.parse(
+    sessionStorage.getItem("completedTasks") || "[]"
+  );
+
+  const index = completedTasks.findIndex(
+    (item) => item.task === taskData.task && item.mode === taskData.mode
+  );
+
+  if (index >= 0) {
+    completedTasks[index] = taskData;
+  } else {
+    completedTasks.push(taskData);
+  }
+
+  sessionStorage.setItem("completedTasks", JSON.stringify(completedTasks));
+}

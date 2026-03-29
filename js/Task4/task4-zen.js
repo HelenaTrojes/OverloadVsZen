@@ -1,7 +1,9 @@
 // Task 4 Zen Mode JavaScript
+// Clean product selection — honest pricing, no urgency manipulation
 
 let taskStartTime;
-let clickCount = 0;
+let firstClickTime = null; // seconds from task load to first click
+let clickCount = 0;        // internal only, not saved
 let selectedProduct = null;
 let selectedPrice = 0;
 
@@ -11,6 +13,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
   document.addEventListener("click", () => {
     clickCount++;
+
+    if (firstClickTime === null) {
+      firstClickTime = (new Date() - taskStartTime) / 1000;
+    }
   });
 });
 
@@ -19,7 +25,6 @@ function selectProduct(product, price) {
   selectedPrice = price;
 
   console.log("Product selected:", product, "Price:", price);
-
   completeTask();
 }
 
@@ -31,9 +36,9 @@ function completeTask() {
     mode: "zen",
     completed: true,
     timeSpent: timeSpent,
-    clicks: clickCount,
-    misclicks: 0, 
-    productChosen: selectedProduct, 
+    firstClickTime: firstClickTime ?? "",
+    misclicks: 0,
+    productChosen: selectedProduct,
     priceChosen: selectedPrice,
     timestamp: new Date().toISOString(),
     participantId: sessionStorage.getItem("participantId"),
@@ -41,23 +46,16 @@ function completeTask() {
 
   console.log("Task 4 Zen completed:", taskData);
 
-  // Save task data
-  const completedTasks = JSON.parse(
-    sessionStorage.getItem("completedTasks") || "[]",
-  );
-  completedTasks.push(taskData);
-  sessionStorage.setItem("completedTasks", JSON.stringify(completedTasks));
+  saveOrUpdateCompletedTask(taskData);
 
-  // Mark mode as completed
   const task4Modes = JSON.parse(
-    sessionStorage.getItem("task4ModesCompleted") || "[]",
+    sessionStorage.getItem("task4ModesCompleted") || "[]"
   );
   if (!task4Modes.includes("zen")) {
     task4Modes.push("zen");
     sessionStorage.setItem("task4ModesCompleted", JSON.stringify(task4Modes));
   }
 
-  // Check if both modes completed
   setTimeout(() => {
     checkIfBothModesCompleted();
   }, 500);
@@ -65,7 +63,7 @@ function completeTask() {
 
 function checkIfBothModesCompleted() {
   const completed = JSON.parse(
-    sessionStorage.getItem("task4ModesCompleted") || "[]",
+    sessionStorage.getItem("task4ModesCompleted") || "[]"
   );
 
   if (completed.includes("overload") && completed.includes("zen")) {
@@ -76,7 +74,23 @@ function checkIfBothModesCompleted() {
 }
 
 function switchMode(mode) {
-  if (mode === "overload") {
-    window.location.href = "task4-overload.html";
+  if (mode === "overload") window.location.href = "task4-overload.html";
+}
+
+function saveOrUpdateCompletedTask(taskData) {
+  const completedTasks = JSON.parse(
+    sessionStorage.getItem("completedTasks") || "[]"
+  );
+
+  const index = completedTasks.findIndex(
+    (item) => item.task === taskData.task && item.mode === taskData.mode
+  );
+
+  if (index >= 0) {
+    completedTasks[index] = taskData;
+  } else {
+    completedTasks.push(taskData);
   }
+
+  sessionStorage.setItem("completedTasks", JSON.stringify(completedTasks));
 }
