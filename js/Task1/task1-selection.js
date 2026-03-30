@@ -1,26 +1,99 @@
-// Task 1 Mode Selection JavaScript
+// Task 1 Selection JavaScript
+// Auto-routing version with shorter delay on second pass
+
+const FIRST_PASS_DELAY_MS = 3000;
+const SECOND_PASS_DELAY_MS = 2000;
 
 document.addEventListener("DOMContentLoaded", () => {
   console.log("Task 1 selection page loaded");
 
-  // Initialize task data
   initializeTaskData();
+  routeTask1Automatically();
 });
 
 function initializeTaskData() {
-  // Check if this is the first task
   if (!sessionStorage.getItem("tasksCompleted")) {
     sessionStorage.setItem("tasksCompleted", JSON.stringify([]));
   }
 
-  // Track which modes have been tried for Task 1
   if (!sessionStorage.getItem("task1ModesCompleted")) {
     sessionStorage.setItem("task1ModesCompleted", JSON.stringify([]));
   }
 }
 
+function routeTask1Automatically() {
+  const completedModes = JSON.parse(
+    sessionStorage.getItem("task1ModesCompleted") || "[]"
+  );
+
+  if (completedModes.includes("overload") && completedModes.includes("zen")) {
+    console.log("Both Task 1 modes already completed. Redirecting to survey.");
+    setTimeout(() => {
+      window.location.href = "./task1-survey.html";
+    }, 500);
+    return;
+  }
+
+  const group = sessionStorage.getItem("counterbalanceGroup");
+  const firstMode = getFirstModeForTask1(group);
+  const secondMode = firstMode === "overload" ? "zen" : "overload";
+
+  let nextMode = null;
+
+  if (!completedModes.includes(firstMode)) {
+    nextMode = firstMode;
+  } else if (!completedModes.includes(secondMode)) {
+    nextMode = secondMode;
+  }
+
+  if (!nextMode) {
+    console.warn("Could not determine next Task 1 mode. Redirecting to survey.");
+    setTimeout(() => {
+      window.location.href = "./task1-survey.html";
+    }, 500);
+    return;
+  }
+
+  const isFirstPass = completedModes.length === 0;
+  const delayMs = isFirstPass ? FIRST_PASS_DELAY_MS : SECOND_PASS_DELAY_MS;
+
+  updateSelectionUI(isFirstPass, delayMs);
+
+  console.log("Task 1 auto-routing to:", nextMode);
+
+  setTimeout(() => {
+    selectMode(nextMode);
+  }, delayMs);
+}
+
+function getFirstModeForTask1(group) {
+  // Group 1 -> Task 1: A first -> overload first
+  // Group 2 -> Task 1: B first -> zen first
+  if (group === "group2") {
+    return "zen";
+  }
+  return "overload";
+}
+
+function updateSelectionUI(isFirstPass, delayMs) {
+  const instructionEl = document.getElementById("taskInstruction");
+  const messageEl = document.getElementById("autoRedirectMessage");
+
+  if (instructionEl) {
+    if (isFirstPass) {
+      instructionEl.textContent = "Preparing the first interface for this task...";
+    } else {
+      instructionEl.textContent = "Preparing the second interface for this task...";
+    }
+  }
+
+  if (messageEl) {
+    messageEl.textContent = `Redirecting automatically in ${delayMs / 1000} seconds...`;
+  }
+}
+
 function selectMode(mode) {
-  console.log(`Mode selected: ${mode}`);
+  console.log(`Task 1 auto-selected mode: ${mode}`);
 
   const firstMode = sessionStorage.getItem("task1FirstMode");
   if (!firstMode) {
@@ -32,13 +105,10 @@ function selectMode(mode) {
     mode: mode,
     timestamp: new Date().toISOString(),
     participantId: sessionStorage.getItem("participantId"),
+    counterbalanceGroup: sessionStorage.getItem("counterbalanceGroup") || "",
   };
 
-  const selections = JSON.parse(
-    sessionStorage.getItem("modeSelections") || "[]",
-  );
-  selections.push(selectionData);
-  sessionStorage.setItem("modeSelections", JSON.stringify(selections));
+  saveModeSelection(selectionData);
 
   if (mode === "overload") {
     window.location.href = "./task1-overload.html";
@@ -47,10 +117,28 @@ function selectMode(mode) {
   }
 }
 
-// Check if user has completed both modes
+function saveModeSelection(selectionData) {
+  const selections = JSON.parse(
+    sessionStorage.getItem("modeSelections") || "[]"
+  );
+
+  const index = selections.findIndex(
+    (item) =>
+      item.task === selectionData.task && item.mode === selectionData.mode
+  );
+
+  if (index >= 0) {
+    selections[index] = selectionData;
+  } else {
+    selections.push(selectionData);
+  }
+
+  sessionStorage.setItem("modeSelections", JSON.stringify(selections));
+}
+
 function checkBothModesCompleted() {
   const completed = JSON.parse(
-    sessionStorage.getItem("task1ModesCompleted") || "[]",
+    sessionStorage.getItem("task1ModesCompleted") || "[]"
   );
   return completed.includes("overload") && completed.includes("zen");
 }

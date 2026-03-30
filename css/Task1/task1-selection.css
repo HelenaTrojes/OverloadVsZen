@@ -35,6 +35,12 @@
     color: rgba(0, 0, 0, 0.6);
 }
 
+.active-mode {
+  outline: 3px solid rgba(255, 255, 255, 0.8);
+  transform: scale(1.03);
+  opacity: 1;
+}
+
 /* Mode Buttons Container */
 .mode-buttons {
     display: flex;

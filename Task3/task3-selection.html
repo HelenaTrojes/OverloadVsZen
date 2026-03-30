@@ -12,21 +12,15 @@
       <div class="task-header">
         <div class="task-icon">🔄</div>
         <h1 class="task-title">Task 3: Choose a Plan</h1>
-        <p class="task-instruction">
-          Choose a subscription plan. Then, before finishing, try to go back and
-          change your choice once.
+        <p class="task-instruction" id="taskInstruction">
+          Preparing the next interface...
         </p>
-      </div>
-
-      <div class="mode-buttons">
-        <button class="mode-btn overload-btn" onclick="selectMode('overload')">
-          <span class="mode-indicator"></span>
-          Mode A
-        </button>
-        <button class="mode-btn zen-btn" onclick="selectMode('zen')">
-          <span class="mode-indicator"></span>
-          Mode B
-        </button>
+        <p
+          id="autoRedirectMessage"
+          style="margin-top: 14px; font-size: 1rem; opacity: 0.85;"
+        >
+          You will be redirected automatically.
+        </p>
       </div>
 
       <input type="hidden" id="firstModeSelected" value="" />

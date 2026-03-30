@@ -1,16 +1,68 @@
 // Welcome Page JavaScript
 // Automatic participant assignment from Google Apps Script
 
-const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycby--KKuzcP5KYwMO83t3KOIKDxPLXhFcztMaOc2LIc_nb9d8kQh531PgLYSqnV7fDKxTg/exec";
+const APPS_SCRIPT_URL =
+  "https://script.google.com/macros/s/AKfycby--KKuzcP5KYwMO83t3KOIKDxPLXhFcztMaOc2LIc_nb9d8kQh531PgLYSqnV7fDKxTg/exec";
+
+let assignmentReady = false;
 
 document.addEventListener("DOMContentLoaded", async () => {
   console.log("Welcome page loaded");
 
   clearPreviousStudyData();
   logPageView("welcome");
+  prepareWelcomeUI();
 
   await prepareParticipantAssignment();
 });
+
+// ── UI setup ──────────────────────────────────────────────────
+
+function prepareWelcomeUI() {
+  const button = document.querySelector(".cta-button");
+
+  if (button) {
+    button.disabled = true;
+    button.style.opacity = "0.7";
+    button.style.cursor = "not-allowed";
+  }
+
+  showAssignmentStatus("Preparing your experience...");
+}
+
+function showAssignmentStatus(message, isError = false) {
+  let statusEl = document.getElementById("assignmentStatus");
+
+  if (!statusEl) {
+    statusEl = document.createElement("p");
+    statusEl.id = "assignmentStatus";
+    statusEl.style.marginTop = "16px";
+    statusEl.style.fontSize = "0.95rem";
+    statusEl.style.opacity = "0.85";
+
+    const infoContent = document.querySelector(".info-content");
+    const button = document.querySelector(".cta-button");
+
+    if (infoContent && button) {
+      infoContent.insertBefore(statusEl, button);
+    } else if (infoContent) {
+      infoContent.appendChild(statusEl);
+    }
+  }
+
+  statusEl.textContent = message;
+  statusEl.style.color = isError ? "#b02a37" : "";
+}
+
+function enableStartButton() {
+  const button = document.querySelector(".cta-button");
+
+  if (button) {
+    button.disabled = false;
+    button.style.opacity = "1";
+    button.style.cursor = "pointer";
+  }
+}
 
 // ── Assignment ────────────────────────────────────────────────
 
@@ -20,14 +72,22 @@ async function prepareParticipantAssignment() {
       `${APPS_SCRIPT_URL}?action=assignParticipant`,
       {
         method: "GET",
-      }
+      },
     );
 
+    if (!response.ok) {
+      throw new Error(`HTTP error ${response.status}`);
+    }
+
     const data = await response.json();
+    console.log("Assignment response:", data);
 
     if (!data || data.status !== "success") {
       console.error("Assignment failed:", data);
-      alert("Could not prepare participant assignment. Please reload the page.");
+      showAssignmentStatus(
+        "Could not prepare the study session. Please reload the page.",
+        true,
+      );
       return;
     }
 
@@ -36,38 +96,67 @@ async function prepareParticipantAssignment() {
     sessionStorage.setItem("counterbalanceGroup", data.counterbalanceGroup);
     sessionStorage.setItem("conditionOrder", data.conditionOrder);
 
-    console.log("Participant assignment ready:", data);
+    assignmentReady = true;
 
+    console.log("Participant assignment ready:", data);
+    showAssignmentStatus("Your experience is ready.");
+    enableStartButton();
   } catch (error) {
     console.error("Error preparing participant assignment:", error);
-    alert("Could not contact the assignment service. Please reload the page.");
+    showAssignmentStatus(
+      "Could not prepare the study session. Please reload the page.",
+      true,
+    );
   }
 }
 
 // ── Start study ───────────────────────────────────────────────
 
-function startExperience() {
+async function startExperience() {
   console.log("startExperience fired");
 
-  const participantId = sessionStorage.getItem("participantId");
-  const counterbalanceGroup = sessionStorage.getItem("counterbalanceGroup");
+  let participantId = sessionStorage.getItem("participantId");
+  let counterbalanceGroup = sessionStorage.getItem("counterbalanceGroup");
 
+  // If not ready → wait for assignment
   if (!participantId || !counterbalanceGroup) {
-    alert("Participant assignment is not ready yet. Please wait a moment and try again.");
-    return;
+    console.log("Assignment not ready, waiting...");
+
+    try {
+      const response = await fetch(
+        `${APPS_SCRIPT_URL}?action=assignParticipant`,
+      );
+      const data = await response.json();
+
+      if (data && data.status === "success") {
+        sessionStorage.setItem(
+          "participantNumber",
+          String(data.participantNumber),
+        );
+        sessionStorage.setItem("participantId", data.participantId);
+        sessionStorage.setItem("counterbalanceGroup", data.counterbalanceGroup);
+        sessionStorage.setItem("conditionOrder", data.conditionOrder);
+
+        participantId = data.participantId;
+        counterbalanceGroup = data.counterbalanceGroup;
+
+        console.log("Assignment completed on click:", data);
+      } else {
+        alert("Could not start the study. Please refresh.");
+        return;
+      }
+    } catch (error) {
+      console.error(error);
+      alert("Connection error. Please refresh.");
+      return;
+    }
   }
 
   const startTime = new Date().toISOString();
   sessionStorage.setItem("experienceStartTime", startTime);
 
-  console.log("Saved startTime:", sessionStorage.getItem("experienceStartTime"));
-  console.log("Saved participantNumber:", sessionStorage.getItem("participantNumber"));
-  console.log("Saved participantId:", sessionStorage.getItem("participantId"));
-  console.log("Saved counterbalanceGroup:", sessionStorage.getItem("counterbalanceGroup"));
-  console.log("Saved conditionOrder:", sessionStorage.getItem("conditionOrder"));
+  console.log("Starting with:", participantId, counterbalanceGroup);
 
-  // Keep current navigation for now.
-  // We will change the routing logic in the next step.
   window.location.href = "Task1/task1-selection.html";
 }
 

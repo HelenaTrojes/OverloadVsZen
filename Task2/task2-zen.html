@@ -9,26 +9,14 @@
   </head>
   <body class="zen-body">
     <div class="zen-container">
-      <!-- Header -->
       <header class="zen-header">
         <div class="task-info">
           <span class="task-icon">📝</span>
           <h1 class="task-title">Task 2: Submit a Simple Form</h1>
         </div>
-        <p class="task-subtitle">
-          Fill out a contact form with your name and email
-        </p>
-        <div class="mode-toggle">
-          <button class="mode-btn inactive" onclick="switchMode('overload')">
-            Mode A
-          </button>
-          <button class="mode-btn active">
-            <span class="indicator-dot"></span> Mode B
-          </button>
-        </div>
+        <p class="task-subtitle">Fill out a contact form with your information.</p>
       </header>
 
-      <!-- Guide Message -->
       <div class="zen-guide">
         <div class="quote-icon">❝</div>
         <p class="guide-text">
@@ -37,7 +25,6 @@
         </p>
       </div>
 
-      <!-- Contact Form -->
       <main class="zen-content">
         <div class="form-container">
           <div class="form-header">
@@ -45,7 +32,6 @@
             <p class="form-subtitle">We'd love to hear from you</p>
           </div>
 
-          <!-- Progress Bar -->
           <div class="progress-wrapper">
             <div class="progress-bar">
               <div class="progress-fill" id="formProgress"></div>
@@ -54,7 +40,6 @@
           </div>
 
           <form id="contactForm" class="contact-form">
-            <!-- First Name -->
             <div class="form-group">
               <label for="firstName" class="form-label">First Name</label>
               <input
@@ -68,7 +53,6 @@
               <span class="error-message" id="firstNameError"></span>
             </div>
 
-            <!-- Last Name -->
             <div class="form-group">
               <label for="lastName" class="form-label">Last Name</label>
               <input
@@ -82,7 +66,6 @@
               <span class="error-message" id="lastNameError"></span>
             </div>
 
-            <!-- Email -->
             <div class="form-group">
               <label for="email" class="form-label">Email Address</label>
               <input
@@ -93,13 +76,12 @@
                 placeholder="your@email.com"
                 required
               />
-              <span class="helper-text"
-                >We will never share your email with anyone.</span
-              >
+              <span class="helper-text">
+                We will never share your email with anyone.
+              </span>
               <span class="error-message" id="emailError"></span>
             </div>
 
-            <!-- Submit Button -->
             <button type="submit" class="submit-button">Submit Form</button>
           </form>
         </div>
