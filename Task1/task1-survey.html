@@ -43,6 +43,37 @@
         </div>
       </div>
 
+      <aside
+        class="floating-mode-reminder"
+        id="floatingModeReminder"
+        aria-label="Floating mode previews"
+        aria-hidden="true"
+      >
+        <p class="floating-mode-reminder-label">Need a quick reminder?</p>
+        <div class="floating-mode-reminder-buttons">
+          <button
+            type="button"
+            class="preview-btn"
+            data-preview-mode="modeA"
+            data-preview-src="../assets/task1-mode-a.png"
+            data-preview-title="Mode A Preview"
+            data-preview-alt="Static screenshot preview of Task 1 Mode A interface"
+          >
+            Mode A
+          </button>
+          <button
+            type="button"
+            class="preview-btn"
+            data-preview-mode="modeB"
+            data-preview-src="../assets/task1-mode-b.png"
+            data-preview-title="Mode B Preview"
+            data-preview-alt="Static screenshot preview of Task 1 Mode B interface"
+          >
+            Mode B
+          </button>
+        </div>
+      </aside>
+
       <form id="surveyForm" class="survey-form">
         <!-- Question 1: Mental Clarity -->
         <div class="question-block">
@@ -50,6 +81,12 @@
             <span class="question-number">1.</span>
             In which mode did you experience greater mental clarity and focus?
           </label>
+
+          <p class="question-help">
+            Select the mode in which you felt more focused and mentally clear
+            during the task.
+          </p>
+
           <div class="radio-group">
             <label class="radio-option">
               <input type="radio" name="q1_clarity" value="overload" required />
@@ -72,6 +109,11 @@
             <span class="question-number">2.</span>
             How did you feel during each mode?
           </label>
+
+          <p class="question-help">
+            Please rate how each mode felt during the task. Select one option
+            per mode from very stressful to very calm.
+          </p>
 
           <div class="sub-question">
             <p class="mode-label">Mode A felt:</p>
@@ -137,6 +179,12 @@
             <span class="question-number">3.</span>
             In which mode did you feel greater control over your actions?
           </label>
+
+          <p class="question-help">
+            Select the mode in which you felt more in control while completing
+            the task.
+          </p>
+
           <div class="radio-group">
             <label class="radio-option">
               <input type="radio" name="q3_control" value="overload" required />
@@ -167,10 +215,7 @@
           ></textarea>
         </div>
 
-        <!-- Submit Button -->
-        <button type="submit" class="submit-btn">
-          Next Task →
-        </button>
+        <button type="submit" class="submit-btn">Next Task →</button>
       </form>
     </div>
 

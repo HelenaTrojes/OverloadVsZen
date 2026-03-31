@@ -31,6 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
     surveyForm.addEventListener("submit", handleSubmit);
   }
 
+  initFloatingModeReminder();
   initPreviewModal();
   initValidationShake();
 });
@@ -93,6 +94,61 @@ function initPreviewModal() {
   document.addEventListener("keydown", (e) => {
     if (e.key === "Escape" && !modal.hidden) closeModal();
   });
+}
+
+function initFloatingModeReminder() {
+  const topReminder = document.querySelector(".mode-preview-section");
+  const floatingReminder = document.getElementById("floatingModeReminder");
+  const desktopMedia = window.matchMedia("(min-width: 1025px)");
+
+  if (!topReminder || !floatingReminder) {
+    return;
+  }
+
+  const setVisible = (isVisible) => {
+    const shouldShow = isVisible && desktopMedia.matches;
+    floatingReminder.classList.toggle("is-visible", shouldShow);
+    floatingReminder.setAttribute("aria-hidden", shouldShow ? "false" : "true");
+  };
+
+  setVisible(false);
+
+  if ("IntersectionObserver" in window) {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setVisible(entry.intersectionRatio < 0.35);
+      },
+      {
+        threshold: [0, 0.35, 1],
+      }
+    );
+
+    observer.observe(topReminder);
+  } else {
+    const updateVisibility = () => {
+      const rect = topReminder.getBoundingClientRect();
+      const visibleHeight =
+        Math.min(rect.bottom, window.innerHeight) - Math.max(rect.top, 0);
+      const ratio = visibleHeight > 0 ? visibleHeight / rect.height : 0;
+      setVisible(ratio < 0.35);
+    };
+
+    window.addEventListener("scroll", updateVisibility, { passive: true });
+    window.addEventListener("resize", updateVisibility);
+    updateVisibility();
+  }
+
+  const handleMediaChange = () => {
+    if (!desktopMedia.matches) {
+      setVisible(false);
+    }
+  };
+
+  if (typeof desktopMedia.addEventListener === "function") {
+    desktopMedia.addEventListener("change", handleMediaChange);
+  } else if (typeof desktopMedia.addListener === "function") {
+    desktopMedia.addListener(handleMediaChange);
+  }
 }
 
 // ── Build payload ─────────────────────────────────────────────
