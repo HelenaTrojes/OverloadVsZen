@@ -82,6 +82,12 @@
             In which mode did you feel more confident in your purchasing
             decision?
           </label>
+
+          <p class="question-help">
+            Select the mode in which you felt more certain and comfortable about
+            your choice.
+          </p>
+
           <div class="radio-group">
             <label class="radio-option">
               <input type="radio" name="q1_trust" value="overload" required />
@@ -105,6 +111,12 @@
             How much urgency did you feel when making your decision?
           </label>
 
+          <p class="question-help">
+            Please rate how much time pressure or urgency you felt in each mode.
+            A score of “1” means no urgency, while “5” means very strong
+            urgency.
+          </p>
+
           <div class="sub-question">
             <p class="mode-label">Mode A:</p>
             <div class="likert-scale">
@@ -115,23 +127,23 @@
                   value="1"
                   required
                 />
-                <span>No Pressure</span>
+                <span>No Urgency (1)</span>
               </label>
               <label class="likert-option">
                 <input type="radio" name="q2_overload_urgency" value="2" />
-                <span>Slight Pressure</span>
+                <span>Slight Urgency (2)</span>
               </label>
               <label class="likert-option">
                 <input type="radio" name="q2_overload_urgency" value="3" />
-                <span>Moderate</span>
+                <span>Moderate (3)</span>
               </label>
               <label class="likert-option">
                 <input type="radio" name="q2_overload_urgency" value="4" />
-                <span>Strong Pressure</span>
+                <span>Strong Urgency (4)</span>
               </label>
               <label class="likert-option">
                 <input type="radio" name="q2_overload_urgency" value="5" />
-                <span>Extreme Pressure</span>
+                <span>Very Strong Urgency (5)</span>
               </label>
             </div>
           </div>
@@ -141,34 +153,40 @@
             <div class="likert-scale">
               <label class="likert-option">
                 <input type="radio" name="q2_zen_urgency" value="1" required />
-                <span>No Pressure</span>
+                <span>No Urgency (1)</span>
               </label>
               <label class="likert-option">
                 <input type="radio" name="q2_zen_urgency" value="2" />
-                <span>Slight Pressure</span>
+                <span>Slight Urgency (2)</span>
               </label>
               <label class="likert-option">
                 <input type="radio" name="q2_zen_urgency" value="3" />
-                <span>Moderate</span>
+                <span>Moderate (3)</span>
               </label>
               <label class="likert-option">
                 <input type="radio" name="q2_zen_urgency" value="4" />
-                <span>Strong Pressure</span>
+                <span>Strong Urgency (4)</span>
               </label>
               <label class="likert-option">
                 <input type="radio" name="q2_zen_urgency" value="5" />
-                <span>Extreme Pressure</span>
+                <span>Very Strong Urgency (5)</span>
               </label>
             </div>
           </div>
         </div>
 
-        <!-- Question 3: Honesty -->
+        <!-- Question 3: Transparency -->
         <div class="question-block">
           <label class="question-label">
             <span class="question-number">3.</span>
             Which mode felt more transparent or straightforward to you?
           </label>
+
+          <p class="question-help">
+            Select the mode in which the information and options felt clearer
+            and easier to understand.
+          </p>
+
           <div class="radio-group">
             <label class="radio-option">
               <input type="radio" name="q3_honesty" value="overload" required />
@@ -194,12 +212,11 @@
           <textarea
             name="q4_comments"
             class="comment-box"
-            placeholder="What influenced your decision? How did the urgency tactics make you feel?"
+            placeholder="What influenced your decision? How did urgency or presentation affect you?"
             rows="4"
           ></textarea>
         </div>
 
-        <!-- Submit Button -->
         <button type="submit" class="submit-btn">Final Task →</button>
       </form>
     </div>

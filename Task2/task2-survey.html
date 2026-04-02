@@ -12,7 +12,8 @@
       <div class="survey-header">
         <h1 class="survey-title">Quick Reflection - Task 2</h1>
         <p class="survey-subtitle">
-          You just completed a form in two different ways. How did each feel to you?
+          You just completed a form in two different ways. How did each feel to
+          you?
         </p>
       </div>
 
@@ -80,6 +81,12 @@
             <span class="question-number">1.</span>
             Which mode made it easier to complete the form?
           </label>
+
+          <p class="question-help">
+            Select the mode in which completing the form felt easier and more
+            straightforward.
+          </p>
+
           <div class="radio-group">
             <label class="radio-option">
               <input type="radio" name="q1_ease" value="overload" required />
@@ -103,6 +110,12 @@
             How confident are you that your form was submitted successfully?
           </label>
 
+          <p class="question-help">
+            Please rate how confident you felt after submitting the form in each
+            mode. A score of “1” means very unsure, while “5” means very
+            confident.
+          </p>
+
           <div class="sub-question">
             <p class="mode-label">Mode A:</p>
             <div class="likert-scale">
@@ -113,23 +126,23 @@
                   value="1"
                   required
                 />
-                <span>Very Unsure</span>
+                <span>Very Unsure (1)</span>
               </label>
               <label class="likert-option">
                 <input type="radio" name="q2_overload_confidence" value="2" />
-                <span>Unsure</span>
+                <span>Unsure (2)</span>
               </label>
               <label class="likert-option">
                 <input type="radio" name="q2_overload_confidence" value="3" />
-                <span>Neutral</span>
+                <span>Neutral (3)</span>
               </label>
               <label class="likert-option">
                 <input type="radio" name="q2_overload_confidence" value="4" />
-                <span>Confident</span>
+                <span>Confident (4)</span>
               </label>
               <label class="likert-option">
                 <input type="radio" name="q2_overload_confidence" value="5" />
-                <span>Very Confident</span>
+                <span>Very Confident (5)</span>
               </label>
             </div>
           </div>
@@ -144,23 +157,23 @@
                   value="1"
                   required
                 />
-                <span>Very Unsure</span>
+                <span>Very Unsure (1)</span>
               </label>
               <label class="likert-option">
                 <input type="radio" name="q2_zen_confidence" value="2" />
-                <span>Unsure</span>
+                <span>Unsure (2)</span>
               </label>
               <label class="likert-option">
                 <input type="radio" name="q2_zen_confidence" value="3" />
-                <span>Neutral</span>
+                <span>Neutral (3)</span>
               </label>
               <label class="likert-option">
                 <input type="radio" name="q2_zen_confidence" value="4" />
-                <span>Confident</span>
+                <span>Confident (4)</span>
               </label>
               <label class="likert-option">
                 <input type="radio" name="q2_zen_confidence" value="5" />
-                <span>Very Confident</span>
+                <span>Very Confident (5)</span>
               </label>
             </div>
           </div>
@@ -172,6 +185,12 @@
             <span class="question-number">3.</span>
             In which mode did you feel more frustration?
           </label>
+
+          <p class="question-help">
+            Select the mode in which the form experience felt more frustrating
+            or difficult.
+          </p>
+
           <div class="radio-group">
             <label class="radio-option">
               <input
@@ -207,10 +226,7 @@
           ></textarea>
         </div>
 
-        <!-- Submit Button -->
-        <button type="submit" class="submit-btn">
-          Next Task →
-        </button>
+        <button type="submit" class="submit-btn">Next Task →</button>
       </form>
     </div>
 
