@@ -1,19 +1,18 @@
 // Welcome Page JavaScript
-// Automatic participant assignment from Google Apps Script
+// Assign participant ONLY when the user clicks Start
 
 const APPS_SCRIPT_URL =
   "https://script.google.com/macros/s/AKfycby--KKuzcP5KYwMO83t3KOIKDxPLXhFcztMaOc2LIc_nb9d8kQh531PgLYSqnV7fDKxTg/exec";
 
-let assignmentReady = false;
-
-document.addEventListener("DOMContentLoaded", async () => {
+document.addEventListener("DOMContentLoaded", () => {
   console.log("Welcome page loaded");
 
   clearPreviousStudyData();
   logPageView("welcome");
   prepareWelcomeUI();
 
-  await prepareParticipantAssignment();
+  showAssignmentStatus("Click Begin Experience to start.");
+  enableStartButton();
 });
 
 // ── UI setup ──────────────────────────────────────────────────
@@ -26,8 +25,6 @@ function prepareWelcomeUI() {
     button.style.opacity = "0.7";
     button.style.cursor = "not-allowed";
   }
-
-  showAssignmentStatus("Preparing your experience...");
 }
 
 function showAssignmentStatus(message, isError = false) {
@@ -64,49 +61,36 @@ function enableStartButton() {
   }
 }
 
-// ── Assignment ────────────────────────────────────────────────
+function disableStartButton() {
+  const button = document.querySelector(".cta-button");
 
-async function prepareParticipantAssignment() {
-  try {
-    const response = await fetch(
-      `${APPS_SCRIPT_URL}?action=assignParticipant`,
-      {
-        method: "GET",
-      },
-    );
+  if (button) {
+    button.disabled = true;
+    button.style.opacity = "1";
+    button.style.cursor = "pointer";
+  }
+}
 
-    if (!response.ok) {
-      throw new Error(`HTTP error ${response.status}`);
-    }
+function showLoadingOverlay(message = "Preparing your experience...") {
+  const overlay = document.getElementById("loadingOverlay");
+  const messageEl = document.getElementById("loadingMessage");
 
-    const data = await response.json();
-    console.log("Assignment response:", data);
+  if (messageEl) {
+    messageEl.textContent = message;
+  }
 
-    if (!data || data.status !== "success") {
-      console.error("Assignment failed:", data);
-      showAssignmentStatus(
-        "Could not prepare the study session. Please reload the page.",
-        true,
-      );
-      return;
-    }
+  if (overlay) {
+    overlay.classList.add("active");
+    overlay.setAttribute("aria-hidden", "false");
+  }
+}
 
-    sessionStorage.setItem("participantNumber", String(data.participantNumber));
-    sessionStorage.setItem("participantId", data.participantId);
-    sessionStorage.setItem("counterbalanceGroup", data.counterbalanceGroup);
-    sessionStorage.setItem("conditionOrder", data.conditionOrder);
+function hideLoadingOverlay() {
+  const overlay = document.getElementById("loadingOverlay");
 
-    assignmentReady = true;
-
-    console.log("Participant assignment ready:", data);
-    showAssignmentStatus("Your experience is ready.");
-    enableStartButton();
-  } catch (error) {
-    console.error("Error preparing participant assignment:", error);
-    showAssignmentStatus(
-      "Could not prepare the study session. Please reload the page.",
-      true,
-    );
+  if (overlay) {
+    overlay.classList.remove("active");
+    overlay.setAttribute("aria-hidden", "true");
   }
 }
 
@@ -115,39 +99,56 @@ async function prepareParticipantAssignment() {
 async function startExperience() {
   console.log("startExperience fired");
 
+  disableStartButton();
+  showLoadingOverlay("Preparing your experience...");
+
   let participantId = sessionStorage.getItem("participantId");
   let counterbalanceGroup = sessionStorage.getItem("counterbalanceGroup");
 
-  // If not ready → wait for assignment
   if (!participantId || !counterbalanceGroup) {
-    console.log("Assignment not ready, waiting...");
-
     try {
       const response = await fetch(
         `${APPS_SCRIPT_URL}?action=assignParticipant`,
+        {
+          method: "GET",
+        },
       );
+
+      if (!response.ok) {
+        throw new Error(`HTTP error ${response.status}`);
+      }
+
       const data = await response.json();
+      console.log("Assignment response:", data);
 
-      if (data && data.status === "success") {
-        sessionStorage.setItem(
-          "participantNumber",
-          String(data.participantNumber),
+      if (!data || data.status !== "success") {
+        hideLoadingOverlay();
+        showAssignmentStatus(
+          "Could not start the study. Please reload the page.",
+          true,
         );
-        sessionStorage.setItem("participantId", data.participantId);
-        sessionStorage.setItem("counterbalanceGroup", data.counterbalanceGroup);
-        sessionStorage.setItem("conditionOrder", data.conditionOrder);
-
-        participantId = data.participantId;
-        counterbalanceGroup = data.counterbalanceGroup;
-
-        console.log("Assignment completed on click:", data);
-      } else {
-        alert("Could not start the study. Please refresh.");
+        enableStartButton();
         return;
       }
+
+      sessionStorage.setItem(
+        "participantNumber",
+        String(data.participantNumber),
+      );
+      sessionStorage.setItem("participantId", data.participantId);
+      sessionStorage.setItem("counterbalanceGroup", data.counterbalanceGroup);
+      sessionStorage.setItem("conditionOrder", data.conditionOrder);
+
+      participantId = data.participantId;
+      counterbalanceGroup = data.counterbalanceGroup;
     } catch (error) {
-      console.error(error);
-      alert("Connection error. Please refresh.");
+      console.error("Error assigning participant:", error);
+      hideLoadingOverlay();
+      showAssignmentStatus(
+        "Could not start the study. Please reload the page.",
+        true,
+      );
+      enableStartButton();
       return;
     }
   }
@@ -155,9 +156,11 @@ async function startExperience() {
   const startTime = new Date().toISOString();
   sessionStorage.setItem("experienceStartTime", startTime);
 
-  console.log("Starting with:", participantId, counterbalanceGroup);
+  showLoadingOverlay("Starting your first task...");
 
-  window.location.href = "Task1/task1-selection.html";
+  setTimeout(() => {
+    window.location.href = "Task1/task1-selection.html";
+  }, 350);
 }
 
 // ── Helpers ───────────────────────────────────────────────────

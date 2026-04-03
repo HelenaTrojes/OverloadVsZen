@@ -148,6 +148,55 @@
   font-weight: 400;
 }
 
+.loading-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.92);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+
+.loading-overlay.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.loading-box {
+  background: #ffffff;
+  padding: 28px 34px;
+  border-radius: 18px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
+  text-align: center;
+  min-width: 240px;
+}
+
+.spinner {
+  width: 38px;
+  height: 38px;
+  margin: 0 auto 14px;
+  border: 4px solid rgba(0, 0, 0, 0.12);
+  border-top: 4px solid rgba(0, 0, 0, 0.65);
+  border-radius: 50%;
+  animation: spin 0.9s linear infinite;
+}
+
+#loadingMessage {
+  margin: 0;
+  font-size: 1rem;
+  color: #1f1f1f;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 /* Animations */
 @keyframes fadeInUp {
   from {
